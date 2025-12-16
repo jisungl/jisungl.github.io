@@ -487,117 +487,106 @@ document.addEventListener('DOMContentLoaded', function() {
                 vy: 0,
                 vz: 0,  // depth velocity
                 z: 0,   // depth position
+                rotation: 0,  // rotation angle
                 dragging: false,
+                flicking: false,
                 kicked: false,
                 scored: false
             },
             goalpost: {
-                leftX: 180,
-                rightX: 320,
-                y: 100,
+                baseX: 250,
+                baseY: 300,
+                postHeight: 120,
+                crossbarWidth: 100,
+                uprightHeight: 60,
                 z: 800  // distance to goalposts
-            }
+            },
+            dragStartX: 0,
+            dragStartY: 0,
+            dragStartTime: 0
         };
         
         // Physics constants
-        const FG_GRAVITY = 0.25;
-        const FG_KICK_MULTIPLIER = 0.12;
-        
-        function drawField() {
-            // Green field
-            fgCtx.fillStyle = '#2d5016';
-            fgCtx.fillRect(0, 350, fgCanvas.width, fgCanvas.height - 350);
-            
-            // Yard lines for perspective
-            for (let i = 0; i < 5; i++) {
-                const y = 350 + i * 30;
-                const alpha = 0.3 - i * 0.05;
-                fgCtx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                fgCtx.lineWidth = 2;
-                fgCtx.beginPath();
-                fgCtx.moveTo(0, y);
-                fgCtx.lineTo(fgCanvas.width, y);
-                fgCtx.stroke();
-            }
-        }
+        const FG_GRAVITY = 0.3;
+        const FG_FLICK_MULTIPLIER = 0.15;
         
         function drawGoalpost() {
-            // Calculate perspective scale based on depth
-            const scale = 1 - (fgState.goalpost.z / 1000);
-            const postY = fgState.goalpost.y;
+            const scale = 1 - (fgState.goalpost.z / 1000) * 0.2;
+            const baseX = fgState.goalpost.baseX;
+            const baseY = fgState.goalpost.baseY;
+            const postHeight = fgState.goalpost.postHeight * scale;
+            const crossbarWidth = fgState.goalpost.crossbarWidth * scale;
+            const uprightHeight = fgState.goalpost.uprightHeight * scale;
             
-            // Posts (yellow)
+            // Yellow goalpost
             fgCtx.strokeStyle = '#ffcc00';
-            fgCtx.lineWidth = 8 * scale;
+            fgCtx.lineWidth = 6 * scale;
             
-            // Left post
+            // Vertical post (from ground to crossbar)
             fgCtx.beginPath();
-            fgCtx.moveTo(fgState.goalpost.leftX, postY);
-            fgCtx.lineTo(fgState.goalpost.leftX, postY + 150 * scale);
+            fgCtx.moveTo(baseX, baseY + postHeight);
+            fgCtx.lineTo(baseX, baseY);
             fgCtx.stroke();
             
-            // Right post
+            // Crossbar (horizontal)
             fgCtx.beginPath();
-            fgCtx.moveTo(fgState.goalpost.rightX, postY);
-            fgCtx.lineTo(fgState.goalpost.rightX, postY + 150 * scale);
+            fgCtx.moveTo(baseX - crossbarWidth / 2, baseY);
+            fgCtx.lineTo(baseX + crossbarWidth / 2, baseY);
             fgCtx.stroke();
             
-            // Crossbar
+            // Left upright
             fgCtx.beginPath();
-            fgCtx.moveTo(fgState.goalpost.leftX, postY);
-            fgCtx.lineTo(fgState.goalpost.rightX, postY);
+            fgCtx.moveTo(baseX - crossbarWidth / 2, baseY);
+            fgCtx.lineTo(baseX - crossbarWidth / 2, baseY - uprightHeight);
+            fgCtx.stroke();
+            
+            // Right upright
+            fgCtx.beginPath();
+            fgCtx.moveTo(baseX + crossbarWidth / 2, baseY);
+            fgCtx.lineTo(baseX + crossbarWidth / 2, baseY - uprightHeight);
             fgCtx.stroke();
         }
         
         function drawFootball() {
-            if (fgState.ball.kicked) {
-                // Calculate size based on depth
-                const scale = Math.max(0.1, 1 - (fgState.ball.z / fgState.goalpost.z));
-                const radius = fgState.ball.radius * scale;
-                
-                // Draw football (brown)
-                fgCtx.fillStyle = '#8b4513';
-                fgCtx.beginPath();
-                fgCtx.ellipse(fgState.ball.x, fgState.ball.y, radius * 1.3, radius * 0.9, Math.PI / 4, 0, Math.PI * 2);
-                fgCtx.fill();
-                
-                // Laces
-                fgCtx.strokeStyle = '#ffffff';
-                fgCtx.lineWidth = 1;
-                fgCtx.beginPath();
-                fgCtx.moveTo(fgState.ball.x - radius * 0.5, fgState.ball.y);
-                fgCtx.lineTo(fgState.ball.x + radius * 0.5, fgState.ball.y);
-                fgCtx.stroke();
-            } else {
-                // Draw full size football at bottom
-                fgCtx.fillStyle = '#8b4513';
-                fgCtx.beginPath();
-                fgCtx.ellipse(fgState.ball.x, fgState.ball.y, fgState.ball.radius * 1.3, fgState.ball.radius * 0.9, Math.PI / 4, 0, Math.PI * 2);
-                fgCtx.fill();
-                
-                // Laces
-                fgCtx.strokeStyle = '#ffffff';
-                fgCtx.lineWidth = 2;
-                fgCtx.beginPath();
-                fgCtx.moveTo(fgState.ball.x - fgState.ball.radius * 0.6, fgState.ball.y);
-                fgCtx.lineTo(fgState.ball.x + fgState.ball.radius * 0.6, fgState.ball.y);
-                fgCtx.stroke();
-                
+            const scale = fgState.ball.kicked ? Math.max(0.2, 1 - (fgState.ball.z / fgState.goalpost.z)) : 1;
+            const radius = fgState.ball.radius * scale;
+            
+            fgCtx.save();
+            fgCtx.translate(fgState.ball.x, fgState.ball.y);
+            fgCtx.rotate(fgState.ball.rotation);
+            
+            // Draw football (brown)
+            fgCtx.fillStyle = '#8b4513';
+            fgCtx.beginPath();
+            fgCtx.ellipse(0, 0, radius * 1.3, radius * 0.9, 0, 0, Math.PI * 2);
+            fgCtx.fill();
+            
+            // Laces
+            fgCtx.strokeStyle = '#ffffff';
+            fgCtx.lineWidth = Math.max(1, 2 * scale);
+            fgCtx.beginPath();
+            fgCtx.moveTo(-radius * 0.6, 0);
+            fgCtx.lineTo(radius * 0.6, 0);
+            fgCtx.stroke();
+            
+            if (!fgState.ball.kicked) {
                 for (let i = -2; i <= 2; i++) {
                     fgCtx.beginPath();
-                    fgCtx.moveTo(fgState.ball.x + i * 6, fgState.ball.y - 4);
-                    fgCtx.lineTo(fgState.ball.x + i * 6, fgState.ball.y + 4);
+                    fgCtx.moveTo(i * 6, -4);
+                    fgCtx.lineTo(i * 6, 4);
                     fgCtx.stroke();
                 }
             }
+            
+            fgCtx.restore();
         }
         
         function drawScoreboard() {
             // Scoreboard background
-            fgCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            fgCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
             fgCtx.fillRect(10, 10, 120, 80);
             
-            fgCtx.fillStyle = '#ffffff';
+            fgCtx.fillStyle = '#5a3d7a';
             fgCtx.font = 'bold 14px "Outfit", sans-serif';
             fgCtx.textAlign = 'left';
             
@@ -613,33 +602,53 @@ document.addEventListener('DOMContentLoaded', function() {
             fgCtx.fillText(homeScore.toString(), 80, 65);
         }
         
-        function drawKickPreview() {
-            if (fgState.ball.dragging) {
-                // Show kick direction arrow
-                const dragX = fgState.ball.x - fgState.ball.startX;
-                const dragY = fgState.ball.y - fgState.ball.startY;
+        function drawFlickIndicator() {
+            if (fgState.ball.flicking) {
+                const dx = fgState.ball.x - fgState.dragStartX;
+                const dy = fgState.ball.y - fgState.dragStartY;
                 
-                if (Math.abs(dragX) > 5 || Math.abs(dragY) > 5) {
-                    fgCtx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
-                    fgCtx.lineWidth = 3;
-                    fgCtx.setLineDash([5, 5]);
-                    fgCtx.beginPath();
-                    fgCtx.moveTo(fgState.ball.startX, fgState.ball.startY);
-                    fgCtx.lineTo(fgState.ball.x, fgState.ball.y);
-                    fgCtx.stroke();
-                    fgCtx.setLineDash([]);
-                }
+                // Draw arrow showing flick direction
+                fgCtx.strokeStyle = 'rgba(90, 61, 122, 0.6)';
+                fgCtx.lineWidth = 3;
+                fgCtx.setLineDash([5, 5]);
+                fgCtx.beginPath();
+                fgCtx.moveTo(fgState.dragStartX, fgState.dragStartY);
+                fgCtx.lineTo(fgState.ball.x, fgState.ball.y);
+                fgCtx.stroke();
+                fgCtx.setLineDash([]);
+                
+                // Arrow head
+                const angle = Math.atan2(dy, dx);
+                const headLength = 15;
+                fgCtx.beginPath();
+                fgCtx.moveTo(fgState.ball.x, fgState.ball.y);
+                fgCtx.lineTo(
+                    fgState.ball.x - headLength * Math.cos(angle - Math.PI / 6),
+                    fgState.ball.y - headLength * Math.sin(angle - Math.PI / 6)
+                );
+                fgCtx.moveTo(fgState.ball.x, fgState.ball.y);
+                fgCtx.lineTo(
+                    fgState.ball.x - headLength * Math.cos(angle + Math.PI / 6),
+                    fgState.ball.y - headLength * Math.sin(angle + Math.PI / 6)
+                );
+                fgCtx.stroke();
             }
         }
         
         function checkFieldGoal() {
             // Check if ball is at goalpost depth and between posts
             if (fgState.ball.z >= fgState.goalpost.z && !fgState.ball.scored) {
-                const leftPost = fgState.goalpost.leftX;
-                const rightPost = fgState.goalpost.rightX;
-                const crossbarY = fgState.goalpost.y;
+                const scale = 1 - (fgState.goalpost.z / 1000) * 0.2;
+                const crossbarWidth = fgState.goalpost.crossbarWidth * scale;
+                const leftPost = fgState.goalpost.baseX - crossbarWidth / 2;
+                const rightPost = fgState.goalpost.baseX + crossbarWidth / 2;
+                const crossbarY = fgState.goalpost.baseY;
+                const uprightTop = crossbarY - fgState.goalpost.uprightHeight * scale;
                 
-                if (fgState.ball.x > leftPost && fgState.ball.x < rightPost && fgState.ball.y < crossbarY) {
+                if (fgState.ball.x > leftPost && 
+                    fgState.ball.x < rightPost && 
+                    fgState.ball.y < crossbarY &&
+                    fgState.ball.y > uprightTop) {
                     fgState.ball.scored = true;
                     homeScore += 3;
                     return true;
@@ -651,13 +660,19 @@ document.addEventListener('DOMContentLoaded', function() {
         function fgDraw() {
             fgCtx.clearRect(0, 0, fgCanvas.width, fgCanvas.height);
             
-            // Sky
-            fgCtx.fillStyle = '#87ceeb';
-            fgCtx.fillRect(0, 0, fgCanvas.width, 350);
+            // Background matching website theme
+            const gradient = fgCtx.createLinearGradient(0, 0, 0, fgCanvas.height);
+            gradient.addColorStop(0, '#e6d9ff');
+            gradient.addColorStop(1, '#d4c1ed');
+            fgCtx.fillStyle = gradient;
+            fgCtx.fillRect(0, 0, fgCanvas.width, fgCanvas.height);
             
-            drawField();
+            // Ground area
+            fgCtx.fillStyle = 'rgba(200, 165, 232, 0.2)';
+            fgCtx.fillRect(0, 380, fgCanvas.width, fgCanvas.height - 380);
+            
             drawGoalpost();
-            drawKickPreview();
+            drawFlickIndicator();
             drawFootball();
             drawScoreboard();
         }
@@ -672,12 +687,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 fgState.ball.y += fgState.ball.vy;
                 fgState.ball.z += fgState.ball.vz;
                 
+                // Update rotation (spin)
+                fgState.ball.rotation += 0.15;
+                
                 // Check for field goal
                 checkFieldGoal();
                 
                 // Reset if ball goes too far or hits ground
                 if (fgState.ball.z > fgState.goalpost.z + 100 || 
-                    fgState.ball.y > 450 ||
+                    fgState.ball.y > 480 ||
                     fgState.ball.x < -50 || 
                     fgState.ball.x > fgCanvas.width + 50) {
                     fgResetBall();
@@ -692,8 +710,9 @@ document.addEventListener('DOMContentLoaded', function() {
             fgState.ball.vx = 0;
             fgState.ball.vy = 0;
             fgState.ball.vz = 0;
+            fgState.ball.rotation = 0;
             fgState.ball.kicked = false;
-            fgState.ball.dragging = false;
+            fgState.ball.flicking = false;
             fgState.ball.scored = false;
         }
         
@@ -703,7 +722,7 @@ document.addEventListener('DOMContentLoaded', function() {
             requestAnimationFrame(fgGameLoop);
         }
         
-        // Mouse events for field goal
+        // Mouse events for field goal - flick mechanic
         fgCanvas.addEventListener('mousedown', (e) => {
             const rect = fgCanvas.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
@@ -714,47 +733,59 @@ document.addEventListener('DOMContentLoaded', function() {
             const distance = Math.sqrt(dx * dx + dy * dy);
             
             if (distance < fgState.ball.radius * 2 && !fgState.ball.kicked) {
-                fgState.ball.dragging = true;
+                fgState.ball.flicking = true;
+                fgState.dragStartX = mouseX;
+                fgState.dragStartY = mouseY;
+                fgState.dragStartTime = Date.now();
             }
         });
         
         fgCanvas.addEventListener('mousemove', (e) => {
-            if (fgState.ball.dragging) {
+            if (fgState.ball.flicking && !fgState.ball.kicked) {
                 const rect = fgCanvas.getBoundingClientRect();
                 fgState.ball.x = e.clientX - rect.left;
                 fgState.ball.y = e.clientY - rect.top;
             }
         });
         
-        fgCanvas.addEventListener('mouseup', () => {
-            if (fgState.ball.dragging) {
-                // Calculate kick vector
-                const dragX = fgState.ball.x - fgState.ball.startX;
-                const dragY = fgState.ball.y - fgState.ball.startY;
-                const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
+        fgCanvas.addEventListener('mouseup', (e) => {
+            if (fgState.ball.flicking) {
+                const rect = fgCanvas.getBoundingClientRect();
+                const endX = e.clientX - rect.left;
+                const endY = e.clientY - rect.top;
+                const endTime = Date.now();
                 
-                // Reset to starting position
+                // Calculate flick velocity based on distance and time
+                const dx = endX - fgState.dragStartX;
+                const dy = endY - fgState.dragStartY;
+                const dt = Math.max(1, endTime - fgState.dragStartTime);
+                
+                const flickSpeed = Math.sqrt(dx * dx + dy * dy) / dt;
+                const flickDistance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Reset ball to starting position
                 fgState.ball.x = fgState.ball.startX;
                 fgState.ball.y = fgState.ball.startY;
                 
-                fgState.ball.dragging = false;
+                fgState.ball.flicking = false;
                 fgState.ball.kicked = true;
                 
-                if (dragDistance > 0) {
-                    const dirX = dragX / dragDistance;
-                    const dirY = dragY / dragDistance;
-                    const power = dragDistance * FG_KICK_MULTIPLIER;
+                if (flickDistance > 5) {
+                    // Velocity based on flick direction and speed
+                    const angle = Math.atan2(dy, dx);
+                    const power = Math.min(flickSpeed * 8, flickDistance * FG_FLICK_MULTIPLIER);
                     
-                    fgState.ball.vx = -dirX * power;
-                    fgState.ball.vy = -dirY * power;
-                    // Forward velocity (into screen)
-                    fgState.ball.vz = power * 3;
+                    fgState.ball.vx = Math.cos(angle) * power;
+                    fgState.ball.vy = Math.sin(angle) * power;
+                    fgState.ball.vz = power * 3;  // Forward velocity
+                } else {
+                    fgResetBall();
                 }
             }
         });
         
         fgCanvas.addEventListener('mouseleave', () => {
-            if (fgState.ball.dragging) {
+            if (fgState.ball.flicking) {
                 fgResetBall();
             }
         });
