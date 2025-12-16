@@ -261,8 +261,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 let pvx = vx;
                 let pvy = vy;
                 
-                // Simulate trajectory
-                for (let i = 0; i < 40; i++) {
+                // Simulate trajectory (shortened for difficulty)
+                for (let i = 0; i < 22; i++) {
                     pvy += GRAVITY;
                     px += pvx;
                     py += pvy;
