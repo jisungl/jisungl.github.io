@@ -244,38 +244,83 @@ nav.scrolled .nav-container {
 }
 
 /* About Page Layout */
-.about-layout {
+.about-content {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
-    gap: 3rem;
-    align-items: flex-start;
+    gap: 4rem;
+    align-items: center;
+    padding: 0 2rem;
 }
 
-.about-image {
+.about-image-circle {
     flex: 0 0 400px;
 }
 
-.image-placeholder {
+.about-image-circle img {
     width: 400px;
     height: 400px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 12px 40px rgba(90, 61, 122, 0.2);
 }
 
-.image-placeholder p {
-    color: #7a5d9a;
-    font-size: 1.2rem;
-}
-
-.about-text {
+.about-text-simple {
     flex: 1;
 }
 
-.about-text h2 {
-    margin-top: 0;
+.about-intro {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #5a3d7a;
+    line-height: 1.4;
+    margin-bottom: 2rem;
+}
+
+.about-description {
+    font-size: 1.4rem;
+    color: #5a3d7a;
+    line-height: 1.8;
+}
+
+/* Basketball Game */
+.game-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2rem;
+}
+
+.game-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    color: #5a3d7a;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.shot-counter {
+    font-size: 1.5rem;
+    color: #5a3d7a;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+#basketballGame {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.15);
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+.game-instructions {
+    font-size: 1.2rem;
+    color: #6b4d8a;
+    margin-top: 1.5rem;
 }
 
 /* Responsive Design */
@@ -317,17 +362,30 @@ nav.scrolled .nav-container {
         flex-direction: column;
     }
     
-    .about-layout {
+    .about-content {
         flex-direction: column;
+        gap: 2rem;
     }
     
-    .about-image {
+    .about-image-circle {
         flex: unset;
-        width: 100%;
     }
     
-    .image-placeholder {
-        width: 100%;
+    .about-image-circle img {
+        width: 300px;
         height: 300px;
+    }
+    
+    .about-intro {
+        font-size: 2rem;
+    }
+    
+    .about-description {
+        font-size: 1.2rem;
+    }
+    
+    #basketballGame {
+        max-width: 100%;
+        height: auto;
     }
 }
