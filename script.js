@@ -101,9 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let gameState = {
             ball: {
                 x: 120,
-                y: 380,
+                y: 390,  // Lowered slightly from 380
                 startX: 120,
-                startY: 380,
+                startY: 390,
                 radius: 12,
                 vx: 0,
                 vy: 0,
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function drawTrajectoryPreview() {
             if (gameState.ball.dragging) {
-                // Calculate initial velocity
+                // Use the actual current ball position (which is already clamped)
                 const dragX = gameState.ball.x - gameState.ball.startX;
                 const dragY = gameState.ball.y - gameState.ball.startY;
                 const vx = -dragX * LAUNCH_MULTIPLIER;
@@ -405,8 +405,29 @@ document.addEventListener('DOMContentLoaded', function() {
         canvas.addEventListener('mousemove', (e) => {
             if (gameState.ball.dragging) {
                 const rect = canvas.getBoundingClientRect();
-                gameState.ball.x = e.clientX - rect.left;
-                gameState.ball.y = e.clientY - rect.top;
+                let mouseX = e.clientX - rect.left;
+                let mouseY = e.clientY - rect.top;
+                
+                // Clamp the drag to prevent the ball from going too far
+                // This maintains consistent shot logic
+                const maxDragDistance = 200;
+                const dragX = mouseX - gameState.ball.startX;
+                const dragY = mouseY - gameState.ball.startY;
+                const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
+                
+                if (dragDistance > maxDragDistance) {
+                    const ratio = maxDragDistance / dragDistance;
+                    mouseX = gameState.ball.startX + dragX * ratio;
+                    mouseY = gameState.ball.startY + dragY * ratio;
+                }
+                
+                // Also prevent ball from going below ground during drag
+                if (mouseY > gameState.ground - gameState.ball.radius) {
+                    mouseY = gameState.ground - gameState.ball.radius;
+                }
+                
+                gameState.ball.x = mouseX;
+                gameState.ball.y = mouseY;
             }
         });
         
