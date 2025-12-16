@@ -32,7 +32,10 @@
             <div class="content-section">
                 <div class="game-container">
                     <h2 class="game-title">Basketball Shooter</h2>
-                    <div class="shot-counter">Shots: <span id="shotCount">0</span></div>
+                    <div class="shot-counter">
+                        <span id="shotStats">0/0</span>
+                        <span id="shootingPct" style="margin-left: 1rem;">0%</span>
+                    </div>
                     <canvas id="basketballGame" width="800" height="600"></canvas>
                     <p class="game-instructions">Drag the ball away from the hoop and release to shoot!</p>
                 </div>
