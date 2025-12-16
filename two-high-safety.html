@@ -28,23 +28,9 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            padding: 60px;
+            background: transparent;
+            padding: 40px 20px;
             position: relative;
-            overflow: hidden;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #8b7aa8 0%, #b899d8 50%, #a88bbd 100%);
         }
 
         .original-link-btn {
@@ -84,11 +70,25 @@
             line-height: 1.2;
         }
 
-        .subtitle {
-            text-align: center;
-            font-size: 20px;
-            color: #7a5d9a;
+        .byline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 50px;
+        }
+
+        .author-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #8b7aa8;
+        }
+
+        .article-meta {
+            font-size: 16px;
+            color: #7a5d9a;
             font-weight: 500;
         }
 
@@ -178,8 +178,17 @@
                 font-size: 32px;
             }
 
-            .subtitle {
-                font-size: 16px;
+            .byline {
+                gap: 10px;
+            }
+
+            .author-photo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .article-meta {
+                font-size: 14px;
             }
 
             .text-section p {
@@ -197,21 +206,6 @@
             }
         }
 
-        /* Animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .container {
-            animation: fadeIn 0.8s ease-out;
-        }
     </style>
 </head>
 <body>
@@ -222,7 +216,10 @@
             </a>
         </div>
         <h1>Are Two-High Safeties Ruining the NFL?</h1>
-        <div class="subtitle">An interactive data analysis</div>
+        <div class="byline">
+            <img src="myphoto.jpg" alt="Jisung Lee" class="author-photo">
+            <span class="article-meta">Interactive Data Analysis • Nov 2025</span>
+        </div>
 
         <div class="text-section">
             <p>If you've spent any time around football discourse over the past few years, you've likely heard the complaints surrounding two-high safety defenses. Media personalities and fans alike blame the apparent decrease in explosive pass plays (passes completed over 20 yards downfield) on the increasing trend of the two-high safety defensive shells.</p>
