@@ -98,11 +98,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Game state
         let gameState = {
             ball: {
-                x: 120,
-                y: 390,  // Lowered slightly from 380
-                startX: 120,
-                startY: 390,
-                radius: 12,
+                x: 144,
+                y: 468,  // Scaled up from 390
+                startX: 144,
+                startY: 468,
+                radius: 14,  // Scaled up from 12
                 vx: 0,
                 vy: 0,
                 dragging: false,
@@ -110,16 +110,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 scored: false
             },
             player: {
-                x: 80,
-                y: 420  // Ground level
+                x: 96,  // Scaled up from 80
+                y: 504  // Scaled up from 420
             },
             hoop: {
-                x: 420,
-                y: 360,  // Slightly above player
-                rimRadius: 30,
-                backboardX: 450
+                x: 504,  // Scaled up from 420
+                y: 432,  // Scaled up from 360
+                rimRadius: 36,  // Scaled up from 30
+                backboardX: 540  // Scaled up from 450
             },
-            ground: 450
+            ground: 540  // Scaled up from 450
         };
         
         // Physics constants
@@ -135,46 +135,46 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Head
             ctx.beginPath();
-            ctx.arc(gameState.player.x, y - 50, 10, 0, Math.PI * 2);
+            ctx.arc(gameState.player.x, y - 60, 12, 0, Math.PI * 2);
             ctx.fill();
             
             // Body
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, y - 40);
-            ctx.lineTo(gameState.player.x, y - 10);
+            ctx.moveTo(gameState.player.x, y - 48);
+            ctx.lineTo(gameState.player.x, y - 12);
             ctx.stroke();
             
             // Arms
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, y - 35);
-            ctx.lineTo(gameState.player.x + 18, y - 25);
+            ctx.moveTo(gameState.player.x, y - 42);
+            ctx.lineTo(gameState.player.x + 22, y - 30);
             ctx.stroke();
             
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, y - 35);
-            ctx.lineTo(gameState.player.x - 18, y - 25);
+            ctx.moveTo(gameState.player.x, y - 42);
+            ctx.lineTo(gameState.player.x - 22, y - 30);
             ctx.stroke();
             
             // Legs - touching ground
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, y - 10);
-            ctx.lineTo(gameState.player.x - 8, y);
+            ctx.moveTo(gameState.player.x, y - 12);
+            ctx.lineTo(gameState.player.x - 10, y);
             ctx.stroke();
             
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, y - 10);
-            ctx.lineTo(gameState.player.x + 8, y);
+            ctx.moveTo(gameState.player.x, y - 12);
+            ctx.lineTo(gameState.player.x + 10, y);
             ctx.stroke();
         }
         
         function drawHoop() {
             // Backboard
             ctx.fillStyle = '#5a3d7a';
-            ctx.fillRect(gameState.hoop.backboardX, gameState.hoop.y - 40, 6, 50);
+            ctx.fillRect(gameState.hoop.backboardX, gameState.hoop.y - 48, 7, 60);
             
             // Rim - thicker for collision detection
             ctx.strokeStyle = '#ff6b6b';
-            ctx.lineWidth = 4;
+            ctx.lineWidth = 5;
             ctx.beginPath();
             ctx.moveTo(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y);
             ctx.lineTo(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y);
@@ -183,37 +183,37 @@ document.addEventListener('DOMContentLoaded', function() {
             // Rim edges (for visual)
             ctx.fillStyle = '#ff6b6b';
             ctx.beginPath();
-            ctx.arc(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y, 3, 0, Math.PI * 2);
+            ctx.arc(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y, 4, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y, 3, 0, Math.PI * 2);
+            ctx.arc(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y, 4, 0, Math.PI * 2);
             ctx.fill();
             
             // Net lines - WHITE
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 2;
-            for (let i = -25; i <= 25; i += 12) {
+            for (let i = -30; i <= 30; i += 15) {
                 ctx.beginPath();
                 ctx.moveTo(gameState.hoop.x + i, gameState.hoop.y);
-                ctx.lineTo(gameState.hoop.x + i * 0.6, gameState.hoop.y + 30);
+                ctx.lineTo(gameState.hoop.x + i * 0.6, gameState.hoop.y + 36);
                 ctx.stroke();
             }
         }
         
         function drawStats() {
             // Draw stats centered at top
-            const boxWidth = 110;
+            const boxWidth = 132;  // Scaled up from 110
             const boxX = (canvas.width - boxWidth) / 2;
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.fillRect(boxX, 10, boxWidth, 50);
+            ctx.fillRect(boxX, 12, boxWidth, 60);
             
             ctx.fillStyle = '#5a3d7a';
-            ctx.font = 'bold 18px "Outfit", sans-serif';
+            ctx.font = 'bold 22px "Outfit", sans-serif';
             ctx.textAlign = 'center';
             
             const pct = attempts > 0 ? ((makes / attempts) * 100).toFixed(1) : 0;
-            ctx.fillText(`${makes}/${attempts}`, boxX + boxWidth / 2, 30);
-            ctx.fillText(`${pct}%`, boxX + boxWidth / 2, 50);
+            ctx.fillText(`${makes}/${attempts}`, boxX + boxWidth / 2, 36);
+            ctx.fillText(`${pct}%`, boxX + boxWidth / 2, 60);
         }
         
         function drawBall() {
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Basketball lines
             ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
             ctx.stroke();
@@ -795,17 +795,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('projectModal');
     const projectFrame = document.getElementById('projectFrame');
     const modalClose = document.querySelector('.modal-close');
-    const projectCards = document.querySelectorAll('.project-card[data-project]');
+    const projectItems = document.querySelectorAll('.project-item[data-project]');
     
     // Project file mapping
     const projectFiles = {
-        'nfl': 'two-high-safeties.html'
+        'nfl': 'two-high-safety.html'
         // Add more projects here as needed
     };
     
-    // Open modal when clicking project card
-    projectCards.forEach(card => {
-        card.addEventListener('click', function() {
+    // Open modal when clicking project item
+    projectItems.forEach(item => {
+        item.addEventListener('click', function() {
             const projectId = this.getAttribute('data-project');
             const projectFile = projectFiles[projectId];
             
