@@ -301,37 +301,28 @@ nav.scrolled .nav-container {
     padding: 2rem;
 }
 
-.placeholder-game {
-    width: 500px;
-    height: 500px;
+.text-container {
+    flex: 1;
+    max-width: 600px;
+    padding: 3rem;
     background: rgba(255, 255, 255, 0.4);
-    border-radius: 20px;
+    border-radius: 30px;
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.1);
 }
 
-.placeholder-game p {
-    font-size: 2rem;
-    color: #7a5d9a;
-}
-
-.game-title {
+.text-container h2 {
     font-family: 'Syne', sans-serif;
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: #5a3d7a;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     font-weight: 700;
 }
 
-.shot-counter {
-    font-size: 1.3rem;
+.text-container p {
+    font-size: 1.4rem;
     color: #5a3d7a;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+    line-height: 1.8;
 }
 
 #basketballGame {
@@ -342,12 +333,6 @@ nav.scrolled .nav-container {
     cursor: pointer;
     display: block;
     margin: 0 auto;
-}
-
-.game-instructions {
-    font-size: 1rem;
-    color: #6b4d8a;
-    margin-top: 1.5rem;
 }
 
 /* Responsive Design */
@@ -426,9 +411,16 @@ nav.scrolled .nav-container {
         width: 100%;
     }
     
-    .placeholder-game {
+    .text-container {
         width: 100%;
-        max-width: 400px;
-        height: 400px;
+        padding: 2rem;
+    }
+    
+    .text-container h2 {
+        font-size: 2.5rem;
+    }
+    
+    .text-container p {
+        font-size: 1.2rem;
     }
 }
