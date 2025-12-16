@@ -245,8 +245,8 @@ nav.scrolled .nav-container {
 }
 
 .project-item {
-    width: 50%;
-    background: rgba(255, 255, 255, 0.4);
+    width: 65%;
+    background: rgba(255, 255, 255, 0.25);
     padding: 3rem;
     border-radius: 30px;
     backdrop-filter: blur(10px);
@@ -258,7 +258,7 @@ nav.scrolled .nav-container {
 .project-item[data-project]:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 40px rgba(90, 61, 122, 0.15);
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .project-item h3 {
