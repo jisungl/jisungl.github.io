@@ -92,80 +92,104 @@ document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('basketballGame');
     if (canvas) {
         const ctx = canvas.getContext('2d');
-        const shotCountEl = document.getElementById('shotCount');
-        let shotCount = 0;
+        const shotStatsEl = document.getElementById('shotStats');
+        const shootingPctEl = document.getElementById('shootingPct');
+        let makes = 0;
+        let attempts = 0;
         
         // Game state
         let gameState = {
             ball: {
-                x: 200,
-                y: 450,
-                radius: 20,
+                x: 150,
+                y: 400,
+                startX: 150,
+                startY: 400,
+                radius: 15,
                 vx: 0,
                 vy: 0,
                 dragging: false,
                 shot: false
             },
             player: {
-                x: 200,
-                y: 500
+                x: 100,
+                y: 400
             },
             hoop: {
-                x: 650,
-                y: 200,
-                radius: 40
+                x: 700,
+                y: 400,
+                rimRadius: 35
             }
         };
         
         // Physics constants
-        const GRAVITY = 0.5;
-        const DRAG_MULTIPLIER = 0.15;
+        const GRAVITY = 0.4;
+        const LAUNCH_MULTIPLIER = 0.2;
         
         function drawPlayer() {
             ctx.fillStyle = '#5a3d7a';
             
-            // Body
-            ctx.fillRect(gameState.player.x - 15, gameState.player.y - 60, 30, 60);
-            
+            // Simple stick figure
             // Head
             ctx.beginPath();
-            ctx.arc(gameState.player.x, gameState.player.y - 75, 15, 0, Math.PI * 2);
+            ctx.arc(gameState.player.x, gameState.player.y - 40, 12, 0, Math.PI * 2);
             ctx.fill();
             
+            // Body
+            ctx.beginPath();
+            ctx.moveTo(gameState.player.x, gameState.player.y - 28);
+            ctx.lineTo(gameState.player.x, gameState.player.y + 10);
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
             // Arms
-            ctx.fillRect(gameState.player.x - 30, gameState.player.y - 50, 15, 40);
-            ctx.fillRect(gameState.player.x + 15, gameState.player.y - 50, 15, 40);
+            ctx.beginPath();
+            ctx.moveTo(gameState.player.x, gameState.player.y - 20);
+            ctx.lineTo(gameState.player.x + 20, gameState.player.y - 10);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(gameState.player.x, gameState.player.y - 20);
+            ctx.lineTo(gameState.player.x - 20, gameState.player.y - 10);
+            ctx.stroke();
             
             // Legs
-            ctx.fillRect(gameState.player.x - 15, gameState.player.y, 12, 40);
-            ctx.fillRect(gameState.player.x + 3, gameState.player.y, 12, 40);
+            ctx.beginPath();
+            ctx.moveTo(gameState.player.x, gameState.player.y + 10);
+            ctx.lineTo(gameState.player.x - 10, gameState.player.y + 30);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(gameState.player.x, gameState.player.y + 10);
+            ctx.lineTo(gameState.player.x + 10, gameState.player.y + 30);
+            ctx.stroke();
         }
         
         function drawHoop() {
             // Backboard
             ctx.fillStyle = '#5a3d7a';
-            ctx.fillRect(gameState.hoop.x - 5, gameState.hoop.y - 60, 10, 60);
-            ctx.fillRect(gameState.hoop.x - 60, gameState.hoop.y - 60, 120, 10);
+            ctx.fillRect(gameState.hoop.x + 40, gameState.hoop.y - 50, 8, 60);
             
-            // Rim
+            // Rim - horizontal line
             ctx.strokeStyle = '#ff6b6b';
-            ctx.lineWidth = 4;
+            ctx.lineWidth = 5;
             ctx.beginPath();
-            ctx.arc(gameState.hoop.x, gameState.hoop.y, gameState.hoop.radius, 0, Math.PI, true);
+            ctx.moveTo(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y);
+            ctx.lineTo(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y);
             ctx.stroke();
             
-            // Net
+            // Net lines
             ctx.strokeStyle = '#ff6b6b';
             ctx.lineWidth = 2;
-            for (let i = -1; i <= 1; i += 0.5) {
+            for (let i = -30; i <= 30; i += 15) {
                 ctx.beginPath();
-                ctx.moveTo(gameState.hoop.x + i * gameState.hoop.radius, gameState.hoop.y);
-                ctx.lineTo(gameState.hoop.x + i * gameState.hoop.radius * 0.7, gameState.hoop.y + 40);
+                ctx.moveTo(gameState.hoop.x + i, gameState.hoop.y);
+                ctx.lineTo(gameState.hoop.x + i * 0.6, gameState.hoop.y + 35);
                 ctx.stroke();
             }
         }
         
         function drawBall() {
+            // Basketball
             ctx.fillStyle = '#ff8c42';
             ctx.beginPath();
             ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
@@ -177,20 +201,16 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.beginPath();
             ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
             ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.moveTo(gameState.ball.x - gameState.ball.radius, gameState.ball.y);
-            ctx.lineTo(gameState.ball.x + gameState.ball.radius, gameState.ball.y);
-            ctx.stroke();
         }
         
         function drawDragLine() {
             if (gameState.ball.dragging) {
-                ctx.strokeStyle = 'rgba(90, 61, 122, 0.5)';
-                ctx.lineWidth = 3;
+                // Show trajectory line
+                ctx.strokeStyle = 'rgba(90, 61, 122, 0.4)';
+                ctx.lineWidth = 2;
                 ctx.setLineDash([5, 5]);
                 ctx.beginPath();
-                ctx.moveTo(200, 450);
+                ctx.moveTo(gameState.ball.startX, gameState.ball.startY);
                 ctx.lineTo(gameState.ball.x, gameState.ball.y);
                 ctx.stroke();
                 ctx.setLineDash([]);
@@ -200,42 +220,76 @@ document.addEventListener('DOMContentLoaded', function() {
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
+            // Draw court line
+            ctx.strokeStyle = 'rgba(90, 61, 122, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, 450);
+            ctx.lineTo(canvas.width, 450);
+            ctx.stroke();
+            
             drawPlayer();
             drawHoop();
             drawDragLine();
             drawBall();
         }
         
+        function checkScore() {
+            // Check if ball passes through the hoop
+            const ballBottom = gameState.ball.y + gameState.ball.radius;
+            const ballTop = gameState.ball.y - gameState.ball.radius;
+            const hoopY = gameState.hoop.y;
+            
+            // Ball is at the right horizontal position
+            if (Math.abs(gameState.ball.x - gameState.hoop.x) < gameState.hoop.rimRadius - gameState.ball.radius) {
+                // Ball is passing through the hoop level
+                if (ballTop <= hoopY && ballBottom >= hoopY && gameState.ball.vy > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         function updatePhysics() {
             if (gameState.ball.shot) {
+                // Apply gravity
                 gameState.ball.vy += GRAVITY;
+                
+                // Update position
                 gameState.ball.x += gameState.ball.vx;
                 gameState.ball.y += gameState.ball.vy;
                 
-                // Check if ball is scored or out of bounds
-                const dx = gameState.ball.x - gameState.hoop.x;
-                const dy = gameState.ball.y - gameState.hoop.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+                // Check for score
+                if (checkScore() && !gameState.ball.scored) {
+                    gameState.ball.scored = true;
+                    makes++;
+                    updateStats();
+                }
                 
-                if (distance < gameState.hoop.radius && gameState.ball.y < gameState.hoop.y + 10 && gameState.ball.vy > 0) {
-                    // Score
-                    resetBall();
-                    shotCount++;
-                    shotCountEl.textContent = shotCount;
-                } else if (gameState.ball.y > canvas.height || gameState.ball.x < 0 || gameState.ball.x > canvas.width) {
-                    // Out of bounds
+                // Check if ball is out of bounds
+                if (gameState.ball.y > canvas.height + 50 || 
+                    gameState.ball.x < -50 || 
+                    gameState.ball.x > canvas.width + 50 ||
+                    gameState.ball.y < -50) {
                     resetBall();
                 }
             }
         }
         
+        function updateStats() {
+            shotStatsEl.textContent = `${makes}/${attempts}`;
+            const pct = attempts > 0 ? ((makes / attempts) * 100).toFixed(1) : 0;
+            shootingPctEl.textContent = `${pct}%`;
+        }
+        
         function resetBall() {
-            gameState.ball.x = 200;
-            gameState.ball.y = 450;
+            gameState.ball.x = gameState.ball.startX;
+            gameState.ball.y = gameState.ball.startY;
             gameState.ball.vx = 0;
             gameState.ball.vy = 0;
             gameState.ball.shot = false;
             gameState.ball.dragging = false;
+            gameState.ball.scored = false;
         }
         
         function gameLoop() {
@@ -254,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const dy = mouseY - gameState.ball.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance < gameState.ball.radius && !gameState.ball.shot) {
+            if (distance < gameState.ball.radius * 2 && !gameState.ball.shot) {
                 gameState.ball.dragging = true;
             }
         });
@@ -271,10 +325,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (gameState.ball.dragging) {
                 gameState.ball.dragging = false;
                 gameState.ball.shot = true;
+                attempts++;
                 
-                // Calculate velocity based on drag distance
-                gameState.ball.vx = (gameState.hoop.x - gameState.ball.x) * DRAG_MULTIPLIER;
-                gameState.ball.vy = (gameState.hoop.y - gameState.ball.y) * DRAG_MULTIPLIER;
+                // Rubber band effect: velocity is opposite of drag direction
+                const dragX = gameState.ball.x - gameState.ball.startX;
+                const dragY = gameState.ball.y - gameState.ball.startY;
+                
+                gameState.ball.vx = -dragX * LAUNCH_MULTIPLIER;
+                gameState.ball.vy = -dragY * LAUNCH_MULTIPLIER;
+                
+                updateStats();
             }
         });
         
@@ -285,6 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Start game loop
+        updateStats();
         gameLoop();
     }
 });
