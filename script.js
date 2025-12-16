@@ -201,17 +201,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function drawStats() {
-            // Draw stats in top-right corner
+            // Draw stats centered at top
+            const boxWidth = 110;
+            const boxX = (canvas.width - boxWidth) / 2;
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.fillRect(canvas.width - 120, 10, 110, 50);
+            ctx.fillRect(boxX, 10, boxWidth, 50);
             
             ctx.fillStyle = '#5a3d7a';
             ctx.font = 'bold 18px "Outfit", sans-serif';
             ctx.textAlign = 'center';
             
             const pct = attempts > 0 ? ((makes / attempts) * 100).toFixed(1) : 0;
-            ctx.fillText(`${makes}/${attempts}`, canvas.width - 65, 30);
-            ctx.fillText(`${pct}%`, canvas.width - 65, 50);
+            ctx.fillText(`${makes}/${attempts}`, boxX + boxWidth / 2, 30);
+            ctx.fillText(`${pct}%`, boxX + boxWidth / 2, 50);
         }
         
         function drawBall() {
@@ -487,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 vy: 0,
                 vz: 0,  // depth velocity
                 z: 0,   // depth position
-                rotation: 0,  // rotation angle
+                rotation: Math.PI / 2,  // Start vertical (90 degrees)
                 dragging: false,
                 flicking: false,
                 kicked: false,
@@ -495,10 +497,10 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             goalpost: {
                 baseX: 250,
-                baseY: 300,
-                postHeight: 120,
-                crossbarWidth: 100,
-                uprightHeight: 60,
+                baseY: 200,  // Higher up to appear further
+                postHeight: 50,  // Shorter vertical post
+                crossbarWidth: 120,  // Wider crossbar
+                uprightHeight: 100,  // Taller uprights
                 z: 800  // distance to goalposts
             },
             dragStartX: 0,
@@ -511,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const FG_FLICK_MULTIPLIER = 0.15;
         
         function drawGoalpost() {
-            const scale = 1 - (fgState.goalpost.z / 1000) * 0.2;
+            const scale = 0.6;  // Make it appear further away
             const baseX = fgState.goalpost.baseX;
             const baseY = fgState.goalpost.baseY;
             const postHeight = fgState.goalpost.postHeight * scale;
@@ -520,9 +522,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Yellow goalpost
             fgCtx.strokeStyle = '#ffcc00';
-            fgCtx.lineWidth = 6 * scale;
+            fgCtx.lineWidth = 5 * scale;
             
-            // Vertical post (from ground to crossbar)
+            // Vertical post (from ground to crossbar) - SHORT
             fgCtx.beginPath();
             fgCtx.moveTo(baseX, baseY + postHeight);
             fgCtx.lineTo(baseX, baseY);
@@ -534,13 +536,13 @@ document.addEventListener('DOMContentLoaded', function() {
             fgCtx.lineTo(baseX + crossbarWidth / 2, baseY);
             fgCtx.stroke();
             
-            // Left upright
+            // Left upright - TALL
             fgCtx.beginPath();
             fgCtx.moveTo(baseX - crossbarWidth / 2, baseY);
             fgCtx.lineTo(baseX - crossbarWidth / 2, baseY - uprightHeight);
             fgCtx.stroke();
             
-            // Right upright
+            // Right upright - TALL
             fgCtx.beginPath();
             fgCtx.moveTo(baseX + crossbarWidth / 2, baseY);
             fgCtx.lineTo(baseX + crossbarWidth / 2, baseY - uprightHeight);
@@ -582,24 +584,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function drawScoreboard() {
-            // Scoreboard background
-            fgCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-            fgCtx.fillRect(10, 10, 120, 80);
+            // Scoreboard background - centered
+            const boardWidth = 120;
+            const boardX = (fgCanvas.width - boardWidth) / 2;
+            fgCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            fgCtx.fillRect(boardX, 10, boardWidth, 70);
             
             fgCtx.fillStyle = '#5a3d7a';
-            fgCtx.font = 'bold 14px "Outfit", sans-serif';
-            fgCtx.textAlign = 'left';
+            fgCtx.font = 'bold 12px "Outfit", sans-serif';
+            fgCtx.textAlign = 'center';
             
             // Away team
-            fgCtx.fillText('AWAY', 20, 30);
-            fgCtx.font = 'bold 24px "Outfit", sans-serif';
-            fgCtx.fillText(awayScore.toString(), 80, 35);
+            fgCtx.fillText('AWAY', boardX + boardWidth / 2, 25);
+            fgCtx.font = 'bold 20px "Outfit", sans-serif';
+            fgCtx.fillText(awayScore.toString(), boardX + boardWidth / 2, 42);
             
             // Home team
-            fgCtx.font = 'bold 14px "Outfit", sans-serif';
-            fgCtx.fillText('HOME', 20, 60);
-            fgCtx.font = 'bold 24px "Outfit", sans-serif';
-            fgCtx.fillText(homeScore.toString(), 80, 65);
+            fgCtx.font = 'bold 12px "Outfit", sans-serif';
+            fgCtx.fillText('HOME', boardX + boardWidth / 2, 57);
+            fgCtx.font = 'bold 20px "Outfit", sans-serif';
+            fgCtx.fillText(homeScore.toString(), boardX + boardWidth / 2, 74);
         }
         
         function drawFlickIndicator() {
@@ -636,19 +640,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function checkFieldGoal() {
-            // Check if ball is at goalpost depth and between posts
+            // Check if ball is at goalpost depth - only check horizontal position between uprights
             if (fgState.ball.z >= fgState.goalpost.z && !fgState.ball.scored) {
-                const scale = 1 - (fgState.goalpost.z / 1000) * 0.2;
+                const scale = 0.6;
                 const crossbarWidth = fgState.goalpost.crossbarWidth * scale;
                 const leftPost = fgState.goalpost.baseX - crossbarWidth / 2;
                 const rightPost = fgState.goalpost.baseX + crossbarWidth / 2;
-                const crossbarY = fgState.goalpost.baseY;
-                const uprightTop = crossbarY - fgState.goalpost.uprightHeight * scale;
                 
-                if (fgState.ball.x > leftPost && 
-                    fgState.ball.x < rightPost && 
-                    fgState.ball.y < crossbarY &&
-                    fgState.ball.y > uprightTop) {
+                // Only check if between the uprights horizontally - height doesn't matter
+                if (fgState.ball.x > leftPost && fgState.ball.x < rightPost) {
                     fgState.ball.scored = true;
                     homeScore += 3;
                     return true;
@@ -660,16 +660,13 @@ document.addEventListener('DOMContentLoaded', function() {
         function fgDraw() {
             fgCtx.clearRect(0, 0, fgCanvas.width, fgCanvas.height);
             
-            // Background matching website theme
-            const gradient = fgCtx.createLinearGradient(0, 0, 0, fgCanvas.height);
-            gradient.addColorStop(0, '#e6d9ff');
-            gradient.addColorStop(1, '#d4c1ed');
-            fgCtx.fillStyle = gradient;
+            // Background matching basketball game
+            fgCtx.fillStyle = 'rgba(90, 61, 122, 0.05)';
             fgCtx.fillRect(0, 0, fgCanvas.width, fgCanvas.height);
             
             // Ground area
-            fgCtx.fillStyle = 'rgba(200, 165, 232, 0.2)';
-            fgCtx.fillRect(0, 380, fgCanvas.width, fgCanvas.height - 380);
+            fgCtx.fillStyle = 'rgba(90, 61, 122, 0.1)';
+            fgCtx.fillRect(0, 450, fgCanvas.width, fgCanvas.height - 450);
             
             drawGoalpost();
             drawFlickIndicator();
@@ -710,7 +707,7 @@ document.addEventListener('DOMContentLoaded', function() {
             fgState.ball.vx = 0;
             fgState.ball.vy = 0;
             fgState.ball.vz = 0;
-            fgState.ball.rotation = 0;
+            fgState.ball.rotation = Math.PI / 2;  // Reset to vertical
             fgState.ball.kicked = false;
             fgState.ball.flicking = false;
             fgState.ball.scored = false;
