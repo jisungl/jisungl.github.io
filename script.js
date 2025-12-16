@@ -799,7 +799,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Project file mapping
     const projectFiles = {
-        'nfl': 'nfl-article.html'
+        'nfl': 'two-high-safeties.html'
         // Add more projects here as needed
     };
     
