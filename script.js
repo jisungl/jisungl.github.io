@@ -790,4 +790,53 @@ document.addEventListener('DOMContentLoaded', function() {
         // Start field goal game loop
         fgGameLoop();
     }
+    
+    // Project Modal Functionality
+    const modal = document.getElementById('projectModal');
+    const projectFrame = document.getElementById('projectFrame');
+    const modalClose = document.querySelector('.modal-close');
+    const projectCards = document.querySelectorAll('.project-card[data-project]');
+    
+    // Project file mapping
+    const projectFiles = {
+        'nfl': 'nfl-article.html'
+        // Add more projects here as needed
+    };
+    
+    // Open modal when clicking project card
+    projectCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const projectId = this.getAttribute('data-project');
+            const projectFile = projectFiles[projectId];
+            
+            if (projectFile) {
+                projectFrame.src = projectFile;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+    
+    // Close modal
+    function closeModal() {
+        modal.classList.remove('active');
+        projectFrame.src = '';
+        document.body.style.overflow = 'auto';
+    }
+    
+    modalClose.addEventListener('click', closeModal);
+    
+    // Close when clicking outside modal content
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
 });
