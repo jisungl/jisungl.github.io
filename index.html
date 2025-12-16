@@ -1,108 +1,333 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jisung Lee</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="nav-bubble"></div>
-            <a href="#home" class="nav-link active" data-page="home">Home</a>
-            <a href="#about" class="nav-link" data-page="about">About</a>
-            <a href="#projects" class="nav-link" data-page="projects">Projects</a>
-            <a href="#contact" class="nav-link" data-page="contact">Contact</a>
-        </div>
-    </nav>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
-    <!-- Animated Background Container -->
-    <div class="animated-background"></div>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <!-- Main Content -->
-    <main id="main-content">
-        <!-- Home Page -->
-        <section id="home" class="page active">
-            <div class="hero-section">
-                <h1 class="main-title">Hi. I'm Jisung.</h1>
-                <p class="subtitle">I'm passionate about coding and football</p>
-            </div>
-            <div class="content-section">
-                <div class="content-wrapper">
-                    <h2>Welcome</h2>
-                    <p>Explore my work and get to know me better.</p>
-                </div>
-            </div>
-        </section>
+body {
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+    background: #e6d9ff;
+}
 
-        <!-- About Page -->
-        <section id="about" class="page">
-            <div class="hero-section">
-                <h1 class="page-title">I'm Jisung.</h1>
-            </div>
-            <div class="content-section">
-                <div class="content-wrapper about-layout">
-                    <div class="about-image">
-                        <div class="image-placeholder">
-                            <p>Your Photo Here</p>
-                        </div>
-                    </div>
-                    <div class="about-text">
-                        <h2>About Me</h2>
-                        <p>Tell your story here. Share your background, interests, and what drives you.</p>
-                        <p>This is where you can talk about your journey in coding, your passion for football, and what makes you unique.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+/* Animated Background */
+.animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    background: linear-gradient(45deg, #c8a5e8, #e6d9ff, #b899d8, #d4c1ed, #c8a5e8);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+    filter: blur(60px);
+}
 
-        <!-- Projects Page -->
-        <section id="projects" class="page">
-            <div class="hero-section">
-                <h1 class="page-title">Projects</h1>
-            </div>
-            <div class="content-section">
-                <div class="content-wrapper">
-                    <h2>My Work</h2>
-                    <div class="project-grid">
-                        <div class="project-card">
-                            <h3>Project 1</h3>
-                            <p>Description of your first project</p>
-                        </div>
-                        <div class="project-card">
-                            <h3>Project 2</h3>
-                            <p>Description of your second project</p>
-                        </div>
-                        <div class="project-card">
-                            <h3>Project 3</h3>
-                            <p>Description of your third project</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 
-        <!-- Contact Page -->
-        <section id="contact" class="page">
-            <div class="hero-section">
-                <h1 class="page-title">Contact</h1>
-            </div>
-            <div class="content-section">
-                <div class="content-wrapper">
-                    <h2>Get In Touch</h2>
-                    <p>Feel free to reach out to me!</p>
-                    <div class="contact-links">
-                        <a href="mailto:your.email@example.com">Email</a>
-                        <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-                        <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+/* Navigation */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    transition: all 0.4s ease;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+.nav-container {
+    position: relative;
+    display: inline-flex;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    transition: all 0.4s ease;
+}
+
+nav.scrolled .nav-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.nav-bubble {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #5a3d7a;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.nav-link:hover {
+    color: #3d2557;
+}
+
+/* Main Content */
+#main-content {
+    position: relative;
+    min-height: 100vh;
+}
+
+.page {
+    display: none;
+    opacity: 0;
+    min-height: 100vh;
+}
+
+.page.active {
+    display: block;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero Section (Top animated part) */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.main-title, .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 7rem;
+    font-weight: 700;
+    color: #5a3d7a;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+}
+
+.subtitle {
+    font-size: 2rem;
+    color: #6b4d8a;
+    font-weight: 300;
+    text-align: center;
+    max-width: 700px;
+}
+
+/* Content Section (Static blurred background) */
+.content-section {
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(to bottom, transparent, rgba(200, 165, 232, 0.3));
+    backdrop-filter: blur(60px);
+    padding: 4rem 2rem;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.1);
+}
+
+.content-wrapper h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    color: #5a3d7a;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.content-wrapper p {
+    font-size: 1.4rem;
+    color: #5a3d7a;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+/* Project Grid */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.project-card {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 2rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(90, 61, 122, 0.15);
+}
+
+.project-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    color: #5a3d7a;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.project-card p {
+    font-size: 1.2rem;
+    color: #6b4d8a;
+    line-height: 1.6;
+}
+
+/* Contact Links */
+.contact-links {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.contact-links a {
+    padding: 1rem 2.5rem;
+    background: rgba(255, 255, 255, 0.5);
+    color: #5a3d7a;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.contact-links a:hover {
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(90, 61, 122, 0.2);
+}
+
+/* About Page Layout */
+.about-layout {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.about-image {
+    flex: 0 0 400px;
+}
+
+.image-placeholder {
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.image-placeholder p {
+    color: #7a5d9a;
+    font-size: 1.2rem;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-text h2 {
+    margin-top: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-title, .page-title {
+        font-size: 4rem;
+    }
+    
+    .subtitle {
+        font-size: 1.5rem;
+    }
+    
+    nav {
+        padding: 1.5rem 1.5rem;
+    }
+    
+    .nav-link {
+        font-size: 0.95rem;
+        padding: 0.7rem 1.2rem;
+    }
+    
+    .content-wrapper {
+        padding: 2rem;
+    }
+    
+    .content-wrapper h2 {
+        font-size: 2.5rem;
+    }
+    
+    .content-wrapper p {
+        font-size: 1.2rem;
+    }
+    
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-links {
+        flex-direction: column;
+    }
+    
+    .about-layout {
+        flex-direction: column;
+    }
+    
+    .about-image {
+        flex: unset;
+        width: 100%;
+    }
+    
+    .image-placeholder {
+        width: 100%;
+        height: 300px;
+    }
+}
