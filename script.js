@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Project file mapping
     const projectFiles = {
-        'nfl': 'two-high-safeties.html'
+        'nfl': 'two-high-safety.html'
         // Add more projects here as needed
     };
     
