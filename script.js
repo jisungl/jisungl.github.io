@@ -460,7 +460,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Start game loop
         updateStats();
         gameLoop();
     }
