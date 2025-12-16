@@ -352,7 +352,7 @@ nav.scrolled .nav-container {
     position: relative;
     width: 90%;
     height: 90%;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(230, 217, 255, 0.3);
     backdrop-filter: blur(20px);
     border-radius: 30px;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
@@ -401,6 +401,7 @@ nav.scrolled .nav-container {
     height: 100%;
     border: none;
     border-radius: 30px;
+    background: transparent;
 }
 
 /* Contact Links */
