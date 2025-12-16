@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const navBubble = document.querySelector('.nav-bubble');
     const navbar = document.getElementById('navbar');
     
-    // Initialize bubble position
     updateBubblePosition();
     
     navLinks.forEach(link => {
