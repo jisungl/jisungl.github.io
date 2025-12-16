@@ -184,6 +184,112 @@ nav.scrolled .nav-container {
 }
 
 /* Project Grid */
+.section-arrows {
+    display: flex;
+    gap: 4rem;
+    justify-content: center;
+    margin-top: 3rem;
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.arrow-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #5a3d7a;
+    font-size: 1.3rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.arrow-link:hover {
+    color: #3d2557;
+    transform: translateY(5px);
+}
+
+.arrow-link .arrow {
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+
+.project-section {
+    max-width: 1200px;
+    margin: 0 auto 6rem;
+    padding: 0 2rem;
+}
+
+.section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    color: #5a3d7a;
+    margin-bottom: 3rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.project-item {
+    width: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 3rem;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.project-item[data-project]:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(90, 61, 122, 0.15);
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.project-item h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    color: #5a3d7a;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.project-item p {
+    font-size: 1.4rem;
+    color: #5a3d7a;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.view-project {
+    display: inline-block;
+    color: #5a3d7a;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.project-item:hover .view-project {
+    transform: translateX(5px);
+    color: #3d2557;
+}
+
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -220,20 +326,6 @@ nav.scrolled .nav-container {
     color: #6b4d8a;
     line-height: 1.6;
     margin-bottom: 1rem;
-}
-
-.view-project {
-    display: inline-block;
-    color: #5a3d7a;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-top: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.project-card:hover .view-project {
-    transform: translateX(5px);
-    color: #3d2557;
 }
 
 /* Modal Styles */
@@ -385,13 +477,16 @@ nav.scrolled .nav-container {
     gap: 3rem;
     justify-content: center;
     padding: 0 3rem;
+    align-items: stretch;
 }
 
 .game-container {
     flex: 1;
     max-width: 600px;
     text-align: center;
-    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .text-container {
@@ -402,6 +497,9 @@ nav.scrolled .nav-container {
     border-radius: 30px;
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px rgba(90, 61, 122, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .text-container h2 {
@@ -425,7 +523,8 @@ nav.scrolled .nav-container {
     box-shadow: 0 8px 32px rgba(90, 61, 122, 0.15);
     cursor: pointer;
     display: block;
-    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
 }
 
 /* Responsive Design */
@@ -461,6 +560,33 @@ nav.scrolled .nav-container {
     
     .project-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .section-arrows {
+        flex-direction: column;
+        gap: 2rem;
+        bottom: 2rem;
+    }
+    
+    .arrow-link {
+        font-size: 1.1rem;
+    }
+    
+    .project-item {
+        width: 90%;
+        padding: 2rem;
+    }
+    
+    .project-item h3 {
+        font-size: 1.5rem;
+    }
+    
+    .project-item p {
+        font-size: 1.2rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
     }
     
     .contact-links {
