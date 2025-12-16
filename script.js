@@ -422,14 +422,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         canvas.addEventListener('mouseup', () => {
             if (gameState.ball.dragging) {
-                gameState.ball.dragging = false;
-                gameState.ball.shot = true;
-                attempts++;
-                
-                // Calculate drag distance and direction
+                // Calculate drag distance and direction BEFORE resetting position
                 const dragX = gameState.ball.x - gameState.ball.startX;
                 const dragY = gameState.ball.y - gameState.ball.startY;
                 const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
+                
+                // Reset ball to starting position for the shot
+                gameState.ball.x = gameState.ball.startX;
+                gameState.ball.y = gameState.ball.startY;
+                
+                gameState.ball.dragging = false;
+                gameState.ball.shot = true;
+                attempts++;
                 
                 if (dragDistance > 0) {
                     // Normalize direction and apply opposite direction with consistent power
