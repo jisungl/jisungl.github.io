@@ -322,7 +322,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const leftRim = gameState.hoop.x - gameState.hoop.rimRadius;
             const rightRim = gameState.hoop.x + gameState.hoop.rimRadius;
             
-            // Ball is within rim horizontally and passing through
             if (gameState.ball.x > leftRim + gameState.ball.radius && 
                 gameState.ball.x < rightRim - gameState.ball.radius &&
                 ballTop <= hoopY && 
