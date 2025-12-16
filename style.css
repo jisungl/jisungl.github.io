@@ -158,6 +158,12 @@ nav.scrolled .nav-container {
     padding: 4rem 2rem;
 }
 
+.content-section::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 .content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -286,22 +292,23 @@ nav.scrolled .nav-container {
 
 /* Basketball Game */
 .game-container {
-    max-width: 900px;
-    margin: 0 auto;
+    max-width: 500px;
+    width: 50%;
+    float: left;
     text-align: center;
     padding: 2rem;
 }
 
 .game-title {
     font-family: 'Syne', sans-serif;
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: #5a3d7a;
     margin-bottom: 1rem;
     font-weight: 700;
 }
 
 .shot-counter {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: #5a3d7a;
     font-weight: 600;
     margin-bottom: 1.5rem;
@@ -318,7 +325,7 @@ nav.scrolled .nav-container {
 }
 
 .game-instructions {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #6b4d8a;
     margin-top: 1.5rem;
 }
@@ -387,5 +394,10 @@ nav.scrolled .nav-container {
     #basketballGame {
         max-width: 100%;
         height: auto;
+    }
+    
+    .game-container {
+        width: 100%;
+        float: none;
     }
 }
