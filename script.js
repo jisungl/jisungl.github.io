@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Physics constants
         const GRAVITY = 0.35;
-        const LAUNCH_MULTIPLIER = 0.15;  // Reduced for easier shooting
+        const LAUNCH_MULTIPLIER = 0.18;  // Increased for better power consistency
         const BOUNCE_DAMPING = 0.6;
         
         function drawPlayer() {
@@ -219,13 +219,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function drawTrajectoryPreview() {
             if (gameState.ball.dragging) {
-                // Use the actual current ball position (which is already clamped)
+                // Use the same calculation as the actual shot
                 const dragX = gameState.ball.x - gameState.ball.startX;
                 const dragY = gameState.ball.y - gameState.ball.startY;
-                const vx = -dragX * LAUNCH_MULTIPLIER;
-                const vy = -dragY * LAUNCH_MULTIPLIER;
+                const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
                 
-                // Draw dotted trajectory line for first portion
+                let vx = 0;
+                let vy = 0;
+                
+                if (dragDistance > 0) {
+                    const dirX = dragX / dragDistance;
+                    const dirY = dragY / dragDistance;
+                    const power = dragDistance * LAUNCH_MULTIPLIER;
+                    vx = -dirX * power;
+                    vy = -dirY * power;
+                }
+                
+                // Draw dotted trajectory line
                 ctx.strokeStyle = 'rgba(90, 61, 122, 0.5)';
                 ctx.lineWidth = 2;
                 ctx.setLineDash([5, 5]);
@@ -237,13 +247,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 let pvx = vx;
                 let pvy = vy;
                 
-                // Simulate trajectory for short distance
-                for (let i = 0; i < 30; i++) {
+                // Simulate trajectory
+                for (let i = 0; i < 40; i++) {
                     pvy += GRAVITY;
                     px += pvx;
                     py += pvy;
                     ctx.lineTo(px, py);
-                    if (py > canvas.height) break;
+                    if (py > canvas.height || px < 0 || px > canvas.width) break;
                 }
                 
                 ctx.stroke();
@@ -416,12 +426,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 gameState.ball.shot = true;
                 attempts++;
                 
-                // Rubber band effect: velocity is opposite of drag direction
+                // Calculate drag distance and direction
                 const dragX = gameState.ball.x - gameState.ball.startX;
                 const dragY = gameState.ball.y - gameState.ball.startY;
+                const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
                 
-                gameState.ball.vx = -dragX * LAUNCH_MULTIPLIER;
-                gameState.ball.vy = -dragY * LAUNCH_MULTIPLIER;
+                if (dragDistance > 0) {
+                    // Normalize direction and apply opposite direction with consistent power
+                    const dirX = dragX / dragDistance;
+                    const dirY = dragY / dragDistance;
+                    
+                    // Power scales with distance, direction is opposite of drag
+                    const power = dragDistance * LAUNCH_MULTIPLIER;
+                    gameState.ball.vx = -dirX * power;
+                    gameState.ball.vy = -dirY * power;
+                } else {
+                    // If no drag, no shot
+                    gameState.ball.vx = 0;
+                    gameState.ball.vy = 0;
+                }
                 
                 updateStats();
             }
