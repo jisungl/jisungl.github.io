@@ -46,19 +46,17 @@ nav {
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 2rem 3rem;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
     transition: all 0.4s ease;
-}
-
-nav.scrolled {
-    padding: 1.5rem 3rem;
 }
 
 .nav-container {
     position: relative;
     display: inline-flex;
     gap: 0.5rem;
-    padding: 0.8rem 1rem;
+    padding: 1rem 1.5rem;
     border-radius: 50px;
     transition: all 0.4s ease;
 }
@@ -66,7 +64,6 @@ nav.scrolled {
 nav.scrolled .nav-container {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    padding: 1rem 1.5rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
