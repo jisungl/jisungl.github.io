@@ -100,90 +100,104 @@ document.addEventListener('DOMContentLoaded', function() {
         // Game state
         let gameState = {
             ball: {
-                x: 150,
-                y: 400,
-                startX: 150,
-                startY: 400,
-                radius: 15,
+                x: 120,
+                y: 380,
+                startX: 120,
+                startY: 380,
+                radius: 12,
                 vx: 0,
                 vy: 0,
                 dragging: false,
-                shot: false
+                shot: false,
+                scored: false
             },
             player: {
-                x: 100,
-                y: 400
+                x: 80,
+                y: 420  // Ground level
             },
             hoop: {
-                x: 700,
-                y: 400,
-                rimRadius: 35
-            }
+                x: 420,
+                y: 360,  // Slightly above player
+                rimRadius: 30,
+                backboardX: 450
+            },
+            ground: 450
         };
         
         // Physics constants
-        const GRAVITY = 0.4;
-        const LAUNCH_MULTIPLIER = 0.2;
+        const GRAVITY = 0.35;
+        const LAUNCH_MULTIPLIER = 0.15;  // Reduced for easier shooting
+        const BOUNCE_DAMPING = 0.6;
         
         function drawPlayer() {
+            const y = gameState.ground;
             ctx.fillStyle = '#5a3d7a';
+            ctx.strokeStyle = '#5a3d7a';
+            ctx.lineWidth = 3;
             
-            // Simple stick figure
             // Head
             ctx.beginPath();
-            ctx.arc(gameState.player.x, gameState.player.y - 40, 12, 0, Math.PI * 2);
+            ctx.arc(gameState.player.x, y - 50, 10, 0, Math.PI * 2);
             ctx.fill();
             
             // Body
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, gameState.player.y - 28);
-            ctx.lineTo(gameState.player.x, gameState.player.y + 10);
-            ctx.lineWidth = 3;
+            ctx.moveTo(gameState.player.x, y - 40);
+            ctx.lineTo(gameState.player.x, y - 10);
             ctx.stroke();
             
             // Arms
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, gameState.player.y - 20);
-            ctx.lineTo(gameState.player.x + 20, gameState.player.y - 10);
+            ctx.moveTo(gameState.player.x, y - 35);
+            ctx.lineTo(gameState.player.x + 18, y - 25);
             ctx.stroke();
             
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, gameState.player.y - 20);
-            ctx.lineTo(gameState.player.x - 20, gameState.player.y - 10);
+            ctx.moveTo(gameState.player.x, y - 35);
+            ctx.lineTo(gameState.player.x - 18, y - 25);
             ctx.stroke();
             
-            // Legs
+            // Legs - touching ground
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, gameState.player.y + 10);
-            ctx.lineTo(gameState.player.x - 10, gameState.player.y + 30);
+            ctx.moveTo(gameState.player.x, y - 10);
+            ctx.lineTo(gameState.player.x - 8, y);
             ctx.stroke();
             
             ctx.beginPath();
-            ctx.moveTo(gameState.player.x, gameState.player.y + 10);
-            ctx.lineTo(gameState.player.x + 10, gameState.player.y + 30);
+            ctx.moveTo(gameState.player.x, y - 10);
+            ctx.lineTo(gameState.player.x + 8, y);
             ctx.stroke();
         }
         
         function drawHoop() {
             // Backboard
             ctx.fillStyle = '#5a3d7a';
-            ctx.fillRect(gameState.hoop.x + 40, gameState.hoop.y - 50, 8, 60);
+            ctx.fillRect(gameState.hoop.backboardX, gameState.hoop.y - 40, 6, 50);
             
-            // Rim - horizontal line
+            // Rim - thicker for collision detection
             ctx.strokeStyle = '#ff6b6b';
-            ctx.lineWidth = 5;
+            ctx.lineWidth = 4;
             ctx.beginPath();
             ctx.moveTo(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y);
             ctx.lineTo(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y);
             ctx.stroke();
             
+            // Rim edges (for visual)
+            ctx.fillStyle = '#ff6b6b';
+            ctx.beginPath();
+            ctx.arc(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
             // Net lines
             ctx.strokeStyle = '#ff6b6b';
             ctx.lineWidth = 2;
-            for (let i = -30; i <= 30; i += 15) {
+            for (let i = -25; i <= 25; i += 12) {
                 ctx.beginPath();
                 ctx.moveTo(gameState.hoop.x + i, gameState.hoop.y);
-                ctx.lineTo(gameState.hoop.x + i * 0.6, gameState.hoop.y + 35);
+                ctx.lineTo(gameState.hoop.x + i * 0.6, gameState.hoop.y + 30);
                 ctx.stroke();
             }
         }
@@ -197,57 +211,116 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Basketball lines
             ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
             ctx.stroke();
         }
         
-        function drawDragLine() {
+        function drawTrajectoryPreview() {
             if (gameState.ball.dragging) {
-                // Show trajectory line
-                ctx.strokeStyle = 'rgba(90, 61, 122, 0.4)';
+                // Calculate initial velocity
+                const dragX = gameState.ball.x - gameState.ball.startX;
+                const dragY = gameState.ball.y - gameState.ball.startY;
+                const vx = -dragX * LAUNCH_MULTIPLIER;
+                const vy = -dragY * LAUNCH_MULTIPLIER;
+                
+                // Draw dotted trajectory line for first portion
+                ctx.strokeStyle = 'rgba(90, 61, 122, 0.5)';
                 ctx.lineWidth = 2;
                 ctx.setLineDash([5, 5]);
                 ctx.beginPath();
                 ctx.moveTo(gameState.ball.startX, gameState.ball.startY);
-                ctx.lineTo(gameState.ball.x, gameState.ball.y);
+                
+                let px = gameState.ball.startX;
+                let py = gameState.ball.startY;
+                let pvx = vx;
+                let pvy = vy;
+                
+                // Simulate trajectory for short distance
+                for (let i = 0; i < 30; i++) {
+                    pvy += GRAVITY;
+                    px += pvx;
+                    py += pvy;
+                    ctx.lineTo(px, py);
+                    if (py > canvas.height) break;
+                }
+                
                 ctx.stroke();
                 ctx.setLineDash([]);
             }
         }
         
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function checkRimCollision() {
+            const leftRim = gameState.hoop.x - gameState.hoop.rimRadius;
+            const rightRim = gameState.hoop.x + gameState.hoop.rimRadius;
+            const rimY = gameState.hoop.y;
             
-            // Draw court line
-            ctx.strokeStyle = 'rgba(90, 61, 122, 0.2)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(0, 450);
-            ctx.lineTo(canvas.width, 450);
-            ctx.stroke();
+            // Check collision with left rim edge
+            if (Math.abs(gameState.ball.x - leftRim) < gameState.ball.radius &&
+                Math.abs(gameState.ball.y - rimY) < gameState.ball.radius) {
+                gameState.ball.vx = -Math.abs(gameState.ball.vx) * BOUNCE_DAMPING;
+                gameState.ball.vy *= BOUNCE_DAMPING;
+                return true;
+            }
             
-            drawPlayer();
-            drawHoop();
-            drawDragLine();
-            drawBall();
+            // Check collision with right rim edge
+            if (Math.abs(gameState.ball.x - rightRim) < gameState.ball.radius &&
+                Math.abs(gameState.ball.y - rimY) < gameState.ball.radius) {
+                gameState.ball.vx = Math.abs(gameState.ball.vx) * BOUNCE_DAMPING;
+                gameState.ball.vy *= BOUNCE_DAMPING;
+                return true;
+            }
+            
+            return false;
+        }
+        
+        function checkBackboardCollision() {
+            const backboardX = gameState.hoop.backboardX;
+            const backboardTop = gameState.hoop.y - 40;
+            const backboardBottom = gameState.hoop.y + 10;
+            
+            // Check if ball hits backboard
+            if (gameState.ball.x + gameState.ball.radius >= backboardX &&
+                gameState.ball.y >= backboardTop &&
+                gameState.ball.y <= backboardBottom &&
+                gameState.ball.vx > 0) {
+                gameState.ball.vx = -gameState.ball.vx * BOUNCE_DAMPING;
+                gameState.ball.x = backboardX - gameState.ball.radius;
+                return true;
+            }
+            return false;
         }
         
         function checkScore() {
-            // Check if ball passes through the hoop
             const ballBottom = gameState.ball.y + gameState.ball.radius;
             const ballTop = gameState.ball.y - gameState.ball.radius;
             const hoopY = gameState.hoop.y;
+            const leftRim = gameState.hoop.x - gameState.hoop.rimRadius;
+            const rightRim = gameState.hoop.x + gameState.hoop.rimRadius;
             
-            // Ball is at the right horizontal position
-            if (Math.abs(gameState.ball.x - gameState.hoop.x) < gameState.hoop.rimRadius - gameState.ball.radius) {
-                // Ball is passing through the hoop level
-                if (ballTop <= hoopY && ballBottom >= hoopY && gameState.ball.vy > 0) {
-                    return true;
-                }
+            // Ball is within rim horizontally and passing through
+            if (gameState.ball.x > leftRim + gameState.ball.radius && 
+                gameState.ball.x < rightRim - gameState.ball.radius &&
+                ballTop <= hoopY && 
+                ballBottom >= hoopY && 
+                gameState.ball.vy > 0) {
+                return true;
             }
             return false;
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw court floor
+            ctx.fillStyle = 'rgba(90, 61, 122, 0.1)';
+            ctx.fillRect(0, gameState.ground, canvas.width, canvas.height - gameState.ground);
+            
+            drawPlayer();
+            drawHoop();
+            drawTrajectoryPreview();
+            drawBall();
         }
         
         function updatePhysics() {
@@ -259,11 +332,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 gameState.ball.x += gameState.ball.vx;
                 gameState.ball.y += gameState.ball.vy;
                 
+                // Check collisions
+                checkBackboardCollision();
+                checkRimCollision();
+                
                 // Check for score
                 if (checkScore() && !gameState.ball.scored) {
                     gameState.ball.scored = true;
                     makes++;
                     updateStats();
+                }
+                
+                // Ground collision
+                if (gameState.ball.y + gameState.ball.radius >= gameState.ground) {
+                    gameState.ball.y = gameState.ground - gameState.ball.radius;
+                    gameState.ball.vy = -gameState.ball.vy * 0.5;
+                    gameState.ball.vx *= 0.8;
+                    
+                    // Stop if bouncing too slowly
+                    if (Math.abs(gameState.ball.vy) < 1) {
+                        resetBall();
+                    }
                 }
                 
                 // Check if ball is out of bounds
