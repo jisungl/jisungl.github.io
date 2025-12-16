@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize bubble position
     updateBubblePosition();
     
-    // Navigation click handlers
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
