@@ -7,18 +7,10 @@
     box-sizing: border-box;
 }
 
-html {
-    overflow-x: hidden;
-    width: 100%;
-}
-
 body {
     font-family: 'Outfit', sans-serif;
     overflow-x: hidden;
     background: #e6d9ff;
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
 }
 
 /* Animated Background */
@@ -111,16 +103,12 @@ nav.scrolled .nav-container {
 #main-content {
     position: relative;
     min-height: 100vh;
-    width: 100%;
-    overflow-x: hidden;
 }
 
 .page {
     display: none;
     opacity: 0;
     min-height: 100vh;
-    width: 100%;
-    overflow-x: hidden;
 }
 
 .page.active {
