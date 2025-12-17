@@ -88,9 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Basketball Game
-    const canvas = document.getElementById('basketballGame');
-    if (canvas) {
+    // Basketball Game - Initialize for both canvases
+    function initBasketballGame(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        
         const ctx = canvas.getContext('2d');
         let makes = 0;
         let attempts = 0;
@@ -470,6 +472,10 @@ document.addEventListener('DOMContentLoaded', function() {
         gameLoop();
     }
     
+    // Initialize basketball game on both canvases
+    initBasketballGame('basketballGame');
+    initBasketballGame('basketballGameProjects');
+    
     // Project Modal Functionality
     const modal = document.getElementById('projectModal');
     const projectFrame = document.getElementById('projectFrame');
@@ -483,7 +489,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Project file mapping
     const projectFiles = {
-        'nfl': 'two-high-safety.html'
+        'nfl': 'two-high-safety.html',
+        'lillard': 'lillard-coming-soon.html'
         // Add more projects here as needed
     };
     
@@ -510,6 +517,41 @@ document.addEventListener('DOMContentLoaded', function() {
     notepadIcons.forEach(icon => {
         icon.addEventListener('click', function(e) {
             e.stopPropagation(); // Prevent triggering project item click
+            
+            const notesType = this.getAttribute('data-notes');
+            const notesContent = document.querySelector('.notes-content');
+            const notesTitle = document.querySelector('.notes-title');
+            
+            // Set notes content based on type
+            if (notesType === 'lillard') {
+                notesTitle.textContent = 'Coming Soon';
+                notesContent.innerHTML = '<p style="text-align: center; font-size: 1.2rem; padding: 40px;">Stay tuned for this analysis!</p>';
+            } else if (notesType === 'nfl') {
+                notesTitle.textContent = 'Notes';
+                notesContent.innerHTML = `
+                    <p>During the early part of the 2024 NFL season, Mel Kiper, one of ESPN's most decorated football analysts claimed one of the most polarizing takes of the year: two-high defenses should be banned in the NFL.</p>
+                    
+                    <div class="video-embed">
+                        <iframe src="https://www.youtube.com/embed/rol91qAC0WY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    
+                    <p>It's a long video, but in short, it shows Kiper stating that the two-high safety defenses ruin the football viewing experience. This was a narrative relatively well-known and believed, although controversial. It involves the belief that because defensive coordinators are dropping two deep safeties into deep coverage so often, explosive pass plays were hard to come by, making games boring to watch.</p>
+                    
+                    <p>This claim misrepresents football. The sport provides viewing experiences of all shapes, including ones with masterclass defense battles and clever offensive schemes that take advantage of minute holes in a defense — it's an art.</p>
+                    
+                    <p>Out of curiosity, I researched around this topic and found a basis and ample data to challenge this take through data visualizations that tell an opposing story. Particularly, <a href="https://www.youtube.com/@BrettKollmann" target="_blank">Brett Kollman's</a> video, <a href="https://www.youtube.com/watch?v=fGRkKmXGZr8" target="_blank"><i>"Two high safeties are ruining football"</i></a>, on this topic was the driving inspiration for my project.</p>
+                    
+                    <p>The key misconception, as explained in my article, is that people notice the popularization of the pre-snap two-high look and falsely correlate it with an increase in actual two-high safety defenses.</p>
+                    
+                    <p>In reality, over the last decade, the rate at which defenses in the NFL run a two-high safety defense has remained consistent. The difference is that coordinators have started disguising their coverage by <strong>rotating</strong> their safeties from a pre-snap position to a post-snap coverage.</p>
+                    
+                    <p>I found that this is encouraged especially alongside the decreasing trend of safety archetypes: rotations were less common when there were defined free safeties (Earl Thomas) that roamed over the top and strong safeties (Roy Williams) who flourished in the box. Now, with more versatile, hybrid safeties like Kyle Hamilton, there is no true "assignment" for safeties. When either safety can play in the box or roam over the top, rotations become easier to pull off, as defenses don't have to compromise player strengths and leave vulnerabilities on the coverage.</p>
+                    <p>I wrote this educational article inclusively for an audience that may not be familiar with the game of football in an attempt to explain a relatively complex concept in football to new fans, although I will probably never do that again, considering how difficult it is to explain complicated football talk in casual language. This is my first true sports-related coding project, inspired by my curiosity and passion for football. I find it bad taste to discourage one of the most subtly satisfying aspects of the game</p>
+                    
+                    <p>At the end of the day, this increasingly advanced, complex idea of playing defense is beautiful to watch in full view. When executed properly, it forces an offense to be smarter with the football and makes the already offense-dominated sport slightly less offensive. In Kollman's words, if you don't like defensive football, then I can't help you.</p>
+                `;
+            }
+            
             notesModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
