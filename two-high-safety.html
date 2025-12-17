@@ -126,6 +126,15 @@
             display: flex;
             justify-content: center;
         }
+        
+        /* Make Observable output transparent */
+        .visual-container .observablehq {
+            background: transparent !important;
+        }
+        
+        .visual-container svg {
+            background: transparent !important;
+        }
 
         .section-divider {
             width: 80px;
@@ -232,7 +241,7 @@
         </div>
 
         <div class="visual-container">
-            <div id="observablehq-viewof-coverages-dd55fcfc"></div>
+            <div id="observablehq-viewof-coverages-47bec02a"></div>
         </div>
 
         <div class="highlight-box">
@@ -262,7 +271,7 @@
         </div>
 
         <div class="visual-container">
-            <div id="observablehq-viewof-presnap-dd55fcfc"></div>
+            <div id="observablehq-viewof-presnap-47bec02a"></div>
         </div>
 
         <div class="text-section">
@@ -286,7 +295,7 @@
         </div>
 
         <div class="visual-container">
-            <div id="observablehq-viewof-rotations-dd55fcfc"></div>
+            <div id="observablehq-viewof-rotations-47bec02a"></div>
         </div>
 
         <div class="text-section">
@@ -298,7 +307,7 @@
         </div>
 
         <div class="visual-container">
-            <div id="observablehq-viewof-sankey-dd55fcfc"></div>
+            <div id="observablehq-viewof-sankey-47bec02a"></div>
         </div>
 
         <div class="highlight-box">
@@ -320,7 +329,7 @@
         </div>
 
         <div class="visual-container">
-            <div id="observablehq-viewof-pie-dd55fcfc"></div>
+            <div id="observablehq-viewof-pie-47bec02a"></div>
         </div>
 
         <div class="text-section">
@@ -337,25 +346,25 @@
         </div>
 
         <div class="visual-container">
-            <div id="observablehq-viewof-game-dd55fcfc"></div>
+            <div id="observablehq-viewof-game-47bec02a"></div>
         </div>
 
         <div class="credit">
-            <p>Data visualization and analysis by <a href="https://observablehq.com/d/4b763b14606d43cb@705" target="_blank">Jisung Lee</a></p>
+            <p>Data visualization and analysis by <a href="https://observablehq.com/d/4b763b14606d43cb@717" target="_blank">Jisung Lee</a></p>
             <p style="margin-top: 8px; font-size: 12px;">Built with Observable and D3.js. All data from PFF.com</p>
         </div>
     </div>
 
     <script type="module">
         import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
-        import define from "https://api.observablehq.com/d/4b763b14606d43cb@705.js?v=4";
+        import define from "https://api.observablehq.com/d/4b763b14606d43cb@717.js?v=4";
         new Runtime().module(define, name => {
-            if (name === "viewof coverages") return new Inspector(document.querySelector("#observablehq-viewof-coverages-dd55fcfc"));
-            if (name === "viewof presnap") return new Inspector(document.querySelector("#observablehq-viewof-presnap-dd55fcfc"));
-            if (name === "viewof rotations") return new Inspector(document.querySelector("#observablehq-viewof-rotations-dd55fcfc"));
-            if (name === "viewof sankey") return new Inspector(document.querySelector("#observablehq-viewof-sankey-dd55fcfc"));
-            if (name === "viewof pie") return new Inspector(document.querySelector("#observablehq-viewof-pie-dd55fcfc"));
-            if (name === "viewof game") return new Inspector(document.querySelector("#observablehq-viewof-game-dd55fcfc"));
+            if (name === "viewof coverages") return new Inspector(document.querySelector("#observablehq-viewof-coverages-47bec02a"));
+            if (name === "viewof presnap") return new Inspector(document.querySelector("#observablehq-viewof-presnap-47bec02a"));
+            if (name === "viewof rotations") return new Inspector(document.querySelector("#observablehq-viewof-rotations-47bec02a"));
+            if (name === "viewof sankey") return new Inspector(document.querySelector("#observablehq-viewof-sankey-47bec02a"));
+            if (name === "viewof pie") return new Inspector(document.querySelector("#observablehq-viewof-pie-47bec02a"));
+            if (name === "viewof game") return new Inspector(document.querySelector("#observablehq-viewof-game-47bec02a"));
         });
     </script>
 </body>
