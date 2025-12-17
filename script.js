@@ -543,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Set notes content based on type
             if (notesType === 'lillard') {
                 notesTitle.textContent = 'Coming Soon';
-                notesContent.innerHTML = '<p style="text-align: center; font-size: 1.2rem; padding: 40px;">Stay tuned for this analysis!</p>';
+                notesContent.innerHTML = '<p style="text-align: center; font-size: 1.2rem; padding: 40px;"></p>';
             } else if (notesType === 'nfl') {
                 notesTitle.textContent = 'Notes';
                 notesContent.innerHTML = `
