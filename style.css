@@ -652,6 +652,66 @@ nav.scrolled .nav-container {
     line-height: 1.8;
 }
 
+/* Skills Section */
+.skills-section {
+    max-width: 1200px;
+    margin: 5rem auto 0;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.15);
+}
+
+.skills-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #5a3d7a;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.skills-category {
+    margin-bottom: 3rem;
+}
+
+.skills-category:last-child {
+    margin-bottom: 0;
+}
+
+.category-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #6b4d8a;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(90, 61, 122, 0.2);
+}
+
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+}
+
+.skill-badge {
+    transition: transform 0.2s ease;
+}
+
+.skill-badge:hover {
+    transform: translateY(-3px);
+}
+
+.skill-badge img {
+    height: 28px;
+    width: auto;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
 /* Basketball Game */
 .games-wrapper {
     max-width: 1400px;
@@ -847,6 +907,24 @@ nav.scrolled .nav-container {
     
     .about-description {
         font-size: 1.2rem;
+    }
+    
+    .skills-section {
+        padding: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .skills-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .category-name {
+        font-size: 1.3rem;
+    }
+    
+    .skills-grid {
+        justify-content: center;
     }
     
     #basketballGame {
