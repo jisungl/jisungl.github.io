@@ -45,6 +45,42 @@ body {
     }
 }
 
+@keyframes float1 {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes float2 {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes float3 {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes float4 {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
 /* Navigation */
 nav {
     position: fixed;
@@ -700,11 +736,40 @@ nav.scrolled .nav-container {
 }
 
 .skill-badge {
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
+    animation: float1 3s ease-in-out infinite;
+}
+
+.skill-badge:nth-child(2) {
+    animation: float2 4s ease-in-out infinite;
+}
+
+.skill-badge:nth-child(3) {
+    animation: float3 3.5s ease-in-out infinite;
+}
+
+.skill-badge:nth-child(4) {
+    animation: float4 4.5s ease-in-out infinite;
+}
+
+.skill-badge:nth-child(5) {
+    animation: float1 4s ease-in-out infinite;
+}
+
+.skill-badge:nth-child(6) {
+    animation: float2 3.8s ease-in-out infinite;
+}
+
+.skill-badge:nth-child(7) {
+    animation: float3 4.2s ease-in-out infinite;
+}
+
+.skill-badge:nth-child(8) {
+    animation: float4 3.3s ease-in-out infinite;
 }
 
 .skill-badge:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px) rotate(5deg);
 }
 
 .skill-badge img {
