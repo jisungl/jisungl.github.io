@@ -615,4 +615,163 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    
+    // 3D Physics Skills Blocks
+    const skillsData = [
+        { name: 'Python', url: 'https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white' },
+        { name: 'Java', url: 'https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white' },
+        { name: 'C', url: 'https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white' },
+        { name: 'C++', url: 'https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white' },
+        { name: 'JavaScript', url: 'https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black' },
+        { name: 'HTML', url: 'https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white' },
+        { name: 'CSS', url: 'https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white' },
+        { name: 'SQL', url: 'https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white' },
+        { name: 'Streamlit', url: 'https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white' },
+        { name: 'Android', url: 'https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white' },
+        { name: 'Git', url: 'https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white' },
+        { name: 'PostgreSQL', url: 'https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white' },
+        { name: 'Figma', url: 'https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white' },
+        { name: 'XGBoost', url: 'https://img.shields.io/badge/XGBoost-orange?style=for-the-badge' },
+        { name: 'ML', url: 'https://img.shields.io/badge/Machine_Learning-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white' },
+        { name: 'DataViz', url: 'https://img.shields.io/badge/Data_Visualization-4285F4?style=for-the-badge&logo=googleanalytics&logoColor=white' },
+        { name: 'UI/UX', url: 'https://img.shields.io/badge/UI/UX_Design-9B59B6?style=for-the-badge&logo=adobe&logoColor=white' },
+        { name: 'FullStack', url: 'https://img.shields.io/badge/Full_Stack-02569B?style=for-the-badge&logo=progate&logoColor=white' }
+    ];
+    
+    const container = document.getElementById('skillsPhysicsContainer');
+    
+    if (container && typeof Matter !== 'undefined') {
+        const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events, Body } = Matter;
+        
+        const containerRect = container.getBoundingClientRect();
+        const width = containerRect.width;
+        const height = 600;
+        
+        // Create engine
+        const engine = Engine.create({
+            gravity: { x: 0, y: 0.3 }
+        });
+        
+        const world = engine.world;
+        
+        // Create invisible render (we'll use CSS for visuals)
+        const render = Render.create({
+            element: container,
+            engine: engine,
+            options: {
+                width: width,
+                height: height,
+                wireframes: false,
+                background: 'transparent'
+            }
+        });
+        
+        render.canvas.style.display = 'none';
+        
+        // Create boundaries
+        const walls = [
+            Bodies.rectangle(width/2, -25, width, 50, { isStatic: true }),
+            Bodies.rectangle(width/2, height + 25, width, 50, { isStatic: true }),
+            Bodies.rectangle(-25, height/2, 50, height, { isStatic: true }),
+            Bodies.rectangle(width + 25, height/2, 50, height, { isStatic: true })
+        ];
+        
+        World.add(world, walls);
+        
+        // Create skill blocks
+        const blocks = [];
+        const blockElements = [];
+        const blockWidth = 120;
+        const blockHeight = 40;
+        const rows = 3;
+        const itemsPerRow = Math.ceil(skillsData.length / rows);
+        
+        skillsData.forEach((skill, index) => {
+            const row = Math.floor(index / itemsPerRow);
+            const col = index % itemsPerRow;
+            const spacing = 150;
+            const startX = (width - (itemsPerRow - 1) * spacing) / 2;
+            const x = startX + col * spacing;
+            const y = 150 + row * 150;
+            
+            // Create physics body
+            const block = Bodies.rectangle(x, y, blockWidth, blockHeight, {
+                restitution: 0.6,
+                friction: 0.1,
+                density: 0.04,
+                frictionAir: 0.01
+            });
+            
+            blocks.push(block);
+            World.add(world, block);
+            
+            // Create DOM element
+            const blockEl = document.createElement('div');
+            blockEl.className = 'skill-block';
+            
+            // Create 6 faces
+            ['front', 'back', 'top', 'bottom', 'left', 'right'].forEach(face => {
+                const faceEl = document.createElement('div');
+                faceEl.className = `skill-face ${face}`;
+                faceEl.innerHTML = `<img src="${skill.url}" alt="${skill.name}">`;
+                blockEl.appendChild(faceEl);
+            });
+            
+            container.appendChild(blockEl);
+            blockElements.push(blockEl);
+        });
+        
+        // Mouse control
+        const mouse = Mouse.create(render.canvas);
+        const mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: { visible: false }
+            }
+        });
+        
+        // Track mouse position on the actual container
+        let mousePos = { x: width / 2, y: height / 2 };
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            mousePos.x = e.clientX - rect.left;
+            mousePos.y = e.clientY - rect.top;
+            mouse.position.x = mousePos.x;
+            mouse.position.y = mousePos.y;
+        });
+        
+        World.add(world, mouseConstraint);
+        
+        // Run engine
+        const runner = Runner.create();
+        Runner.run(runner, engine);
+        
+        // Update visual positions and 3D transforms
+        function updateBlocks() {
+            blocks.forEach((block, i) => {
+                const blockEl = blockElements[i];
+                const pos = block.position;
+                const angle = block.angle;
+                
+                // Calculate 3D rotation based on position and physics rotation
+                const normalizedY = pos.y / height;
+                const rotateX = (normalizedY - 0.5) * 60;
+                const normalizedX = pos.x / width;
+                const rotateY = (normalizedX - 0.5) * 30;
+                
+                // Apply transform
+                blockEl.style.transform = `
+                    translate(${pos.x - blockWidth/2}px, ${pos.y - blockHeight/2}px)
+                    rotateX(${rotateX}deg)
+                    rotateY(${rotateY}deg)
+                    rotateZ(${angle}rad)
+                `;
+            });
+            
+            requestAnimationFrame(updateBlocks);
+        }
+        
+        updateBlocks();
+    }
 });
