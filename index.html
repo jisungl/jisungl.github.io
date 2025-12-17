@@ -81,12 +81,22 @@
                     <h2 class="section-title">Work</h2>
                     <div class="project-list">
                         <div class="project-item">
-                            <h3>Project 1</h3>
-                            <p>Description of your work project</p>
+                            <div class="project-content">
+                                <h3>Project 1</h3>
+                                <p>Description of your work project</p>
+                            </div>
+                            <div class="project-icons">
+                                <!-- Space reserved for skill icons -->
+                            </div>
                         </div>
                         <div class="project-item">
-                            <h3>Project 2</h3>
-                            <p>Description of another work project</p>
+                            <div class="project-content">
+                                <h3>Project 2</h3>
+                                <p>Description of another work project</p>
+                            </div>
+                            <div class="project-icons">
+                                <!-- Space reserved for skill icons -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -95,9 +105,14 @@
                     <h2 class="section-title">Sports Articles</h2>
                     <div class="project-list">
                         <div class="project-item" data-project="nfl">
-                            <h3>Are Two-High Safeties Ruining the NFL?</h3>
-                            <p>Interactive data visualization analyzing defensive coverage trends and disguises in the NFL from 2015-2024</p>
-                            <span class="view-project">View Article →</span>
+                            <div class="project-content">
+                                <h3>Are Two-High Safeties Ruining the NFL?</h3>
+                                <p>Interactive data visualization + analysis challenging a common football narrative.</p>
+                                <span class="view-project">View Article →</span>
+                            </div>
+                            <div class="project-icons">
+                                <div class="notepad-icon" data-notes="nfl"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,6 +124,19 @@
             <div class="modal-content">
                 <span class="modal-close">&times;</span>
                 <iframe id="projectFrame" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+        
+        <!-- Notes Modal -->
+        <div id="notesModal" class="modal">
+            <div class="modal-content notes-modal-content">
+                <span class="modal-close notes-close">&times;</span>
+                <div class="notes-container">
+                    <h2 class="notes-title">Notes</h2>
+                    <div class="notes-content">
+                        <p>Notes will be added here.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
