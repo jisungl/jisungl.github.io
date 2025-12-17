@@ -690,9 +690,9 @@ nav.scrolled .nav-container {
     line-height: 1.8;
 }
 
-/* Skills Section - Bento Box Grid */
+/* Skills Section - Tight Rectangular Grid */
 .skills-section {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 5rem auto 0;
     padding: 0 2rem;
     background: transparent;
@@ -709,77 +709,30 @@ nav.scrolled .nav-container {
 
 .bento-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1.5rem;
-    grid-auto-flow: dense;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    width: 100%;
 }
 
 .bento-item {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 2rem;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(90, 61, 122, 0.1);
-    min-height: 100px;
+    padding: 0;
+    transition: transform 0.2s ease;
 }
 
 .bento-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(90, 61, 122, 0.2);
-    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.08);
+    z-index: 10;
 }
 
 .bento-item img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
+    display: block;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-/* Size variations */
-.bento-item.large {
-    grid-column: span 2;
-    grid-row: span 2;
-    padding: 3rem;
-}
-
-.bento-item.wide {
-    grid-column: span 2;
-    padding: 2.5rem;
-}
-
-.bento-item.tall {
-    grid-row: span 2;
-    padding: 2.5rem;
-}
-
-.bento-item.medium {
-    grid-column: span 1;
-    padding: 2rem;
-}
-
-.bento-item.small {
-    grid-column: span 1;
-    padding: 1.5rem;
-    min-height: 80px;
-}
-
-/* Specific sizing for badges in different boxes */
-.bento-item.large img {
-    height: 45px;
-}
-
-.bento-item.wide img,
-.bento-item.tall img,
-.bento-item.medium img {
-    height: 35px;
-}
-
-.bento-item.small img {
-    height: 28px;
 }
 
 
@@ -982,6 +935,7 @@ nav.scrolled .nav-container {
     
     .skills-section {
         padding: 0 1rem;
+        max-width: 600px;
     }
     
     .skills-title {
@@ -990,43 +944,7 @@ nav.scrolled .nav-container {
     }
     
     .bento-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 1rem;
-    }
-    
-    .bento-item {
-        padding: 1.5rem;
-        min-height: 80px;
-    }
-    
-    .bento-item.large {
-        grid-column: span 2;
-        grid-row: span 1;
-        padding: 2rem;
-    }
-    
-    .bento-item.wide {
-        grid-column: span 2;
-        padding: 1.5rem;
-    }
-    
-    .bento-item.tall {
-        grid-row: span 1;
-        padding: 1.5rem;
-    }
-    
-    .bento-item.large img {
-        height: 35px;
-    }
-    
-    .bento-item.wide img,
-    .bento-item.tall img,
-    .bento-item.medium img {
-        height: 28px;
-    }
-    
-    .bento-item.small img {
-        height: 24px;
+        grid-template-columns: repeat(2, 1fr);
     }
     
     #basketballGame {
