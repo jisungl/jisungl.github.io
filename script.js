@@ -616,3 +616,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Skills horizontal scroll function
+function scrollSkills(button, amount) {
+    const container = button.parentElement;
+    const skillsGrid = container.querySelector('.skills-grid');
+    skillsGrid.scrollBy({
+        left: amount,
+        behavior: 'smooth'
+    });
+}
