@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Are Two-High Safeties Ruining the NFL?</title>
-    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,11 +16,15 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            background: rgba(0, 0, 0, 0) !important;
+            background-color: transparent !important;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.7;
-            color: #2d3748;
-            background: transparent;
+            color: #5a3d7a;
             min-height: 100vh;
             padding: 40px 20px;
         }
@@ -28,31 +32,67 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: transparent;
-            padding: 60px;
+            background: transparent !important;
+            padding: 40px 20px;
             position: relative;
-            overflow: hidden;
         }
 
-        .container::before {
-            display: none;
+        .original-link-btn {
+            display: inline-block;
+            margin: 0 auto 30px;
+            padding: 12px 30px;
+            background: rgba(90, 61, 122, 0.15);
+            border: 2px solid #8b7aa8;
+            border-radius: 50px;
+            color: #5a3d7a;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .original-link-btn:hover {
+            background: rgba(90, 61, 122, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(90, 61, 122, 0.2);
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         h1 {
+            font-family: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             font-size: 48px;
-            font-weight: 800;
+            font-weight: 700;
             text-align: center;
             margin-bottom: 20px;
-            color: #1a202c;
+            color: #5a3d7a;
             letter-spacing: -0.5px;
             line-height: 1.2;
         }
 
-        .subtitle {
-            text-align: center;
-            font-size: 20px;
-            color: #718096;
+        .byline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 50px;
+        }
+
+        .author-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #8b7aa8;
+        }
+
+        .article-meta {
+            font-size: 16px;
+            color: #7a5d9a;
             font-weight: 500;
         }
 
@@ -65,7 +105,7 @@
         .text-section p {
             font-size: 17px;
             margin-bottom: 24px;
-            color: #4a5568;
+            color: #5a3d7a;
             text-align: left;
         }
 
@@ -77,6 +117,7 @@
             align-items: center;
             padding: 20px;
             background: transparent;
+            border-radius: 20px;
         }
 
         .visual-container > div {
@@ -85,28 +126,38 @@
             display: flex;
             justify-content: center;
         }
+        
+        /* Make Observable output transparent */
+        .visual-container .observablehq {
+            background: transparent !important;
+        }
+        
+        .visual-container svg {
+            background: transparent !important;
+        }
 
         .section-divider {
             width: 80px;
             height: 4px;
-            background: linear-gradient(90deg, #4ECDC4, #FF6B9D);
+            background: linear-gradient(90deg, #8b7aa8, #b899d8);
             margin: 60px auto;
             border-radius: 2px;
         }
 
         .highlight-box {
-            background: transparent;
-            border-left: 4px solid #FECA57;
+            background: rgba(139, 122, 168, 0.15);
+            border-left: 4px solid #8b7aa8;
             padding: 24px;
             margin: 40px auto;
             max-width: 800px;
             border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(90, 61, 122, 0.1);
         }
 
         .highlight-box p {
             margin: 0;
             font-size: 13px;
-            color: #2d3748;
+            color: #5a3d7a;
             font-weight: 500;
         }
 
@@ -114,20 +165,20 @@
             text-align: center;
             margin-top: 60px;
             padding-top: 40px;
-            border-top: 2px solid rgba(0, 0, 0, 0.1);
+            border-top: 2px solid rgba(90, 61, 122, 0.2);
             font-size: 14px;
-            color: #718096;
+            color: #7a5d9a;
         }
 
         .credit a {
-            color: #4ECDC4;
+            color: #8b7aa8;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.2s;
         }
 
         .credit a:hover {
-            color: #45B7D1;
+            color: #5a3d7a;
         }
 
         /* Responsive adjustments */
@@ -140,8 +191,17 @@
                 font-size: 32px;
             }
 
-            .subtitle {
-                font-size: 16px;
+            .byline {
+                gap: 10px;
+            }
+
+            .author-photo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .article-meta {
+                font-size: 14px;
             }
 
             .text-section p {
@@ -152,29 +212,27 @@
                 padding: 10px;
                 margin: 40px 0;
             }
-        }
-
-        /* Animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            
+            .original-link-btn {
+                font-size: 14px;
+                padding: 10px 24px;
             }
         }
 
-        .container {
-            animation: fadeIn 0.8s ease-out;
-        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="btn-container">
+            <a href="https://jisungl.github.io/Are-Two-High-Safeties-Ruining-Football/" target="_blank" class="original-link-btn">
+                View Original Article →
+            </a>
+        </div>
         <h1>Are Two-High Safeties Ruining the NFL?</h1>
-        <div class="subtitle">An interactive data analysis</div>
+        <div class="byline">
+            <img src="myphoto.jpg" alt="Jisung Lee" class="author-photo">
+            <span class="article-meta">Interactive Data Analysis • Nov 2025</span>
+        </div>
 
         <div class="text-section">
             <p>If you've spent any time around football discourse over the past few years, you've likely heard the complaints surrounding two-high safety defenses. Media personalities and fans alike blame the apparent decrease in explosive pass plays (passes completed over 20 yards downfield) on the increasing trend of the two-high safety defensive shells.</p>
@@ -307,7 +365,7 @@
             if (name === "viewof sankey") return new Inspector(document.querySelector("#observablehq-viewof-sankey-5b1d9f00"));
             if (name === "viewof pie") return new Inspector(document.querySelector("#observablehq-viewof-pie-5b1d9f00"));
             if (name === "viewof game") return new Inspector(document.querySelector("#observablehq-viewof-game-5b1d9f00"));
-        });
+        }); 
     </script>
 </body>
 </html>
