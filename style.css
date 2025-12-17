@@ -173,9 +173,11 @@ nav.scrolled .nav-container {
 }
 
 .projects-game-container canvas {
+    background: rgba(255, 255, 255, 0.4);
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(90, 61, 122, 0.2);
-    background: white;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.15);
+    cursor: pointer;
 }
 
 .content-wrapper {
@@ -291,21 +293,17 @@ nav.scrolled .nav-container {
 
 .project-icons {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    min-width: 60px;
+    min-width: 120px;
 }
 
-.tech-icon {
-    font-size: 2rem;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-    cursor: default;
-}
-
-.tech-icon:hover {
-    opacity: 1;
-    transform: scale(1.1);
+.project-icons img {
+    pointer-events: none;
+    height: 28px;
+    width: auto;
 }
 
 .project-item h3 {
@@ -654,26 +652,14 @@ nav.scrolled .nav-container {
     line-height: 1.8;
 }
 
-.in-progress-item {
-    margin-top: 2rem;
-    padding: 2rem;
-    background: rgba(139, 122, 168, 0.15);
-    border-radius: 20px;
-    border-left: 4px solid #8b7aa8;
+.in-progress-item-static {
+    cursor: default;
+    pointer-events: none;
 }
 
-.in-progress-item h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.6rem;
-    color: #5a3d7a;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-}
-
-.in-progress-item p {
-    font-size: 1.1rem;
-    color: #7a5d9a;
-    margin: 0;
+.in-progress-item-static:hover {
+    transform: none;
+    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.15);
 }
 
 #basketballGame {
