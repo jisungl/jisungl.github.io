@@ -5,8 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const navBubble = document.querySelector('.nav-bubble');
     const navbar = document.getElementById('navbar');
     
+    // Initialize bubble position
     updateBubblePosition();
     
+    // Navigation click handlers
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -321,6 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const leftRim = gameState.hoop.x - gameState.hoop.rimRadius;
             const rightRim = gameState.hoop.x + gameState.hoop.rimRadius;
             
+            // Ball is within rim horizontally and passing through
             if (gameState.ball.x > leftRim + gameState.ball.radius && 
                 gameState.ball.x < rightRim - gameState.ball.radius &&
                 ballTop <= hoopY && 
@@ -473,15 +476,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalClose = document.querySelector('.modal-close');
     const projectItems = document.querySelectorAll('.project-item[data-project]');
     
+    // Notes Modal Functionality
+    const notesModal = document.getElementById('notesModal');
+    const notesClose = document.querySelector('.notes-close');
+    const notepadIcons = document.querySelectorAll('.notepad-icon');
+    
     // Project file mapping
     const projectFiles = {
         'nfl': 'two-high-safety.html'
         // Add more projects here as needed
     };
     
-    // Open modal when clicking project item
+    // Open project modal when clicking project item
     projectItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function(e) {
+            // Don't open project modal if clicking on notepad icon
+            if (e.target.closest('.notepad-icon')) {
+                return;
+            }
+            
             const projectId = this.getAttribute('data-project');
             const projectFile = projectFiles[projectId];
             
@@ -493,14 +506,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Close modal
+    // Open notes modal when clicking notepad icon
+    notepadIcons.forEach(icon => {
+        icon.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent triggering project item click
+            notesModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    
+    // Close project modal
     function closeModal() {
         modal.classList.remove('active');
         projectFrame.src = '';
         document.body.style.overflow = 'auto';
     }
     
+    // Close notes modal
+    function closeNotesModal() {
+        notesModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+    
     modalClose.addEventListener('click', closeModal);
+    notesClose.addEventListener('click', closeNotesModal);
     
     // Close when clicking outside modal content
     modal.addEventListener('click', function(e) {
@@ -509,10 +538,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    notesModal.addEventListener('click', function(e) {
+        if (e.target === notesModal) {
+            closeNotesModal();
+        }
+    });
+    
     // Close on escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal();
+        if (e.key === 'Escape') {
+            if (modal.classList.contains('active')) {
+                closeModal();
+            }
+            if (notesModal.classList.contains('active')) {
+                closeNotesModal();
+            }
         }
     });
 });
