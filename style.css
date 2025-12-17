@@ -281,7 +281,7 @@ nav.scrolled .nav-container {
     gap: 2rem;
 }
 
-.project-item[data-project]:hover {
+.project-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 40px rgba(90, 61, 122, 0.15);
     background: rgba(255, 255, 255, 0.4);
