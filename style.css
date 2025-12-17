@@ -539,29 +539,76 @@ nav.scrolled .nav-container {
     border-radius: 12px;
 }
 
-/* Contact Links */
+/* Contact Page */
+.contact-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2rem;
+}
+
+.contact-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    color: #5a3d7a;
+    margin-bottom: 4rem;
+    font-weight: 700;
+}
+
 .contact-links {
     display: flex;
-    gap: 2rem;
-    margin-top: 3rem;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
 }
 
-.contact-links a {
-    padding: 1rem 2.5rem;
-    background: rgba(255, 255, 255, 0.5);
-    color: #5a3d7a;
+.contact-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
     text-decoration: none;
-    border-radius: 50px;
-    font-weight: 500;
-    font-size: 1.3rem;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
 }
 
-.contact-links a:hover {
+.contact-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(90, 61, 122, 0.15);
+}
+
+.contact-icon svg {
+    color: #5a3d7a;
+    transition: all 0.3s ease;
+}
+
+.contact-link span {
+    color: #5a3d7a;
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.contact-link:hover .contact-icon {
     background: rgba(255, 255, 255, 0.7);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(90, 61, 122, 0.2);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(90, 61, 122, 0.25);
+}
+
+.contact-link:hover .contact-icon svg {
+    color: #6b4d8a;
+    transform: scale(1.1);
+}
+
+.contact-link:hover span {
+    color: #6b4d8a;
 }
 
 /* About Page Layout */
@@ -758,8 +805,26 @@ nav.scrolled .nav-container {
         font-size: 1.1rem;
     }
     
+    .contact-heading {
+        font-size: 2rem;
+    }
+    
     .contact-links {
-        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .contact-icon {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .contact-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .contact-link span {
+        font-size: 1rem;
     }
     
     .about-content {
