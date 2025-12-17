@@ -496,11 +496,13 @@ nav.scrolled .nav-container {
 }
 
 .notes-content {
-    font-size: 1.2rem;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-size: 1.25rem;
     color: #5a3d7a;
     line-height: 1.8;
     max-width: 900px;
     margin: 0 auto;
+    font-weight: 600;
 }
 
 .notes-content p {
