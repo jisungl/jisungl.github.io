@@ -5,6 +5,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const navBubble = document.querySelector('.nav-bubble');
     const navbar = document.getElementById('navbar');
     
+    // Restore page state on load and scroll to top
+    const savedPage = localStorage.getItem('currentPage') || 'home';
+    navLinks.forEach(l => l.classList.remove('active'));
+    pages.forEach(page => page.classList.remove('active'));
+    
+    const targetLink = document.querySelector(`[data-page="${savedPage}"]`);
+    const targetPageElement = document.getElementById(savedPage);
+    
+    if (targetLink && targetPageElement) {
+        targetLink.classList.add('active');
+        targetPageElement.classList.add('active');
+    }
+    
+    // Scroll to top on page load
+    window.scrollTo(0, 0);
+    
     // Initialize bubble position
     updateBubblePosition();
     
@@ -14,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             
             const targetPage = this.getAttribute('data-page');
+            
+            // Save current page to localStorage
+            localStorage.setItem('currentPage', targetPage);
             
             // Update active states
             navLinks.forEach(l => l.classList.remove('active'));
@@ -524,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Set notes content based on type
             if (notesType === 'lillard') {
                 notesTitle.textContent = 'Coming Soon';
-                notesContent.innerHTML = '<p style="text-align: center; font-size: 1.2rem; padding: 40px;"></p>';
+                notesContent.innerHTML = '<p style="text-align: center; font-size: 1.2rem; padding: 40px;">Stay tuned for this analysis!</p>';
             } else if (notesType === 'nfl') {
                 notesTitle.textContent = 'Notes';
                 notesContent.innerHTML = `
