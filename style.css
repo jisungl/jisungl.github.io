@@ -746,6 +746,31 @@ nav.scrolled .nav-container {
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
+/* Custom Text Section */
+.custom-text-section {
+    max-width: 1200px;
+    margin: 6rem auto 0;
+    padding: 0 2rem;
+}
+
+.custom-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #5a3d7a;
+    line-height: 1.4;
+    margin-bottom: 2rem;
+    margin-left: 15%;
+}
+
+.custom-description {
+    font-size: 1.4rem;
+    color: rgba(90, 61, 122, 0.8);
+    line-height: 1.8;
+    max-width: 800px;
+    margin-left: 20%;
+}
+
 
 /* Basketball Game */
 .games-wrapper {
@@ -964,6 +989,21 @@ nav.scrolled .nav-container {
     
     .skill-badge img {
         height: 28px;
+    }
+    
+    .custom-text-section {
+        margin-top: 4rem;
+        padding: 0 1rem;
+    }
+    
+    .custom-title {
+        font-size: 2rem;
+        margin-left: 5%;
+    }
+    
+    .custom-description {
+        font-size: 1.2rem;
+        margin-left: 10%;
     }
     
     #basketballGame {
