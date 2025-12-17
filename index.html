@@ -28,7 +28,7 @@
         <section id="home" class="page active">
             <div class="hero-section">
                 <h1 class="main-title">Hi. I'm Jisung.</h1>
-                <p class="subtitle">I'm passionate about coding and football</p>
+                <p class="subtitle">A Student Developer</p>
             </div>
             <div class="content-section">
                 <div class="games-wrapper">
@@ -36,8 +36,11 @@
                         <canvas id="basketballGame" width="600" height="600"></canvas>
                     </div>
                     <div class="text-container">
-                        <h2>About This Site</h2>
-                        <p>Welcome! This portfolio showcases my work in computer science and data visualization. Feel free to explore my projects and get in touch.</p>
+                        <h2>In Progress</h2>
+                        <div class="in-progress-item">
+                            <h3>Just How Good was Damian Lillard in 2020?</h3>
+                            <p>Interactive Data Analysis • Coming Soon</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,26 +79,35 @@
                     </a>
                 </div>
             </div>
+            
+            <div class="projects-game-container">
+                <canvas id="basketballGameProjects" width="600" height="600"></canvas>
+            </div>
+            
             <div class="content-section">
                 <div id="work-section" class="project-section">
                     <h2 class="section-title">Work</h2>
                     <div class="project-list">
-                        <div class="project-item">
+                        <div class="project-item" onclick="window.open('https://github.com/jisungl/NFL-Play-Predictor', '_blank')">
                             <div class="project-content">
-                                <h3>Project 1</h3>
-                                <p>Description of your work project</p>
+                                <h3>NFL Play-Calling Predictor</h3>
+                                <p>Machine Learning model that predicts offensive play based on situation.</p>
                             </div>
                             <div class="project-icons">
-                                <!-- Space reserved for skill icons -->
+                                <span class="tech-icon" title="Python">🐍</span>
+                                <span class="tech-icon" title="Streamlit">⚡</span>
+                                <span class="tech-icon" title="XGBoost">🚀</span>
                             </div>
                         </div>
-                        <div class="project-item">
+                        <div class="project-item" onclick="window.open('https://github.com/jisungl/Linked', '_blank')">
                             <div class="project-content">
-                                <h3>Project 2</h3>
-                                <p>Description of another work project</p>
+                                <h3>Linked</h3>
+                                <p>Tutoring Room Scheduling App</p>
                             </div>
                             <div class="project-icons">
-                                <!-- Space reserved for skill icons -->
+                                <span class="tech-icon" title="Java">☕</span>
+                                <span class="tech-icon" title="App Dev">📱</span>
+                                <span class="tech-icon" title="UI/UX">🎨</span>
                             </div>
                         </div>
                     </div>
@@ -112,6 +124,16 @@
                             </div>
                             <div class="project-icons">
                                 <div class="notepad-icon" data-notes="nfl"></div>
+                            </div>
+                        </div>
+                        <div class="project-item" data-project="lillard">
+                            <div class="project-content">
+                                <h3>Just How Good was Damian Lillard in 2020?</h3>
+                                <p>Interactive Data Analysis: Coming Soon</p>
+                                <span class="view-project">View Article →</span>
+                            </div>
+                            <div class="project-icons">
+                                <div class="notepad-icon" data-notes="lillard"></div>
                             </div>
                         </div>
                     </div>
