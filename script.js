@@ -472,8 +472,7 @@ document.addEventListener('DOMContentLoaded', function() {
         gameLoop();
     }
     
-    // Initialize basketball game on both canvases
-    initBasketballGame('basketballGame');
+    // Initialize basketball game on projects page
     initBasketballGame('basketballGameProjects');
     
     // Project Modal Functionality
@@ -490,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Project file mapping
     const projectFiles = {
         'nfl': 'two-high-safety.html',
-        'lillard': 'lillard-coming-soon.html'
+        'lillard': 'lillard.html'
         // Add more projects here as needed
     };
     
