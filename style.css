@@ -534,7 +534,7 @@ nav.scrolled .nav-container {
 .notes-content {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     font-size: 1.25rem;
-    color: #5a3d7a;
+    color: rgba(90, 61, 122, 0.85);
     line-height: 1.8;
     max-width: 900px;
     margin: 0 auto;
@@ -692,26 +692,24 @@ nav.scrolled .nav-container {
 
 /* Skills Section */
 .skills-section {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 5rem auto 0;
-    padding: 3rem;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 30px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(90, 61, 122, 0.15);
+    padding: 0;
+    background: transparent;
 }
 
 .skills-title {
     font-family: 'Syne', sans-serif;
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
     color: #5a3d7a;
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
 }
 
 .skills-category {
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
+    position: relative;
 }
 
 .skills-category:last-child {
@@ -720,63 +718,78 @@ nav.scrolled .nav-container {
 
 .category-name {
     font-family: 'Syne', sans-serif;
-    font-size: 1.6rem;
+    font-size: 2rem;
     font-weight: 600;
-    color: #6b4d8a;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid rgba(90, 61, 122, 0.2);
+    color: #5a3d7a;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.skills-scroll-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 4rem;
+}
+
+.scroll-arrow {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #5a3d7a;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(90, 61, 122, 0.2);
+    z-index: 10;
+}
+
+.scroll-arrow:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.1);
+}
+
+.scroll-arrow:active {
+    transform: scale(0.95);
 }
 
 .skills-grid {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: flex-start;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 1rem 0;
+    flex: 1;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.skills-grid::-webkit-scrollbar {
+    display: none;
 }
 
 .skill-badge {
     transition: transform 0.3s ease;
-    animation: float1 3s ease-in-out infinite;
-}
-
-.skill-badge:nth-child(2) {
-    animation: float2 4s ease-in-out infinite;
-}
-
-.skill-badge:nth-child(3) {
-    animation: float3 3.5s ease-in-out infinite;
-}
-
-.skill-badge:nth-child(4) {
-    animation: float4 4.5s ease-in-out infinite;
-}
-
-.skill-badge:nth-child(5) {
-    animation: float1 4s ease-in-out infinite;
-}
-
-.skill-badge:nth-child(6) {
-    animation: float2 3.8s ease-in-out infinite;
-}
-
-.skill-badge:nth-child(7) {
-    animation: float3 4.2s ease-in-out infinite;
-}
-
-.skill-badge:nth-child(8) {
-    animation: float4 3.3s ease-in-out infinite;
+    flex-shrink: 0;
 }
 
 .skill-badge:hover {
-    transform: translateY(-5px) rotate(5deg);
+    transform: translateY(-5px);
 }
 
 .skill-badge img {
-    height: 28px;
+    height: 35px;
     width: auto;
     pointer-events: none;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
 /* Basketball Game */
@@ -977,21 +990,31 @@ nav.scrolled .nav-container {
     }
     
     .skills-section {
-        padding: 2rem;
+        padding: 0;
         margin-top: 3rem;
     }
     
     .skills-title {
-        font-size: 2rem;
-        margin-bottom: 2rem;
+        font-size: 2.2rem;
+        margin-bottom: 3rem;
     }
     
     .category-name {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
     }
     
-    .skills-grid {
-        justify-content: center;
+    .skills-scroll-container {
+        padding: 0 2rem;
+    }
+    
+    .scroll-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .skill-badge img {
+        height: 30px;
     }
     
     #basketballGame {
