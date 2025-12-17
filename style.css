@@ -692,10 +692,12 @@ nav.scrolled .nav-container {
 
 /* Skills Section */
 .skills-section {
-    max-width: 1000px;
+    max-width: 100%;
     margin: 5rem auto 0;
     padding: 0;
     background: transparent;
+    perspective: 1500px;
+    perspective-origin: center center;
 }
 
 .skills-title {
@@ -707,95 +709,79 @@ nav.scrolled .nav-container {
     margin-bottom: 4rem;
 }
 
-.skills-category {
-    margin-bottom: 3rem;
-    position: relative;
-}
-
-.skills-category:last-child {
-    margin-bottom: 0;
-}
-
-.category-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #5a3d7a;
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.skills-carousel-wrapper {
+.skills-physics-container {
     position: relative;
     width: 100%;
-    overflow: hidden;
-    padding: 1rem 0;
+    height: 600px;
+    margin: 0 auto;
 }
 
-.skills-carousel-wrapper::before,
-.skills-carousel-wrapper::after {
-    content: '';
+.skill-block {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100px;
-    z-index: 2;
-    pointer-events: none;
+    width: 120px;
+    height: 40px;
+    transform-style: preserve-3d;
+    transition: none;
+    cursor: grab;
 }
 
-.skills-carousel-wrapper::before {
-    left: 0;
-    background: linear-gradient(to right, #e6d9ff, transparent);
+.skill-block:active {
+    cursor: grabbing;
 }
 
-.skills-carousel-wrapper::after {
-    right: 0;
-    background: linear-gradient(to left, #e6d9ff, transparent);
-}
-
-.skills-carousel {
+.skill-face {
+    position: absolute;
+    width: 120px;
+    height: 40px;
     display: flex;
-    gap: 1.5rem;
-    width: max-content;
-    animation: scrollRight 20s linear infinite;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.skills-carousel.scroll-left {
-    animation: scrollLeft 25s linear infinite;
-}
-
-.skills-carousel.scroll-slow {
-    animation-duration: 30s;
-}
-
-@keyframes scrollRight {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes scrollLeft {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-
-.skill-badge {
-    flex-shrink: 0;
-}
-
-.skill-badge img {
-    height: 35px;
+.skill-face img {
+    height: 28px;
     width: auto;
     pointer-events: none;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
+
+/* Front face */
+.skill-face.front {
+    transform: translateZ(20px);
+}
+
+/* Back face */
+.skill-face.back {
+    transform: rotateY(180deg) translateZ(20px);
+}
+
+/* Top face */
+.skill-face.top {
+    transform: rotateX(90deg) translateZ(20px);
+    height: 40px;
+}
+
+/* Bottom face */
+.skill-face.bottom {
+    transform: rotateX(-90deg) translateZ(20px);
+    height: 40px;
+}
+
+/* Left face */
+.skill-face.left {
+    transform: rotateY(-90deg) translateZ(60px);
+    width: 40px;
+}
+
+/* Right face */
+.skill-face.right {
+    transform: rotateY(90deg) translateZ(60px);
+    width: 40px;
+}
+
 
 /* Basketball Game */
 .games-wrapper {
@@ -995,27 +981,58 @@ nav.scrolled .nav-container {
     }
     
     .skills-section {
-        max-width: 90%;
-        padding: 0;
-        margin-top: 3rem;
+        padding: 0 1rem;
     }
     
     .skills-title {
         font-size: 2.2rem;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
     }
     
-    .category-name {
-        font-size: 1.5rem;
+    .skills-physics-container {
+        height: 500px;
     }
     
-    .skills-carousel-wrapper::before,
-    .skills-carousel-wrapper::after {
-        width: 50px;
+    .skill-block {
+        width: 100px;
+        height: 35px;
     }
     
-    .skill-badge img {
-        height: 30px;
+    .skill-face {
+        width: 100px;
+        height: 35px;
+    }
+    
+    .skill-face img {
+        height: 24px;
+    }
+    
+    .skill-face.front {
+        transform: translateZ(17.5px);
+    }
+    
+    .skill-face.back {
+        transform: rotateY(180deg) translateZ(17.5px);
+    }
+    
+    .skill-face.top {
+        transform: rotateX(90deg) translateZ(17.5px);
+        height: 35px;
+    }
+    
+    .skill-face.bottom {
+        transform: rotateX(-90deg) translateZ(17.5px);
+        height: 35px;
+    }
+    
+    .skill-face.left {
+        transform: rotateY(-90deg) translateZ(50px);
+        width: 35px;
+    }
+    
+    .skill-face.right {
+        transform: rotateY(90deg) translateZ(50px);
+        width: 35px;
     }
     
     #basketballGame {
