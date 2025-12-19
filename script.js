@@ -49,11 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update bubble position
             updateBubblePosition();
             
-            // Scroll to top smoothly
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            // Scroll to top instantly
+            window.scrollTo(0, 0);
         });
     });
     
