@@ -191,6 +191,11 @@ nav.scrolled .nav-container {
     max-width: 700px;
 }
 
+.subtitle-aligned {
+    text-align: right;
+    padding-right: calc((100% - 700px) / 2);
+}
+
 /* Content Section (Static blurred background) */
 .content-section {
     min-height: 100vh;
@@ -534,11 +539,12 @@ nav.scrolled .nav-container {
 .notes-content {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     font-size: 1.25rem;
-    color: rgba(90, 61, 122, 0.85);
+    color: rgba(255, 255, 255, 0.7);
     line-height: 1.8;
-    max-width: 900px;
+    max-width: 650px;
     margin: 0 auto;
     font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .notes-content p {
@@ -546,14 +552,14 @@ nav.scrolled .nav-container {
 }
 
 .notes-content a {
-    color: #8b7aa8;
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 .notes-content a:hover {
-    color: #5a3d7a;
+    color: rgba(255, 255, 255, 0.95);
     text-decoration: underline;
 }
 
@@ -881,6 +887,11 @@ nav.scrolled .nav-container {
     
     .subtitle {
         font-size: 1.5rem;
+    }
+    
+    .subtitle-aligned {
+        text-align: center;
+        padding-right: 0;
     }
     
     nav {
