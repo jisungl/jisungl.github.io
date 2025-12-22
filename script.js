@@ -18,8 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
         targetPageElement.classList.add('active');
     }
     
-    // Scroll to top on page load
+    // Force scroll to top immediately and after a brief delay
     window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    }, 10);
     
     // Initialize bubble position
     updateBubblePosition();
@@ -49,8 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update bubble position
             updateBubblePosition();
             
-            // Scroll to top instantly
+            // Force scroll to top instantly
             window.scrollTo(0, 0);
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
         });
     });
     
