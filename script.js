@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // basketball game
+    // Basketball game
     function initBasketballGame(canvasId) {
         const canvas = document.getElementById(canvasId);
         if (!canvas) return;
@@ -366,7 +366,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     makes++;
                 }
                 
-                // ground contact
                 if (gameState.ball.y + gameState.ball.radius >= gameState.ground) {
                     gameState.ball.y = gameState.ground - gameState.ball.radius;
                     gameState.ball.vy = -gameState.ball.vy * 0.5;
@@ -426,7 +425,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         canvas.addEventListener('mouseup', () => {
             if (gameState.ball.dragging) {
-                // Calculate drag distance and direction BEFORE resetting position
                 const dragX = gameState.ball.x - gameState.ball.startX;
                 const dragY = gameState.ball.y - gameState.ball.startY;
                 const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
@@ -473,8 +471,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const notepadIcons = document.querySelectorAll('.notepad-icon');
     
     const projectFiles = {
-        'nfl': 'two-high-safety.html',
-        'lillard': 'lillard.html'
+        'nfl': 'articles/two-high-safety.html',
+        'lillard': 'articles/lillard.html'
     };
     
     projectItems.forEach(item => {
@@ -492,10 +490,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // open notepad
     notepadIcons.forEach(icon => {
         icon.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent triggering project item click
+            e.stopPropagation();
             
             const notesType = this.getAttribute('data-notes');
             const notesContent = document.querySelector('.notes-content');
