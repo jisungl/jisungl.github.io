@@ -7,6 +7,11 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-padding-top: 0;
+    scroll-margin-top: 0;
+}
+
 body {
     font-family: 'Outfit', sans-serif;
     overflow-x: hidden;
@@ -192,8 +197,11 @@ nav.scrolled .nav-container {
 }
 
 .subtitle-aligned {
+    max-width: 700px;
+    width: 100%;
     text-align: right;
-    padding-right: calc((100% - 700px) / 2);
+    white-space: nowrap;
+    padding-right: 0;
 }
 
 /* Content Section (Static blurred background) */
