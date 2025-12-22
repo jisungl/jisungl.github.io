@@ -18,15 +18,22 @@ document.addEventListener('DOMContentLoaded', function() {
         targetPageElement.classList.add('active');
     }
     
-    // Force scroll to top immediately and after a brief delay
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    setTimeout(() => {
+    // Aggressive scroll to top - multiple methods
+    function forceScrollTop() {
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
-    }, 10);
+        window.pageYOffset = 0;
+    }
+    
+    // Force scroll immediately
+    forceScrollTop();
+    
+    // Force scroll after brief delays to catch any rendering
+    setTimeout(forceScrollTop, 0);
+    setTimeout(forceScrollTop, 50);
+    setTimeout(forceScrollTop, 100);
+    setTimeout(forceScrollTop, 200);
     
     // Initialize bubble position
     updateBubblePosition();
@@ -56,10 +63,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update bubble position
             updateBubblePosition();
             
-            // Force scroll to top instantly
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
+            // Aggressive force scroll to top
+            function forceScrollTop() {
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+                window.pageYOffset = 0;
+            }
+            
+            forceScrollTop();
+            setTimeout(forceScrollTop, 0);
+            setTimeout(forceScrollTop, 50);
+            setTimeout(forceScrollTop, 100);
         });
     });
     
