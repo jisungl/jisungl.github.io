@@ -1,11 +1,8 @@
-// Navigation and Page Switching
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
     const navBubble = document.querySelector('.nav-bubble');
     const navbar = document.getElementById('navbar');
-    
-    // Restore page state on load and scroll to top
     const savedPage = localStorage.getItem('currentPage') || 'home';
     navLinks.forEach(l => l.classList.remove('active'));
     pages.forEach(page => page.classList.remove('active'));
@@ -18,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
         targetPageElement.classList.add('active');
     }
     
-    // Aggressive scroll to top - multiple methods
     function forceScrollTop() {
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
@@ -26,33 +22,25 @@ document.addEventListener('DOMContentLoaded', function() {
         window.pageYOffset = 0;
     }
     
-    // Force scroll immediately
     forceScrollTop();
-    
-    // Force scroll after brief delays to catch any rendering
     setTimeout(forceScrollTop, 0);
     setTimeout(forceScrollTop, 50);
     setTimeout(forceScrollTop, 100);
     setTimeout(forceScrollTop, 200);
     
-    // Initialize bubble position
     updateBubblePosition();
     
-    // Navigation click handlers
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             
             const targetPage = this.getAttribute('data-page');
             
-            // Save current page to localStorage
             localStorage.setItem('currentPage', targetPage);
             
-            // Update active states
             navLinks.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
             
-            // Switch pages
             pages.forEach(page => {
                 page.classList.remove('active');
                 if (page.id === targetPage) {
@@ -60,10 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            // Update bubble position
             updateBubblePosition();
             
-            // Aggressive force scroll to top
             function forceScrollTop() {
                 window.scrollTo(0, 0);
                 document.documentElement.scrollTop = 0;
@@ -78,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Update bubble position function
     function updateBubblePosition() {
         const activeLink = document.querySelector('.nav-link.active');
         if (activeLink) {
@@ -92,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Scroll handler for navbar styling
     let scrollTimeout;
     window.addEventListener('scroll', function() {
         clearTimeout(scrollTimeout);
@@ -104,15 +88,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 navbar.classList.remove('scrolled');
             }
             
-            // Update bubble position when scrolled (in case of resize)
             updateBubblePosition();
         }, 10);
     });
     
-    // Handle window resize
     window.addEventListener('resize', updateBubblePosition);
     
-    // Smooth scroll behavior for all anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -128,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Basketball Game - Initialize for both canvases
+    // basketball game
     function initBasketballGame(canvasId) {
         const canvas = document.getElementById(canvasId);
         if (!canvas) return;
@@ -137,14 +118,13 @@ document.addEventListener('DOMContentLoaded', function() {
         let makes = 0;
         let attempts = 0;
         
-        // Game state
         let gameState = {
             ball: {
                 x: 144,
-                y: 468,  // Scaled up from 390
+                y: 468,
                 startX: 144,
                 startY: 468,
-                radius: 14,  // Scaled up from 12
+                radius: 14,
                 vx: 0,
                 vy: 0,
                 dragging: false,
@@ -152,21 +132,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 scored: false
             },
             player: {
-                x: 96,  // Scaled up from 80
-                y: 504  // Scaled up from 420
+                x: 96,
+                y: 504
             },
             hoop: {
-                x: 504,  // Scaled up from 420
-                y: 432,  // Scaled up from 360
-                rimRadius: 36,  // Scaled up from 30
-                backboardX: 540  // Scaled up from 450
+                x: 504,
+                y: 432,
+                rimRadius: 36,
+                backboardX: 540
             },
-            ground: 540  // Scaled up from 450
+            ground: 540
         };
         
-        // Physics constants
         const GRAVITY = 0.35;
-        const LAUNCH_MULTIPLIER = 0.18;  // Increased for better power consistency
+        const LAUNCH_MULTIPLIER = 0.18;
         const BOUNCE_DAMPING = 0.6;
         
         function drawPlayer() {
@@ -175,18 +154,15 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.strokeStyle = '#5a3d7a';
             ctx.lineWidth = 3;
             
-            // Head
             ctx.beginPath();
             ctx.arc(gameState.player.x, y - 60, 12, 0, Math.PI * 2);
             ctx.fill();
             
-            // Body
             ctx.beginPath();
             ctx.moveTo(gameState.player.x, y - 48);
             ctx.lineTo(gameState.player.x, y - 12);
             ctx.stroke();
             
-            // Arms
             ctx.beginPath();
             ctx.moveTo(gameState.player.x, y - 42);
             ctx.lineTo(gameState.player.x + 22, y - 30);
@@ -197,7 +173,6 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.lineTo(gameState.player.x - 22, y - 30);
             ctx.stroke();
             
-            // Legs - touching ground
             ctx.beginPath();
             ctx.moveTo(gameState.player.x, y - 12);
             ctx.lineTo(gameState.player.x - 10, y);
@@ -210,11 +185,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function drawHoop() {
-            // Backboard
             ctx.fillStyle = '#5a3d7a';
             ctx.fillRect(gameState.hoop.backboardX, gameState.hoop.y - 48, 7, 60);
             
-            // Rim - thicker for collision detection
             ctx.strokeStyle = '#ff6b6b';
             ctx.lineWidth = 5;
             ctx.beginPath();
@@ -222,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.lineTo(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y);
             ctx.stroke();
             
-            // Rim edges (for visual)
             ctx.fillStyle = '#ff6b6b';
             ctx.beginPath();
             ctx.arc(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y, 4, 0, Math.PI * 2);
@@ -231,7 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.arc(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y, 4, 0, Math.PI * 2);
             ctx.fill();
             
-            // Net lines - WHITE
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 2;
             for (let i = -30; i <= 30; i += 15) {
@@ -243,8 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function drawStats() {
-            // Draw stats centered at top
-            const boxWidth = 132;  // Scaled up from 110
+            const boxWidth = 132;
             const boxX = (canvas.width - boxWidth) / 2;
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.fillRect(boxX, 12, boxWidth, 60);
@@ -259,13 +229,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         function drawBall() {
-            // Basketball
             ctx.fillStyle = '#ff8c42';
             ctx.beginPath();
             ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
             ctx.fill();
             
-            // Basketball lines
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -275,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function drawTrajectoryPreview() {
             if (gameState.ball.dragging) {
-                // Use the same calculation as the actual shot
                 const dragX = gameState.ball.x - gameState.ball.startX;
                 const dragY = gameState.ball.y - gameState.ball.startY;
                 const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
@@ -291,7 +258,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     vy = -dirY * power;
                 }
                 
-                // Draw dotted trajectory line
                 ctx.strokeStyle = 'rgba(90, 61, 122, 0.5)';
                 ctx.lineWidth = 2;
                 ctx.setLineDash([5, 5]);
@@ -303,7 +269,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 let pvx = vx;
                 let pvy = vy;
                 
-                // Simulate trajectory (shortened for difficulty)
                 for (let i = 0; i < 22; i++) {
                     pvy += GRAVITY;
                     px += pvx;
@@ -322,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const rightRim = gameState.hoop.x + gameState.hoop.rimRadius;
             const rimY = gameState.hoop.y;
             
-            // Check collision with left rim edge
+            // left
             if (Math.abs(gameState.ball.x - leftRim) < gameState.ball.radius &&
                 Math.abs(gameState.ball.y - rimY) < gameState.ball.radius) {
                 gameState.ball.vx = -Math.abs(gameState.ball.vx) * BOUNCE_DAMPING;
@@ -330,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return true;
             }
             
-            // Check collision with right rim edge
+            // right
             if (Math.abs(gameState.ball.x - rightRim) < gameState.ball.radius &&
                 Math.abs(gameState.ball.y - rimY) < gameState.ball.radius) {
                 gameState.ball.vx = Math.abs(gameState.ball.vx) * BOUNCE_DAMPING;
@@ -346,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const backboardTop = gameState.hoop.y - 40;
             const backboardBottom = gameState.hoop.y + 10;
             
-            // Check if ball hits backboard
             if (gameState.ball.x + gameState.ball.radius >= backboardX &&
                 gameState.ball.y >= backboardTop &&
                 gameState.ball.y <= backboardBottom &&
@@ -365,7 +329,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const leftRim = gameState.hoop.x - gameState.hoop.rimRadius;
             const rightRim = gameState.hoop.x + gameState.hoop.rimRadius;
             
-            // Ball is within rim horizontally and passing through
             if (gameState.ball.x > leftRim + gameState.ball.radius && 
                 gameState.ball.x < rightRim - gameState.ball.radius &&
                 ballTop <= hoopY && 
@@ -379,7 +342,6 @@ document.addEventListener('DOMContentLoaded', function() {
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw court floor
             ctx.fillStyle = 'rgba(90, 61, 122, 0.1)';
             ctx.fillRect(0, gameState.ground, canvas.width, canvas.height - gameState.ground);
             
@@ -392,36 +354,29 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function updatePhysics() {
             if (gameState.ball.shot) {
-                // Apply gravity
                 gameState.ball.vy += GRAVITY;
-                
-                // Update position
                 gameState.ball.x += gameState.ball.vx;
                 gameState.ball.y += gameState.ball.vy;
                 
-                // Check collisions
                 checkBackboardCollision();
                 checkRimCollision();
                 
-                // Check for score
                 if (checkScore() && !gameState.ball.scored) {
                     gameState.ball.scored = true;
                     makes++;
                 }
                 
-                // Ground collision
+                // ground contact
                 if (gameState.ball.y + gameState.ball.radius >= gameState.ground) {
                     gameState.ball.y = gameState.ground - gameState.ball.radius;
                     gameState.ball.vy = -gameState.ball.vy * 0.5;
                     gameState.ball.vx *= 0.8;
                     
-                    // Stop if bouncing too slowly
                     if (Math.abs(gameState.ball.vy) < 1) {
                         resetBall();
                     }
                 }
                 
-                // Check if ball is out of bounds
                 if (gameState.ball.y > canvas.height + 50 || 
                     gameState.ball.x < -50 || 
                     gameState.ball.x > canvas.width + 50 ||
@@ -447,7 +402,6 @@ document.addEventListener('DOMContentLoaded', function() {
             requestAnimationFrame(gameLoop);
         }
         
-        // Mouse events
         canvas.addEventListener('mousedown', (e) => {
             const rect = canvas.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
@@ -477,7 +431,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const dragY = gameState.ball.y - gameState.ball.startY;
                 const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
                 
-                // Reset ball to starting position for the shot
                 gameState.ball.x = gameState.ball.startX;
                 gameState.ball.y = gameState.ball.startY;
                 
@@ -486,16 +439,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 attempts++;
                 
                 if (dragDistance > 0) {
-                    // Normalize direction and apply opposite direction with consistent power
                     const dirX = dragX / dragDistance;
                     const dirY = dragY / dragDistance;
                     
-                    // Power scales with distance, direction is opposite of drag
                     const power = dragDistance * LAUNCH_MULTIPLIER;
                     gameState.ball.vx = -dirX * power;
                     gameState.ball.vy = -dirY * power;
                 } else {
-                    // If no drag, no shot
                     gameState.ball.vx = 0;
                     gameState.ball.vy = 0;
                 }
@@ -508,38 +458,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Start game loop
         gameLoop();
     }
     
-    // Initialize basketball game on projects page
     initBasketballGame('basketballGameProjects');
     
-    // Project Modal Functionality
     const modal = document.getElementById('projectModal');
     const projectFrame = document.getElementById('projectFrame');
     const modalClose = document.querySelector('.modal-close');
     const projectItems = document.querySelectorAll('.project-item[data-project]');
     
-    // Notes Modal Functionality
     const notesModal = document.getElementById('notesModal');
     const notesClose = document.querySelector('.notes-close');
     const notepadIcons = document.querySelectorAll('.notepad-icon');
     
-    // Project file mapping
     const projectFiles = {
         'nfl': 'two-high-safety.html',
         'lillard': 'lillard.html'
-        // Add more projects here as needed
     };
     
-    // Open project modal when clicking project item
     projectItems.forEach(item => {
         item.addEventListener('click', function(e) {
-            // Don't open project modal if clicking on notepad icon
-            if (e.target.closest('.notepad-icon')) {
-                return;
-            }
+            if (e.target.closest('.notepad-icon')) return;
             
             const projectId = this.getAttribute('data-project');
             const projectFile = projectFiles[projectId];
@@ -552,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Open notes modal when clicking notepad icon
+    // open notepad
     notepadIcons.forEach(icon => {
         icon.addEventListener('click', function(e) {
             e.stopPropagation(); // Prevent triggering project item click
@@ -561,14 +501,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const notesContent = document.querySelector('.notes-content');
             const notesTitle = document.querySelector('.notes-title');
             
-            // Set notes content based on type
             if (notesType === 'lillard') {
                 notesTitle.textContent = 'Coming Soon';
                 notesContent.innerHTML = '<p style="text-align: center; font-size: 1.2rem; padding: 40px;"></p>';
             } else if (notesType === 'nfl') {
                 notesTitle.textContent = 'Notes';
                 notesContent.innerHTML = `
-                    <p>During the early part of the 2024 NFL season, Mel Kiper, one of ESPN's most decorated football analysts claimed one of the most polarizing takes of the year: two-high defenses should be banned in the NFL.</p>
+                    <p>During the early part of the 2024 NFL season, Mel Kiper, one of ESPN's most decorated football analysts, claimed one of the most polarizing takes of the year: two-high defenses should be banned in the NFL.</p>
                     
                     <div class="video-embed">
                         <iframe src="https://www.youtube.com/embed/rol91qAC0WY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -596,14 +535,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Close project modal
     function closeModal() {
         modal.classList.remove('active');
         projectFrame.src = '';
         document.body.style.overflow = 'auto';
     }
     
-    // Close notes modal
     function closeNotesModal() {
         notesModal.classList.remove('active');
         document.body.style.overflow = 'auto';
@@ -612,20 +549,14 @@ document.addEventListener('DOMContentLoaded', function() {
     modalClose.addEventListener('click', closeModal);
     notesClose.addEventListener('click', closeNotesModal);
     
-    // Close when clicking outside modal content
     modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModal();
-        }
+        if (e.target === modal) closeModal();
     });
     
     notesModal.addEventListener('click', function(e) {
-        if (e.target === notesModal) {
-            closeNotesModal();
-        }
+        if (e.target === notesModal) closeNotesModal();
     });
     
-    // Close on escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             if (modal.classList.contains('active')) {
