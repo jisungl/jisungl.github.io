@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Are Two-High Safeties Ruining the NFL?</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style media="print">
+        @page {
+            margin: 0.5in;
+            size: letter;
+        }
+        
+        body {
+            max-width: 100%;
+            padding: 20px;
+        }
+        
+        a {
+            color: #5a3d7a !important;
+            text-decoration: underline;
+        }
+    </style>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background: rgba(0, 0, 0, 0) !important;
+            background-color: transparent !important;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: transparent !important;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .original-link-btn {
+            display: inline-block;
+            margin: 0 auto 30px;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .original-link-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #5a3d7a;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .byline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .author-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .article-meta {
+            font-size: 19px;
+            color: rgba(255, 255, 255, 0.65);
+            font-weight: 600;
+        }
+
+        .text-section {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .text-section p {
+            font-size: 21px;
+            margin-bottom: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .visual-container {
+            width: 100%;
+            margin: 60px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: transparent;
+            border-radius: 20px;
+        }
+
+        .visual-container > div {
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .visual-container .observablehq {
+            background: transparent !important;
+        }
+        
+        .visual-container svg {
+            background: transparent !important;
+        }
+
+        .section-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
+            margin: 60px auto;
+            border-radius: 2px;
+        }
+
+        .highlight-box {
+            background: rgba(255, 255, 255, 0.12);
+            border-left: 4px solid rgba(255, 255, 255, 0.5);
+            padding: 24px;
+            margin: 40px auto;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        .credit {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.65);
+            font-weight: 600;
+        }
+
+        .credit a {
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .credit a:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .byline {
+                gap: 10px;
+            }
+
+            .author-photo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .article-meta {
+                font-size: 14px;
+            }
+
+            .text-section p {
+                font-size: 16px;
+            }
+
+            .visual-container {
+                padding: 10px;
+                margin: 40px 0;
+            }
+            
+            .original-link-btn {
+                font-size: 14px;
+                padding: 10px 24px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="btn-container">
+            <a href="https://jisungl.github.io/Are-Two-High-Safeties-Ruining-Football/" target="_blank" class="original-link-btn">
+                View Original Article →
+            </a>
+        </div>
+        <h1>Are Two-High Safeties Ruining the NFL?</h1>
+        <div class="byline">
+            <img src="../photos/myphoto.jpg" alt="Jisung Lee" class="author-photo">
+            <span class="article-meta">Interactive Data Analysis • Nov 2025</span>
+        </div>
+
+        <div class="text-section">
+            <p>If you've spent any time around football discourse over the past few years, you've likely heard the complaints surrounding two-high safety defenses. Media personalities and fans alike blame the apparent decrease in explosive pass plays (passes completed over 20 yards downfield) on the increasing trend of the two-high safety defensive shells.</p>
+
+            <p>On paper, the claim seems logical. Take, for example, the diagram below:</p>
+        </div>
+
+        <div class="visual-container">
+            <div id="observablehq-viewof-coverages-5b1d9f00"></div>
+        </div>
+
+        <div class="highlight-box">
+            <p>"Safety" refers to the defensive position shown above in yellow: they are typically lined up the furthest downfield, as they are the last line of defense.</p>
+        </div>
+
+        <div class="text-section">
+            <p>It's not difficult to see that on this play, an offense may have a better chance throwing the ball downfield against a one-high safety defense (left), given that the safety over the top can only pick one sideline to defend. This is the pick-your-poison nature of the one-high safety shells, typically run in <strong>Cover 1</strong> and <strong>Cover 3</strong>, as at least one of the two wide receivers will have a one-on-one matchup with a defender. In the NFL, that's not a bad shot.</p>
+            
+            <p>Against a two-high safety look (right), it's much harder to take a chance downfield. Each wide receiver is matched up with their aligned defender, but as he reaches the safety's territory on his side, he is now in a one-on-two scenario. Typically against a <strong>Cover 2</strong> and sometimes <strong>Cover 4</strong>, this is a shot you almost never take.</p>
+        </div>
+
+        <div class="highlight-box">
+            <p>For the purpose of this analysis, it's not entirely important what each of Cover 1, 2, 3, or 4 is, but it is important to be able to distinguish which coverage is one or two-high safety coverages.</p>
+        </div>
+
+        <div class="text-section">
+            <p>You might be wondering, why don't defenses simply stay in two-high defense all game? </p>
+                
+            <p>With an 11-man limit for each team, placing two high safeties means that there is one fewer defender to cover the underneath area of the field. Constantly running two safeties high to prioritize defending against the explosive plays means that an offense can wear you down through easy, short-yardage gains.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="text-section">
+            <p>In the last decade, it is true that defenses are lining up in two-high at an increasing rate. We can compare the safety alignment rates each year from 2015 and 2024 to see a major shift from the one-high to two-high:</p>
+        </div>
+
+        <div class="visual-container">
+            <div id="observablehq-viewof-presnap-5b1d9f00"></div>
+        </div>
+
+        <div class="text-section">
+            <p>As the years go by, the gap between the one-high alignment and two-high alignment closes, almost to an equivalent rate. At a glance, the complaints seem to hold value. Defenses are moving towards two-high defenses more than ever, right?</p>
+
+            <p> Well, not quite.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="text-section">
+            <p>In 2015, Seattle's Legion of Boom, arguably the most dominant defensive unit in football history, popularized the usage of Cover 3, the most common one-high safety defense. The league average rate of running Cover 3 in 2015 was 26.5%. A decade later, in 2024, this number actually <strong>increases</strong> to 29.7%.</p>
+            
+            <p>So, how is it possible that the increased rate of two-high safeties is ruining the NFL if teams are running a one-high safety defense more than ever?</p>
+            
+            <p>Notice that the lines above show the pre-snap alignment of safeties. The "snap" marks the start of the play, so what actually matters is not what the defense showed before the snap, but rather what they are actually assigned to run during the play.</p>
+
+            <p>Many defensive coordinators over the years, most notably Vic Fangio, pioneered the evolution of the <strong>rotation</strong> in defensive philosophy. This means that a defense will set up in a certain safety alignment before the play to give the impression they are running a certain coverage, then rotate a safety into a different part of the field to run a completely different coverage. It's like the idea of bluffing in poker.</p>
+
+            <p>The two most common cases of defensive rotations are shown (drag at your own speed):</p>
+        </div>
+
+        <div class="visual-container">
+            <div id="observablehq-viewof-rotations-5b1d9f00"></div>
+        </div>
+
+        <div class="text-section">
+            <p>This effectively 'disguises' the actual coverage as something else, and an offense can only know for sure what coverage they are facing until after the ball is snapped.</p>
+
+            <p>When a defense rotates from a 2-high look to a 1-high coverage (top), the idea is that the defense hopes to discourage the opposing quarterback pre-snap from wanting to throw the ball deep, then rotates into a coverage that defends the short routes better. This allows the partial benefits of both one and two-high safety coverages simultaneously, and has proven to be quite effective in the modern NFL.</p>
+
+            <p>Below is a flow diagram that shows the number of plays starting in a specific pre-snap alignment on the left, flowing to the actual coverage that was run on the right.</p>
+        </div>
+
+        <div class="visual-container">
+            <div id="observablehq-viewof-sankey-5b1d9f00"></div>
+        </div>
+
+        <div class="highlight-box">
+            <p>In this article, we only consider the two main safety pre-snap alignments: one-high and two-high. There are technically some others, including zero-high and goal line, but they were omitted from the data, since they are completely case-specific and never used in situations where the offense realistically has diverse playcalling options.</p>
+        </div>
+
+        <div class="text-section">
+            <p>Based on the above diagram (hover to see details), we can see that in 2015, NFL defenses lined up in 1-high (68.2%) pre-snap at a considerably higher rate than that of 2-high (31.8%). After the snap, only about 26% of Cover 3 usage and 15% of Cover 1 usage (both one-high defenses) came from a 2-high safety look pre-snap, meaning that on most plays where the defense lined up in one-high, they stayed in one-high without rotating, so offenses could easily predict the actual coverage.</p>
+            
+            <p>A decade later, the pre-snap rate of the 1-high safety look falls to 51.4%, while the 2-high look jumps to 48.6%: roughly at an equivalent rate. Now, almost 43.3% of Cover 3 usage and 29% of Cover 1 usage come from a 2-high safety look pre-snap.</p>
+            
+            <p>Both values almost double, indicating a clear increase in safety rotations, especially from a 2-high disguise to a 1-high coverage. Namely, in recent years, the rate at which a defense attempts to disguise its coverage with its pre-snap alignment has almost doubled, making it difficult for an offense to predict the defensive coverage.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="text-section">
+            <p>Ultimately, the root cause of the narrative that two-high defensive defenses are limiting explosive offense is that people are conflating lining up in a two-high shell pre-snap with actually running a two-high coverage.</p>
+        </div>
+
+        <div class="visual-container">
+            <div id="observablehq-viewof-pie-5b1d9f00"></div>
+        </div>
+
+        <div class="text-section">
+            <p>When we look above at the overall distribution of the main one-high and two-high safety defenses being played, the differences across the years are not meaningfully large. In 2015, one-high defenses (Cover 1 + Cover 3) were being played at a 40.5% rate, and two-high defenses (Cover 2 + Cover 4) were being played at a 35.7% rate, while in 2024, these values are 40% and 36.5%, respectively.</p>
+            
+            <p><strong>Specifically, it is true that having two deep safeties will indeed limit explosive offensive plays. But defenses aren't actually running more two-high coverages– they are only pretending to do so through rotations and disguises</strong></p>
+
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="text-section">
+            <p>We encourage you to test your learning and see the field through the eyes of the offense, facing a potentially disguised coverage through the mini-game below! This is a probability game based on the proportions from the flow diagram, so there is no guaranteed correct answer to any one situation, reflecting the reality of the offense that cannot 100% know the coverage they are facing until after the snap.</p>
+        </div>
+
+        <div class="visual-container">
+            <div id="observablehq-viewof-game-5b1d9f00"></div>
+        </div>
+
+        <div class="credit">
+            <p>Data visualization and analysis by <a href="https://observablehq.com/d/4b763b14606d43cb@727" target="_blank">Jisung Lee</a></p>
+            <p style="margin-top: 8px; font-size: 12px;">Built with Observable and D3.js. All data from PFF.com</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
+        import define from "https://api.observablehq.com/d/4b763b14606d43cb@727.js?v=4";
+        new Runtime().module(define, name => {
+            if (name === "viewof coverages") return new Inspector(document.querySelector("#observablehq-viewof-coverages-5b1d9f00"));
+            if (name === "viewof presnap") return new Inspector(document.querySelector("#observablehq-viewof-presnap-5b1d9f00"));
+            if (name === "viewof rotations") return new Inspector(document.querySelector("#observablehq-viewof-rotations-5b1d9f00"));
+            if (name === "viewof sankey") return new Inspector(document.querySelector("#observablehq-viewof-sankey-5b1d9f00"));
+            if (name === "viewof pie") return new Inspector(document.querySelector("#observablehq-viewof-pie-5b1d9f00"));
+            if (name === "viewof game") return new Inspector(document.querySelector("#observablehq-viewof-game-5b1d9f00"));
+        }); 
+    </script>
+</body>
+</html>
