@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     modalClose.addEventListener('click', closeModal);
-    notesClose.addEventListener('click', closeModal);
+    notesClose.addEventListener('click', closeNotesModal);
     
     modal.addEventListener('click', function(e) {
         if (e.target === modal) closeModal();
