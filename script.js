@@ -22,6 +22,15 @@ document.addEventListener('DOMContentLoaded', function() {
         'just-how-good-was-damian-lillard': 'lillard'
     };
     
+    function getBasePath() {
+        const pathParts = window.location.pathname.split('/').filter(p => p);
+        let basePath = '';
+        for (let i = 0; i < pathParts.length; i++) {
+            basePath += '../';
+        }
+        return basePath;
+    }
+    
     function updateBubblePosition() {
         const activeLink = document.querySelector('.nav-link.active');
         if (activeLink) {
@@ -87,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function openProjectModal(projectId, urlSlug, updateUrl = false) {
         const projectFile = projectFiles[projectId];
         if (projectFile) {
-            const basePath = window.location.pathname.includes('/projects/') ? '../' : '';
+            const basePath = getBasePath();
             projectFrame.src = basePath + projectFile;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
