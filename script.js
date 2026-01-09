@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const notepadIcons = document.querySelectorAll('.notepad-icon');
     
     const projectFiles = {
-        'nfl': 'two-high-safety.html',
-        'lillard': 'lillard.html'
+        'nfl': 'articles/two-high-safety.html',
+        'lillard': 'articles/lillard.html'
     };
     
     let currentModalUrl = null;
