@@ -2,11 +2,95 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=/">
-    <script>window.location.href = "/";</script>
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jisung Lee - Home</title>
+    <link rel="icon" type="image/png" href="../photos/favicon.png">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <p>Redirecting...</p>
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-bubble"></div>
+            <a href="../" class="nav-link active">Home</a>
+            <a href="../about/" class="nav-link">About</a>
+            <a href="../projects/" class="nav-link">Projects</a>
+            <a href="../contact/" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <div class="animated-background"></div>
+
+    <main id="main-content">
+        <section id="home" class="page active">
+            <div class="hero-section">
+                <h1 class="main-title">Hi. I'm Jisung.</h1>
+                <p class="subtitle">A Student Developer</p>
+            </div>
+            <div class="content-section">
+                <div id="featured-section" class="project-section">
+                    <h2 class="section-title">New & Featured</h2>
+                    <div class="project-list">
+                        <div class="project-item" onclick="window.open('https://github.com/jisungl/NFL-Play-Predictor', '_blank')">
+                            <div class="project-content">
+                                <h3>NFL Play-Calling Predictor</h3>
+                                <p>Machine Learning model that predicts offensive play based on situation.</p>
+                                <span class="view-project">View Work →</span>
+                            </div>
+                            <div class="project-icons">
+                                <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+                                <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white" alt="Streamlit">
+                                <img src="https://img.shields.io/badge/XGBoost-orange?style=for-the-badge" alt="XGBoost">
+                            </div>
+                        </div>
+                        <div class="project-item" data-project="nfl" data-url="are-two-high-safeties-ruining-the-nfl">
+                            <div class="project-content">
+                                <h3>Are Two-High Safeties Ruining the NFL?</h3>
+                                <p>NFL: Interactive data visualization + analysis challenging a common football narrative.</p>
+                                <span class="view-project">View Article →</span>
+                            </div>
+                            <div class="project-icons">
+                                <div class="notepad-icon" data-notes="nfl" data-url="are-two-high-safeties-ruining-the-nfl/notes"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="in-progress-section" class="project-section">
+                    <h2 class="section-title">In Progress</h2>
+                    <div class="project-list">
+                        <div class="project-item" data-project="lillard" data-url="just-how-good-was-damian-lillard">
+                            <div class="project-content">
+                                <h3>Just How Good was Damian Lillard in 2020?</h3>
+                                <p>NBA: Interactive Data Analysis: Coming Soon</p>
+                                <span class="view-project">View Article →</span>
+                            </div>
+                            <div class="project-icons">
+                                <div class="notepad-icon" data-notes="lillard" data-url="just-how-good-was-damian-lillard/notes"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <iframe id="projectFrame" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+    
+    <div id="notesModal" class="modal">
+        <div class="modal-content notes-modal-content">
+            <span class="modal-close notes-close">&times;</span>
+            <div class="notes-container">
+                <h2 class="notes-title">Notes</h2>
+                <div class="notes-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
 </body>
 </html>
