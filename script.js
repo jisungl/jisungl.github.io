@@ -11,11 +11,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const notepadIcons = document.querySelectorAll('.notepad-icon');
     
     const projectFiles = {
-        'nfl': 'articles/two-high-safety.html',
-        'lillard': 'articles/lillard.html'
+        'nfl': 'two-high-safety.html',
+        'lillard': 'lillard.html'
     };
     
     let currentModalUrl = null;
+    
+    const urlToProject = {
+        'are-two-high-safeties-ruining-the-nfl': 'nfl',
+        'just-how-good-was-damian-lillard': 'lillard'
+    };
     
     function updateBubblePosition() {
         const activeLink = document.querySelector('.nav-link.active');
@@ -64,26 +69,92 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    function checkUrlAndOpenModal() {
+        const path = window.location.pathname;
+        
+        for (const [urlSlug, projectId] of Object.entries(urlToProject)) {
+            if (path.includes(`/${urlSlug}/notes`)) {
+                openNotesModal(projectId, urlSlug);
+                return;
+            }
+            if (path.includes(`/${urlSlug}`)) {
+                openProjectModal(projectId, urlSlug);
+                return;
+            }
+        }
+    }
+    
+    function openProjectModal(projectId, urlSlug, updateUrl = false) {
+        const projectFile = projectFiles[projectId];
+        if (projectFile) {
+            const basePath = window.location.pathname.includes('/projects/') ? '../' : '';
+            projectFrame.src = basePath + projectFile;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (updateUrl) {
+                const isProjectsPage = window.location.pathname.includes('/projects/');
+                const newUrl = isProjectsPage ? `/projects/${urlSlug}/` : `/${urlSlug}/`;
+                history.pushState({ modal: 'project', projectId: projectId }, '', newUrl);
+                currentModalUrl = newUrl;
+            }
+        }
+    }
+    
+    function openNotesModal(notesType, urlSlug, updateUrl = false) {
+        const notesContent = document.querySelector('.notes-content');
+        const notesTitle = document.querySelector('.notes-title');
+        
+        if (notesType === 'lillard') {
+            notesTitle.textContent = 'Coming Soon';
+            notesContent.innerHTML = '<p style="text-align: center; font-size: 1.2rem; padding: 40px;"></p>';
+        } else if (notesType === 'nfl') {
+            notesTitle.textContent = 'Notes';
+            notesContent.innerHTML = `
+                <p>During the early part of the 2024 NFL season, Mel Kiper, one of ESPN's most decorated football analysts, claimed one of the most polarizing takes of the year: two-high defenses should be banned in the NFL.</p>
+                
+                <div class="video-embed">
+                    <iframe src="https://www.youtube.com/embed/rol91qAC0WY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                
+                <p>It's a long video, but in short, it shows Kiper stating that the two-high safety defenses ruin the football viewing experience. This was a narrative relatively well-known and believed, although controversial. It involves the belief that because defensive coordinators are dropping two deep safeties into deep coverage so often, explosive pass plays were hard to come by, making games boring to watch.</p>
+                
+                <p>This claim misrepresents football. The sport provides viewing experiences of all shapes, including ones with masterclass defense battles and clever offensive schemes that take advantage of minute holes in a defense — it's an art.</p>
+                
+                <p>Out of curiosity, I researched around this topic and found a basis and ample data to challenge this take through data visualizations that tell an opposing story. Particularly, <a href="https://www.youtube.com/@BrettKollmann" target="_blank">Brett Kollman's</a> video, <a href="https://www.youtube.com/watch?v=fGRkKmXGZr8" target="_blank"><i>"Two high safeties are ruining football"</i></a>, on this topic was the driving inspiration for my project.</p>
+                
+                <p>The key misconception, as explained in my article, is that people notice the popularization of the pre-snap two-high look and falsely correlate it with an increase in actual two-high safety defenses.</p>
+                
+                <p>In reality, over the last decade, the rate at which defenses in the NFL run a two-high safety defense has remained consistent. The difference is that coordinators have started disguising their coverage by <strong>rotating</strong> their safeties from a pre-snap position to a post-snap coverage.</p>
+                
+                <p>I found that this is encouraged especially alongside the decreasing trend of safety archetypes: rotations were less common when there were defined free safeties (Earl Thomas) that roamed over the top and strong safeties (Roy Williams) who flourished in the box. Now, with more versatile, hybrid safeties like Kyle Hamilton, there is no true "assignment" for safeties. When either safety can play in the box or roam over the top, rotations become easier to pull off, as defenses don't have to compromise player strengths and leave vulnerabilities on the coverage.</p>
+                <p>I wrote this educational article inclusively for an audience that may not be familiar with the game of football in an attempt to explain a relatively complex concept in football to new fans, although I will probably never do that again, considering how difficult it is to explain complicated football talk in casual language. This is my first true sports-related coding project, inspired by my curiosity and passion for football. I find it bad taste to discourage one of the most subtly satisfying aspects of the game</p>
+                
+                <p>At the end of the day, this increasingly advanced, complex idea of playing defense is beautiful to watch in full view. When executed properly, it forces an offense to be smarter with the football and makes the already offense-dominated sport slightly less offensive. In Kollman's words, if you don't like defensive football, then I can't help you.</p>
+            `;
+        }
+        
+        notesModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        if (updateUrl) {
+            const isProjectsPage = window.location.pathname.includes('/projects/');
+            const newUrl = isProjectsPage ? `/projects/${urlSlug}/notes/` : `/${urlSlug}/notes/`;
+            history.pushState({ modal: 'notes', notesType: notesType }, '', newUrl);
+            currentModalUrl = newUrl;
+        }
+    }
+    
+    checkUrlAndOpenModal();
+    
     projectItems.forEach(item => {
         item.addEventListener('click', function(e) {
             if (e.target.closest('.notepad-icon')) return;
             
             const projectId = this.getAttribute('data-project');
             const urlPath = this.getAttribute('data-url');
-            const projectFile = projectFiles[projectId];
             
-            if (projectFile) {
-                const basePath = window.location.pathname.includes('/projects/') ? '../' : '';
-                projectFrame.src = basePath + projectFile;
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                
-                if (urlPath) {
-                    const newUrl = '/' + urlPath + '/';
-                    history.pushState({ modal: 'project', projectId: projectId }, '', newUrl);
-                    currentModalUrl = newUrl;
-                }
-            }
+            openProjectModal(projectId, urlPath, true);
         });
     });
     
@@ -93,46 +164,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const notesType = this.getAttribute('data-notes');
             const urlPath = this.getAttribute('data-url');
-            const notesContent = document.querySelector('.notes-content');
-            const notesTitle = document.querySelector('.notes-title');
             
-            if (notesType === 'lillard') {
-                notesTitle.textContent = 'Coming Soon';
-                notesContent.innerHTML = '<p style="text-align: center; font-size: 1.2rem; padding: 40px;"></p>';
-            } else if (notesType === 'nfl') {
-                notesTitle.textContent = 'Notes';
-                notesContent.innerHTML = `
-                    <p>During the early part of the 2024 NFL season, Mel Kiper, one of ESPN's most decorated football analysts, claimed one of the most polarizing takes of the year: two-high defenses should be banned in the NFL.</p>
-                    
-                    <div class="video-embed">
-                        <iframe src="https://www.youtube.com/embed/rol91qAC0WY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    
-                    <p>It's a long video, but in short, it shows Kiper stating that the two-high safety defenses ruin the football viewing experience. This was a narrative relatively well-known and believed, although controversial. It involves the belief that because defensive coordinators are dropping two deep safeties into deep coverage so often, explosive pass plays were hard to come by, making games boring to watch.</p>
-                    
-                    <p>This claim misrepresents football. The sport provides viewing experiences of all shapes, including ones with masterclass defense battles and clever offensive schemes that take advantage of minute holes in a defense — it's an art.</p>
-                    
-                    <p>Out of curiosity, I researched around this topic and found a basis and ample data to challenge this take through data visualizations that tell an opposing story. Particularly, <a href="https://www.youtube.com/@BrettKollmann" target="_blank">Brett Kollman's</a> video, <a href="https://www.youtube.com/watch?v=fGRkKmXGZr8" target="_blank"><i>"Two high safeties are ruining football"</i></a>, on this topic was the driving inspiration for my project.</p>
-                    
-                    <p>The key misconception, as explained in my article, is that people notice the popularization of the pre-snap two-high look and falsely correlate it with an increase in actual two-high safety defenses.</p>
-                    
-                    <p>In reality, over the last decade, the rate at which defenses in the NFL run a two-high safety defense has remained consistent. The difference is that coordinators have started disguising their coverage by <strong>rotating</strong> their safeties from a pre-snap position to a post-snap coverage.</p>
-                    
-                    <p>I found that this is encouraged especially alongside the decreasing trend of safety archetypes: rotations were less common when there were defined free safeties (Earl Thomas) that roamed over the top and strong safeties (Roy Williams) who flourished in the box. Now, with more versatile, hybrid safeties like Kyle Hamilton, there is no true "assignment" for safeties. When either safety can play in the box or roam over the top, rotations become easier to pull off, as defenses don't have to compromise player strengths and leave vulnerabilities on the coverage.</p>
-                    <p>I wrote this educational article inclusively for an audience that may not be familiar with the game of football in an attempt to explain a relatively complex concept in football to new fans, although I will probably never do that again, considering how difficult it is to explain complicated football talk in casual language. This is my first true sports-related coding project, inspired by my curiosity and passion for football. I find it bad taste to discourage one of the most subtly satisfying aspects of the game</p>
-                    
-                    <p>At the end of the day, this increasingly advanced, complex idea of playing defense is beautiful to watch in full view. When executed properly, it forces an offense to be smarter with the football and makes the already offense-dominated sport slightly less offensive. In Kollman's words, if you don't like defensive football, then I can't help you.</p>
-                `;
-            }
-            
-            notesModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            if (urlPath) {
-                const newUrl = '/' + urlPath + '/';
-                history.pushState({ modal: 'notes', notesType: notesType }, '', newUrl);
-                currentModalUrl = newUrl;
-            }
+            openNotesModal(notesType, urlPath, true);
         });
     });
     
@@ -142,7 +175,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'auto';
         
         if (currentModalUrl) {
-            history.pushState(null, '', window.location.pathname.split('/').slice(0, -2).join('/') + '/');
+            const basePath = window.location.pathname.includes('/projects/') ? '/projects/' : '/';
+            history.pushState(null, '', basePath);
             currentModalUrl = null;
         }
     }
@@ -152,7 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'auto';
         
         if (currentModalUrl) {
-            history.pushState(null, '', window.location.pathname.split('/').slice(0, -2).join('/') + '/');
+            const basePath = window.location.pathname.includes('/projects/') ? '/projects/' : '/';
+            history.pushState(null, '', basePath);
             currentModalUrl = null;
         }
     }
