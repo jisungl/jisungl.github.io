@@ -31,6 +31,64 @@ document.addEventListener('DOMContentLoaded', function() {
         return basePath;
     }
     
+    function getPageFromPath(path) {
+        if (path.includes('/about')) return 'about';
+        if (path.includes('/projects')) return 'projects';
+        if (path.includes('/contact')) return 'contact';
+        return 'home';
+    }
+    
+    function initBubblePosition() {
+        const referrer = document.referrer;
+        const currentPage = getPageFromPath(window.location.pathname);
+        const previousPage = getPageFromPath(referrer);
+        
+        const isSameSite = referrer.includes(window.location.hostname) || referrer === '';
+        
+        if (isSameSite && previousPage !== currentPage) {
+            const links = document.querySelectorAll('.nav-link');
+            let previousLink = null;
+            let currentLink = null;
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (previousPage === 'home' && (href === './' || href === '../')) {
+                    previousLink = link;
+                }
+                if (previousPage === 'about' && href.includes('about')) {
+                    previousLink = link;
+                }
+                if (previousPage === 'projects' && href.includes('projects')) {
+                    previousLink = link;
+                }
+                if (previousPage === 'contact' && href.includes('contact')) {
+                    previousLink = link;
+                }
+                
+                if (link.classList.contains('active')) {
+                    currentLink = link;
+                }
+            });
+            
+            if (previousLink) {
+                const prevRect = previousLink.getBoundingClientRect();
+                const navRect = document.querySelector('.nav-container').getBoundingClientRect();
+                
+                navBubble.style.transition = 'none';
+                navBubble.style.width = prevRect.width + 'px';
+                navBubble.style.height = prevRect.height + 'px';
+                navBubble.style.left = (prevRect.left - navRect.left) + 'px';
+                navBubble.style.top = (prevRect.top - navRect.top) + 'px';
+                
+                navBubble.offsetHeight;
+                
+                navBubble.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            }
+        }
+        
+        updateBubblePosition();
+    }
+    
     function updateBubblePosition() {
         const activeLink = document.querySelector('.nav-link.active');
         if (activeLink) {
@@ -44,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    updateBubblePosition();
+    initBubblePosition();
     
     let scrollTimeout;
     window.addEventListener('scroll', function() {
@@ -211,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     modalClose.addEventListener('click', closeModal);
-    notesClose.addEventListener('click', closeNotesModal);
+    notesClose.addEventListener('click', closeModal);
     
     modal.addEventListener('click', function(e) {
         if (e.target === modal) closeModal();
