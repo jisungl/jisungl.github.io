@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     let currentModalUrl = null;
+    let originalUrl = null; // Track the URL before opening any modal
     
     const urlToProject = {
         'are-two-high-safeties-ruining-the-nfl': 'nfl',
@@ -212,6 +213,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'hidden';
             
             if (updateUrl) {
+                // Save original URL before changing it
+                originalUrl = window.location.pathname;
+                
                 const isProjectsPage = window.location.pathname.includes('/projects/');
                 const newUrl = isProjectsPage ? `/projects/${urlSlug}/` : `/${urlSlug}/`;
                 history.pushState({ modal: 'project', projectId: projectId }, '', newUrl);
@@ -257,6 +261,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'hidden';
         
         if (updateUrl) {
+            // Save original URL before changing it
+            originalUrl = window.location.pathname;
+            
             const isProjectsPage = window.location.pathname.includes('/projects/');
             const newUrl = isProjectsPage ? `/projects/${urlSlug}/notes/` : `/${urlSlug}/notes/`;
             history.pushState({ modal: 'notes', notesType: notesType }, '', newUrl);
@@ -279,6 +286,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'hidden';
             
             if (updateUrl) {
+                // Save original URL before changing it
+                originalUrl = window.location.pathname;
+                
                 const newUrl = `/projects/${urlSlug}/`;
                 history.pushState({ modal: 'work', workId: workId }, '', newUrl);
                 currentModalUrl = newUrl;
@@ -290,9 +300,11 @@ document.addEventListener('DOMContentLoaded', function() {
         workModal.classList.remove('active');
         document.body.style.overflow = 'auto';
         
-        if (currentModalUrl) {
-            history.pushState(null, '', '/projects/');
+        if (currentModalUrl && originalUrl) {
+            // Restore the original URL
+            history.pushState(null, '', originalUrl);
             currentModalUrl = null;
+            originalUrl = null;
         }
     }
     
@@ -335,10 +347,11 @@ document.addEventListener('DOMContentLoaded', function() {
         projectFrame.src = '';
         document.body.style.overflow = 'auto';
         
-        if (currentModalUrl) {
-            const basePath = window.location.pathname.includes('/projects/') ? '/projects/' : '/';
-            history.pushState(null, '', basePath);
+        if (currentModalUrl && originalUrl) {
+            // Restore the original URL
+            history.pushState(null, '', originalUrl);
             currentModalUrl = null;
+            originalUrl = null;
         }
     }
     
@@ -346,10 +359,11 @@ document.addEventListener('DOMContentLoaded', function() {
         notesModal.classList.remove('active');
         document.body.style.overflow = 'auto';
         
-        if (currentModalUrl) {
-            const basePath = window.location.pathname.includes('/projects/') ? '/projects/' : '/';
-            history.pushState(null, '', basePath);
+        if (currentModalUrl && originalUrl) {
+            // Restore the original URL
+            history.pushState(null, '', originalUrl);
             currentModalUrl = null;
+            originalUrl = null;
         }
     }
     
