@@ -10,9 +10,43 @@ document.addEventListener('DOMContentLoaded', function() {
     const notesClose = document.querySelector('.notes-close');
     const notepadIcons = document.querySelectorAll('.notepad-icon');
     
+    // Work modal elements
+    const workModal = document.getElementById('workModal');
+    const workClose = document.querySelector('.work-close');
+    const workItems = document.querySelectorAll('.project-item[data-work-project]');
+    
     const projectFiles = {
         'nfl': 'articles/two-high-safety.html',
         'lillard': 'articles/lillard.html'
+    };
+    
+    // Work projects data with summaries from READMEs
+    const workProjects = {
+        'nfl-predictor': {
+            title: 'NFL Play-Calling Predictor',
+            description: 'A machine learning model that predicts offensive play calls in the NFL, classifying each play into six types (run left/middle/right, pass short/medium/deep) based on game situation. Built with XGBoost and trained on over 200,000 plays from nflfastR datasets (2018-2023). Features custom sample weighting to emphasize high-leverage situations like two-minute drills and fourth downs, achieving ~52% accuracy on the 6-class prediction task. Deployed as an interactive Streamlit dashboard where users can input game state, personnel, and clock information to receive probability distributions across all play types.',
+            github: 'https://github.com/jisungl/NFL-Play-Predictor'
+        },
+        'linked': {
+            title: 'Linked',
+            description: 'An Android app built for Sunday Study Room, my tutoring organization, to manage weekly attendance and automate tutor-student matching. Students request attendance via a calendar view, tutors see their assigned students, and admins assign students to tutors using dropdowns that update in real time. Built with MVVM architecture using Kotlin ViewModels, LiveData, and coroutines for reactive UI updates. Uses Azure Blob Storage as the backend, storing user accounts and session data as JSON blobs. Features role-based routing that navigates users to student, tutor, or admin views based on their account type.',
+            github: 'https://github.com/jisungl/Linked'
+        },
+        'folio': {
+            title: 'Folio',
+            description: 'This portfolio website. Built with vanilla HTML, CSS, and JavaScript, featuring smooth animations, modal-based content delivery, and URL-based deep linking with history.pushState. The navigation includes an animated bubble indicator that tracks the active page using cubic-bezier easing. Articles are embedded in iframe modals with responsive formatting, and each has an associated notes modal with background context. Includes a canvas-based basketball shooting game with drag-to-aim mechanics, projectile physics (gravity, bounce damping), rim and backboard collision detection, and real-time score tracking.',
+            github: 'https://github.com/jisungl/jisungl.github.io'
+        },
+        'flights-app': {
+            title: 'Flights App',
+            description: 'A console-based flight booking system built with Java and PostgreSQL. Users can create accounts, search for direct and multi-leg itineraries sorted by duration, book flights with seat capacity enforcement, and pay for reservations from an account balance. Search queries use multi-table joins across Flights, Aircraft_Types, and N_Numbers to retrieve seat capacity alongside flight details. Booking runs inside manual transactions that check for same-day conflicts, verify capacity by counting existing reservations, and atomically insert itinerary and reservation records with rollback on failure. Authentication uses PBKDF2 with HMAC-SHA1 for password hashing with per-user salts.',
+            github: 'https://github.com/jisungl/Flights-App'
+        },
+        'web-search': {
+            title: 'Web Search Engine',
+            description: 'A multithreaded HTTP web server with integrated full-text search, written in C and C++. The system crawls a directory of documents, builds an inverted index mapping every word to the documents and positions where it appears, and serializes it to a custom binary format with checksums. The server binds to a TCP socket and dispatches connections to 8 worker threads via a synchronized task queue built on pthreads. Requests route to either static file serving or search query processing, with results ranked and returned as HTML. Supports graceful shutdown, persistent HTTP connections, and HTML escaping to prevent XSS.',
+            github: 'https://github.com/jisungl/Web-Search-Engine'
+        }
     };
     
     let currentModalUrl = null;
@@ -20,6 +54,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlToProject = {
         'are-two-high-safeties-ruining-the-nfl': 'nfl',
         'just-how-good-was-damian-lillard': 'lillard'
+    };
+    
+    // URL mapping for work projects
+    const urlToWorkProject = {
+        'nfl-play-predictor': 'nfl-predictor',
+        'linked': 'linked',
+        'folio': 'folio',
+        'flights-app': 'flights-app',
+        'web-search-engine': 'web-search'
     };
     
     function getBasePath() {
@@ -139,6 +182,15 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkUrlAndOpenModal() {
         const path = window.location.pathname;
         
+        // Check for work projects first
+        for (const [urlSlug, workId] of Object.entries(urlToWorkProject)) {
+            if (path.includes(`/projects/${urlSlug}`)) {
+                openWorkModal(workId, urlSlug);
+                return;
+            }
+        }
+        
+        // Then check for articles
         for (const [urlSlug, projectId] of Object.entries(urlToProject)) {
             if (path.includes(`/${urlSlug}/notes`)) {
                 openNotesModal(projectId, urlSlug);
@@ -212,6 +264,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    function openWorkModal(workId, urlSlug, updateUrl = false) {
+        const project = workProjects[workId];
+        if (project) {
+            const workTitle = document.querySelector('.work-title');
+            const workDescription = document.querySelector('.work-description');
+            const githubLink = document.querySelector('.github-link');
+            
+            workTitle.textContent = project.title;
+            workDescription.textContent = project.description;
+            githubLink.href = project.github;
+            
+            workModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (updateUrl) {
+                const newUrl = `/projects/${urlSlug}/`;
+                history.pushState({ modal: 'work', workId: workId }, '', newUrl);
+                currentModalUrl = newUrl;
+            }
+        }
+    }
+    
+    function closeWorkModal() {
+        workModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        
+        if (currentModalUrl) {
+            history.pushState(null, '', '/projects/');
+            currentModalUrl = null;
+        }
+    }
+    
     checkUrlAndOpenModal();
     
     projectItems.forEach(item => {
@@ -233,6 +317,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const urlPath = this.getAttribute('data-url');
             
             openNotesModal(notesType, urlPath, true);
+        });
+    });
+    
+    // Work project click handlers
+    workItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            const workId = this.getAttribute('data-work-project');
+            const urlPath = this.getAttribute('data-work-url');
+            
+            openWorkModal(workId, urlPath, true);
         });
     });
     
@@ -266,10 +360,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (notesModal.classList.contains('active')) {
             closeNotesModal();
         }
+        if (workModal.classList.contains('active')) {
+            closeWorkModal();
+        }
     });
     
     modalClose.addEventListener('click', closeModal);
     notesClose.addEventListener('click', closeNotesModal);
+    workClose.addEventListener('click', closeWorkModal);
     
     modal.addEventListener('click', function(e) {
         if (e.target === modal) closeModal();
@@ -279,6 +377,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === notesModal) closeNotesModal();
     });
     
+    workModal.addEventListener('click', function(e) {
+        if (e.target === workModal) closeWorkModal();
+    });
+    
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             if (modal.classList.contains('active')) {
@@ -286,6 +388,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             if (notesModal.classList.contains('active')) {
                 closeNotesModal();
+            }
+            if (workModal.classList.contains('active')) {
+                closeWorkModal();
             }
         }
     });
