@@ -20,44 +20,42 @@ document.addEventListener('DOMContentLoaded', function() {
         'lillard': 'articles/lillard.html'
     };
     
-    // Work projects data with summaries from READMEs
     const workProjects = {
         'nfl-predictor': {
             title: 'NFL Play-Calling Predictor',
-            description: 'A machine learning model that predicts offensive play calls in the NFL, classifying each play into six types (run left/middle/right, pass short/medium/deep) based on game situation. Built with XGBoost and trained on over 200,000 plays from nflfastR datasets (2018-2023). Features custom sample weighting to emphasize high-leverage situations like two-minute drills and fourth downs, achieving ~52% accuracy on the 6-class prediction task. Deployed as an interactive Streamlit dashboard where users can input game state, personnel, and clock information to receive probability distributions across all play types.',
+            description: 'I built a machine learning model that predicts offensive play calls in the NFL. I trained it with XGBoost on over 200,000 plays from nflfastR datasets spanning 2018-2023, classifying each play into six types based on game situation. I implemented custom sample weighting to emphasize high-leverage moments like two-minute drills and fourth downs, achieving around 52% accuracy on the 6-class prediction task. I deployed it as an interactive Streamlit dashboard where you can input game state, personnel, and clock information to see probability distributions across all play types.',
             github: 'https://github.com/jisungl/NFL-Play-Predictor'
         },
         'linked': {
             title: 'Linked',
-            description: 'An Android app built for Sunday Study Room, my tutoring organization, to manage weekly attendance and automate tutor-student matching. Students request attendance via a calendar view, tutors see their assigned students, and admins assign students to tutors using dropdowns that update in real time. Built with MVVM architecture using Kotlin ViewModels, LiveData, and coroutines for reactive UI updates. Uses Azure Blob Storage as the backend, storing user accounts and session data as JSON blobs. Features role-based routing that navigates users to student, tutor, or admin views based on their account type.',
+            description: 'I built this Android app for Sunday Study Room, my tutoring organization, to manage weekly attendance and automate tutor-student matching. Students can request attendance through a calendar view, tutors see their assigned students, and I built an admin interface where admins assign students to tutors using dropdowns that update in real time. I used MVVM architecture with Kotlin ViewModels, LiveData, and coroutines for reactive UI updates. I chose Azure Blob Storage as the backend, storing user accounts and session data as JSON blobs. I implemented role-based routing that navigates users to different views based on their account type.',
             github: 'https://github.com/jisungl/Linked'
         },
         'folio': {
             title: 'Folio',
-            description: 'This portfolio website. Built with vanilla HTML, CSS, and JavaScript, featuring smooth animations, modal-based content delivery, and URL-based deep linking with history.pushState. The navigation includes an animated bubble indicator that tracks the active page using cubic-bezier easing. Articles are embedded in iframe modals with responsive formatting, and each has an associated notes modal with background context. Includes a canvas-based basketball shooting game with drag-to-aim mechanics, projectile physics (gravity, bounce damping), rim and backboard collision detection, and real-time score tracking.',
+            description: 'This is my portfolio website. I built it with vanilla HTML, CSS, and JavaScript, featuring smooth animations, modal-based content delivery, and URL-based deep linking with history.pushState. I created an animated bubble indicator that tracks the active page using cubic-bezier easing. I embedded my articles in iframe modals with responsive formatting, and each has an associated notes modal with background context. I also built a canvas-based basketball shooting game with drag-to-aim mechanics, projectile physics (gravity, bounce damping), rim and backboard collision detection, and real-time score tracking.',
             github: 'https://github.com/jisungl/jisungl.github.io'
         },
         'flights-app': {
             title: 'Flights App',
-            description: 'A console-based flight booking system built with Java and PostgreSQL. Users can create accounts, search for direct and multi-leg itineraries sorted by duration, book flights with seat capacity enforcement, and pay for reservations from an account balance. Search queries use multi-table joins across Flights, Aircraft_Types, and N_Numbers to retrieve seat capacity alongside flight details. Booking runs inside manual transactions that check for same-day conflicts, verify capacity by counting existing reservations, and atomically insert itinerary and reservation records with rollback on failure. Authentication uses PBKDF2 with HMAC-SHA1 for password hashing with per-user salts.',
+            description: 'I built a console-based flight booking system with Java and PostgreSQL. Users can create accounts, search for direct and multi-leg itineraries sorted by duration, book flights with seat capacity enforcement, and pay for reservations from an account balance. I implemented search queries using multi-table joins across Flights, Aircraft_Types, and N_Numbers to retrieve seat capacity alongside flight details. I wrapped booking logic inside manual transactions that check for same-day conflicts, verify capacity by counting existing reservations, and atomically insert itinerary and reservation records with rollback on failure. For authentication, I used PBKDF2 with HMAC-SHA1 for password hashing with per-user salts.',
             github: 'https://github.com/jisungl/Flights-App'
         },
         'web-search': {
             title: 'Web Search Engine',
-            description: 'A multithreaded HTTP web server with integrated full-text search, written in C and C++. The system crawls a directory of documents, builds an inverted index mapping every word to the documents and positions where it appears, and serializes it to a custom binary format with checksums. The server binds to a TCP socket and dispatches connections to 8 worker threads via a synchronized task queue built on pthreads. Requests route to either static file serving or search query processing, with results ranked and returned as HTML. Supports graceful shutdown, persistent HTTP connections, and HTML escaping to prevent XSS.',
+            description: 'I built a multithreaded HTTP web server with integrated full-text search, written in C and C++. The system crawls a directory of documents, builds an inverted index mapping every word to the documents and positions where it appears, and serializes it to a custom binary format with checksums. I implemented the server to bind to a TCP socket and dispatch connections to 8 worker threads via a synchronized task queue built on pthreads. Requests route to either static file serving or search query processing, with results ranked and returned as HTML. I added support for graceful shutdown, persistent HTTP connections, and HTML escaping to prevent XSS.',
             github: 'https://github.com/jisungl/Web-Search-Engine'
         }
     };
     
     let currentModalUrl = null;
-    let originalUrl = null; // Track the URL before opening any modal
+    let originalUrl = null;
     
     const urlToProject = {
         'are-two-high-safeties-ruining-the-nfl': 'nfl',
         'just-how-good-was-damian-lillard': 'lillard'
     };
     
-    // URL mapping for work projects
     const urlToWorkProject = {
         'nfl-play-predictor': 'nfl-predictor',
         'linked': 'linked',
@@ -183,7 +181,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkUrlAndOpenModal() {
         const path = window.location.pathname;
         
-        // Check for work projects first
         for (const [urlSlug, workId] of Object.entries(urlToWorkProject)) {
             if (path.includes(`/projects/${urlSlug}`)) {
                 openWorkModal(workId, urlSlug);
@@ -191,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Then check for articles
         for (const [urlSlug, projectId] of Object.entries(urlToProject)) {
             if (path.includes(`/${urlSlug}/notes`)) {
                 openNotesModal(projectId, urlSlug);
@@ -209,13 +205,54 @@ document.addEventListener('DOMContentLoaded', function() {
         if (projectFile) {
             const basePath = getBasePath();
             projectFrame.src = basePath + projectFile;
+            
+            projectFrame.onload = function() {
+                try {
+                    const iframeDoc = projectFrame.contentDocument || projectFrame.contentWindow.document;
+                    const style = iframeDoc.createElement('style');
+                    style.textContent = `
+                        /* Article text - dark teal */
+                        body, p, div, span, li, td, th, h1, h2, h3, h4, h5, h6 {
+                            color: #025A4E !important;
+                        }
+                        
+                        /* Regular links - bold dark teal */
+                        a {
+                            color: #025A4E !important;
+                            font-weight: bold !important;
+                        }
+                        
+                        /* "View Original Article →" button at top - styled like GitHub button */
+                        a.original-link-btn {
+                            display: inline-flex !important;
+                            align-items: center !important;
+                            gap: 10px !important;
+                            padding: 12px 24px !important;
+                            background: #025A4E !important;
+                            color: white !important;
+                            text-decoration: none !important;
+                            border-radius: 8px !important;
+                            font-weight: 500 !important;
+                            transition: background 0.2s ease !important;
+                            box-shadow: none !important;
+                            animation: none !important;
+                        }
+                        
+                        a.original-link-btn:hover {
+                            background: #013d34 !important;
+                        }
+                    `;
+                    iframeDoc.head.appendChild(style);
+                } catch (e) {
+                    console.log('Could not inject styles:', e);
+                }
+            };
+            
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
             
             if (updateUrl) {
-                // Save original URL before changing it
                 originalUrl = window.location.pathname;
-                
                 const isProjectsPage = window.location.pathname.includes('/projects/');
                 const newUrl = isProjectsPage ? `/projects/${urlSlug}/` : `/${urlSlug}/`;
                 history.pushState({ modal: 'project', projectId: projectId }, '', newUrl);
@@ -261,9 +298,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'hidden';
         
         if (updateUrl) {
-            // Save original URL before changing it
             originalUrl = window.location.pathname;
-            
             const isProjectsPage = window.location.pathname.includes('/projects/');
             const newUrl = isProjectsPage ? `/projects/${urlSlug}/notes/` : `/${urlSlug}/notes/`;
             history.pushState({ modal: 'notes', notesType: notesType }, '', newUrl);
@@ -286,9 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'hidden';
             
             if (updateUrl) {
-                // Save original URL before changing it
                 originalUrl = window.location.pathname;
-                
                 const newUrl = `/projects/${urlSlug}/`;
                 history.pushState({ modal: 'work', workId: workId }, '', newUrl);
                 currentModalUrl = newUrl;
@@ -301,7 +334,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'auto';
         
         if (currentModalUrl && originalUrl) {
-            // Restore the original URL
             history.pushState(null, '', originalUrl);
             currentModalUrl = null;
             originalUrl = null;
@@ -332,7 +364,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Work project click handlers
     workItems.forEach(item => {
         item.addEventListener('click', function(e) {
             const workId = this.getAttribute('data-work-project');
@@ -348,7 +379,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'auto';
         
         if (currentModalUrl && originalUrl) {
-            // Restore the original URL
             history.pushState(null, '', originalUrl);
             currentModalUrl = null;
             originalUrl = null;
@@ -360,7 +390,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'auto';
         
         if (currentModalUrl && originalUrl) {
-            // Restore the original URL
             history.pushState(null, '', originalUrl);
             currentModalUrl = null;
             originalUrl = null;
@@ -419,28 +448,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let attempts = 0;
         
         let gameState = {
-            ball: {
-                x: 144,
-                y: 468,
-                startX: 144,
-                startY: 468,
-                radius: 14,
-                vx: 0,
-                vy: 0,
-                dragging: false,
-                shot: false,
-                scored: false
-            },
-            player: {
-                x: 96,
-                y: 504
-            },
-            hoop: {
-                x: 504,
-                y: 432,
-                rimRadius: 36,
-                backboardX: 540
-            },
+            ball: { x: 144, y: 468, startX: 144, startY: 468, radius: 14, vx: 0, vy: 0, dragging: false, shot: false, scored: false },
+            player: { x: 96, y: 504 },
+            hoop: { x: 504, y: 432, rimRadius: 36, backboardX: 540 },
             ground: 540
         };
         
@@ -453,31 +463,25 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.fillStyle = '#5a3d7a';
             ctx.strokeStyle = '#5a3d7a';
             ctx.lineWidth = 3;
-            
             ctx.beginPath();
             ctx.arc(gameState.player.x, y - 60, 12, 0, Math.PI * 2);
             ctx.fill();
-            
             ctx.beginPath();
             ctx.moveTo(gameState.player.x, y - 48);
             ctx.lineTo(gameState.player.x, y - 12);
             ctx.stroke();
-            
             ctx.beginPath();
             ctx.moveTo(gameState.player.x, y - 42);
             ctx.lineTo(gameState.player.x + 22, y - 30);
             ctx.stroke();
-            
             ctx.beginPath();
             ctx.moveTo(gameState.player.x, y - 42);
             ctx.lineTo(gameState.player.x - 22, y - 30);
             ctx.stroke();
-            
             ctx.beginPath();
             ctx.moveTo(gameState.player.x, y - 12);
             ctx.lineTo(gameState.player.x - 10, y);
             ctx.stroke();
-            
             ctx.beginPath();
             ctx.moveTo(gameState.player.x, y - 12);
             ctx.lineTo(gameState.player.x + 10, y);
@@ -487,14 +491,12 @@ document.addEventListener('DOMContentLoaded', function() {
         function drawHoop() {
             ctx.fillStyle = '#5a3d7a';
             ctx.fillRect(gameState.hoop.backboardX, gameState.hoop.y - 48, 7, 60);
-            
             ctx.strokeStyle = '#ff6b6b';
             ctx.lineWidth = 5;
             ctx.beginPath();
             ctx.moveTo(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y);
             ctx.lineTo(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y);
             ctx.stroke();
-            
             ctx.fillStyle = '#ff6b6b';
             ctx.beginPath();
             ctx.arc(gameState.hoop.x - gameState.hoop.rimRadius, gameState.hoop.y, 4, 0, Math.PI * 2);
@@ -502,7 +504,6 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.beginPath();
             ctx.arc(gameState.hoop.x + gameState.hoop.rimRadius, gameState.hoop.y, 4, 0, Math.PI * 2);
             ctx.fill();
-            
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 2;
             for (let i = -30; i <= 30; i += 15) {
@@ -518,11 +519,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const boxX = (canvas.width - boxWidth) / 2;
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.fillRect(boxX, 12, boxWidth, 60);
-            
             ctx.fillStyle = '#5a3d7a';
             ctx.font = 'bold 22px "Outfit", sans-serif';
             ctx.textAlign = 'center';
-            
             const pct = attempts > 0 ? ((makes / attempts) * 100).toFixed(1) : 0;
             ctx.fillText(`${makes}/${attempts}`, boxX + boxWidth / 2, 36);
             ctx.fillText(`${pct}%`, boxX + boxWidth / 2, 60);
@@ -533,7 +532,6 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.beginPath();
             ctx.arc(gameState.ball.x, gameState.ball.y, gameState.ball.radius, 0, Math.PI * 2);
             ctx.fill();
-            
             ctx.strokeStyle = '#000000';
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -546,10 +544,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const dragX = gameState.ball.x - gameState.ball.startX;
                 const dragY = gameState.ball.y - gameState.ball.startY;
                 const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
-                
-                let vx = 0;
-                let vy = 0;
-                
+                let vx = 0, vy = 0;
                 if (dragDistance > 0) {
                     const dirX = dragX / dragDistance;
                     const dirY = dragY / dragDistance;
@@ -557,18 +552,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     vx = -dirX * power;
                     vy = -dirY * power;
                 }
-                
                 ctx.strokeStyle = 'rgba(90, 61, 122, 0.5)';
                 ctx.lineWidth = 2;
                 ctx.setLineDash([5, 5]);
                 ctx.beginPath();
                 ctx.moveTo(gameState.ball.startX, gameState.ball.startY);
-                
-                let px = gameState.ball.startX;
-                let py = gameState.ball.startY;
-                let pvx = vx;
-                let pvy = vy;
-                
+                let px = gameState.ball.startX, py = gameState.ball.startY, pvx = vx, pvy = vy;
                 for (let i = 0; i < 22; i++) {
                     pvy += GRAVITY;
                     px += pvx;
@@ -576,7 +565,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     ctx.lineTo(px, py);
                     if (py > canvas.height || px < 0 || px > canvas.width) break;
                 }
-                
                 ctx.stroke();
                 ctx.setLineDash([]);
             }
@@ -586,21 +574,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const leftRim = gameState.hoop.x - gameState.hoop.rimRadius;
             const rightRim = gameState.hoop.x + gameState.hoop.rimRadius;
             const rimY = gameState.hoop.y;
-            
-            if (Math.abs(gameState.ball.x - leftRim) < gameState.ball.radius &&
-                Math.abs(gameState.ball.y - rimY) < gameState.ball.radius) {
+            if (Math.abs(gameState.ball.x - leftRim) < gameState.ball.radius && Math.abs(gameState.ball.y - rimY) < gameState.ball.radius) {
                 gameState.ball.vx = -Math.abs(gameState.ball.vx) * BOUNCE_DAMPING;
                 gameState.ball.vy *= BOUNCE_DAMPING;
                 return true;
             }
-            
-            if (Math.abs(gameState.ball.x - rightRim) < gameState.ball.radius &&
-                Math.abs(gameState.ball.y - rimY) < gameState.ball.radius) {
+            if (Math.abs(gameState.ball.x - rightRim) < gameState.ball.radius && Math.abs(gameState.ball.y - rimY) < gameState.ball.radius) {
                 gameState.ball.vx = Math.abs(gameState.ball.vx) * BOUNCE_DAMPING;
                 gameState.ball.vy *= BOUNCE_DAMPING;
                 return true;
             }
-            
             return false;
         }
         
@@ -608,11 +591,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const backboardX = gameState.hoop.backboardX;
             const backboardTop = gameState.hoop.y - 40;
             const backboardBottom = gameState.hoop.y + 10;
-            
-            if (gameState.ball.x + gameState.ball.radius >= backboardX &&
-                gameState.ball.y >= backboardTop &&
-                gameState.ball.y <= backboardBottom &&
-                gameState.ball.vx > 0) {
+            if (gameState.ball.x + gameState.ball.radius >= backboardX && gameState.ball.y >= backboardTop && gameState.ball.y <= backboardBottom && gameState.ball.vx > 0) {
                 gameState.ball.vx = -gameState.ball.vx * BOUNCE_DAMPING;
                 gameState.ball.x = backboardX - gameState.ball.radius;
                 return true;
@@ -626,23 +605,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const hoopY = gameState.hoop.y;
             const leftRim = gameState.hoop.x - gameState.hoop.rimRadius;
             const rightRim = gameState.hoop.x + gameState.hoop.rimRadius;
-            
-            if (gameState.ball.x > leftRim + gameState.ball.radius && 
-                gameState.ball.x < rightRim - gameState.ball.radius &&
-                ballTop <= hoopY && 
-                ballBottom >= hoopY && 
-                gameState.ball.vy > 0) {
-                return true;
-            }
-            return false;
+            return gameState.ball.x > leftRim + gameState.ball.radius && gameState.ball.x < rightRim - gameState.ball.radius && ballTop <= hoopY && ballBottom >= hoopY && gameState.ball.vy > 0;
         }
         
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
             ctx.fillStyle = 'rgba(90, 61, 122, 0.1)';
             ctx.fillRect(0, gameState.ground, canvas.width, canvas.height - gameState.ground);
-            
             drawPlayer();
             drawHoop();
             drawTrajectoryPreview();
@@ -655,29 +624,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 gameState.ball.vy += GRAVITY;
                 gameState.ball.x += gameState.ball.vx;
                 gameState.ball.y += gameState.ball.vy;
-                
                 checkBackboardCollision();
                 checkRimCollision();
-                
                 if (checkScore() && !gameState.ball.scored) {
                     gameState.ball.scored = true;
                     makes++;
                 }
-                
                 if (gameState.ball.y + gameState.ball.radius >= gameState.ground) {
                     gameState.ball.y = gameState.ground - gameState.ball.radius;
                     gameState.ball.vy = -gameState.ball.vy * 0.5;
                     gameState.ball.vx *= 0.8;
-                    
                     if (Math.abs(gameState.ball.vy) < 1) {
                         resetBall();
                     }
                 }
-                
-                if (gameState.ball.y > canvas.height + 50 || 
-                    gameState.ball.x < -50 || 
-                    gameState.ball.x > canvas.width + 50 ||
-                    gameState.ball.y < -50) {
+                if (gameState.ball.y > canvas.height + 50 || gameState.ball.x < -50 || gameState.ball.x > canvas.width + 50 || gameState.ball.y < -50) {
                     resetBall();
                 }
             }
@@ -703,11 +664,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const rect = canvas.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
-            
             const dx = mouseX - gameState.ball.x;
             const dy = mouseY - gameState.ball.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
             if (distance < gameState.ball.radius * 2 && !gameState.ball.shot) {
                 gameState.ball.dragging = true;
             }
@@ -726,18 +685,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const dragX = gameState.ball.x - gameState.ball.startX;
                 const dragY = gameState.ball.y - gameState.ball.startY;
                 const dragDistance = Math.sqrt(dragX * dragX + dragY * dragY);
-                
                 gameState.ball.x = gameState.ball.startX;
                 gameState.ball.y = gameState.ball.startY;
-                
                 gameState.ball.dragging = false;
                 gameState.ball.shot = true;
                 attempts++;
-                
                 if (dragDistance > 0) {
                     const dirX = dragX / dragDistance;
                     const dirY = dragY / dragDistance;
-                    
                     const power = dragDistance * LAUNCH_MULTIPLIER;
                     gameState.ball.vx = -dirX * power;
                     gameState.ball.vy = -dirY * power;
