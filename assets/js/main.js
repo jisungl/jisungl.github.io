@@ -1,5 +1,3 @@
-// GitHub Pages 404 redirect restoration
-// This runs immediately when the script loads
 (function() {
     var redirect = sessionStorage.redirect;
     delete sessionStorage.redirect;
@@ -8,7 +6,6 @@
     }
 })();
 
-// Project data
 const projectData = {
     'nfl-predictor': {
         title: 'NFL Play-Calling<br>Predictor',
@@ -51,11 +48,8 @@ const articleData = {
 document.addEventListener('DOMContentLoaded', function() {
     const siteHeader = document.querySelector('.siteHeader');
     const content = document.querySelector('.content');
-    
-    // Navigation
     const navLinks = document.querySelectorAll('.siteHeader_nav a');
     const navItems = document.querySelectorAll('.siteHeader_nav li');
-    const pages = document.querySelectorAll('.page');
     
     navLinks.forEach((link, index) => {
         link.addEventListener('click', function(e) {
@@ -66,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Theme toggle
     const lightBtn = document.getElementById('light-btn');
     const darkBtn = document.getElementById('dark-btn');
     
@@ -82,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
         lightBtn.classList.remove('is-selected');
     });
     
-    // Project items
     const projectItems = document.querySelectorAll('.project_item[data-project]');
     projectItems.forEach(item => {
         item.addEventListener('click', function() {
@@ -127,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Article items
     const articleItems = document.querySelectorAll('.project_item[data-article]');
     articleItems.forEach(item => {
         item.addEventListener('click', function(e) {
@@ -201,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Notes
     const notesLinks = document.querySelectorAll('.notes-link');
     notesLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -272,14 +262,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ============================================
-    // CLEAN URL ROUTING with history.pushState()
-    // ============================================
-    
     function loadPageFromPath() {
         let path = window.location.pathname;
         
-        // Remove leading slash and trailing slash
         path = path.replace(/^\//, '').replace(/\/$/, '');
         
         if (!path || path === '' || path === 'index.html' || path === 'home') {
@@ -304,7 +289,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Project detail: /projects/nfl-predictor
         if (path.startsWith('projects/')) {
             const projectId = path.split('/')[1];
             if (projectData[projectId]) {
@@ -321,7 +305,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Article or notes: /analysis/two-high or /analysis/two-high/notes
         if (path.startsWith('analysis/')) {
             const parts = path.split('/');
             const articleId = parts[1];
@@ -350,7 +333,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Regular pages: /projects, /about, /gallery, /contact, /analysis
         const targetPage = document.querySelector(`[data-page-section="${path}"]`);
         if (targetPage && !targetPage.classList.contains('is-active')) {
             navigateToPage(path);
@@ -384,15 +366,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Load correct page on initial load
     loadPageFromPath();
     
-    // Handle browser back/forward buttons
     window.addEventListener('popstate', loadPageFromPath);
-    
-    // ============================================
-    // ESCAPE KEY to close project detail, articles, and notes
-    // ============================================
     
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -400,21 +376,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const articleViewPage = document.querySelector('[data-page-section="article-view"]');
             const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
             
-            // Close project detail if open
             if (projectDetailPage.classList.contains('is-active')) {
                 history.pushState(null, '', '/projects');
                 loadPageFromPath();
                 return;
             }
             
-            // Close article view if open
             if (articleViewPage.classList.contains('is-active')) {
                 history.pushState(null, '', '/analysis');
                 loadPageFromPath();
                 return;
             }
             
-            // Close notes view if open
             if (notesViewPage.classList.contains('is-active')) {
                 history.pushState(null, '', '/analysis');
                 loadPageFromPath();

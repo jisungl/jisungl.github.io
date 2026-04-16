@@ -1,16 +1,11 @@
-// Flowing particles background animation
 (function() {
     const canvas = document.getElementById('backgroundCanvas');
-    if (!canvas) {
-        console.error('Background canvas not found');
-        return;
-    }
+    if (!canvas) return;
     
     const ctx = canvas.getContext('2d');
     let width, height;
     let particles = [];
     
-    // Particle class
     class Particle {
         constructor() {
             this.reset();
@@ -31,7 +26,6 @@
             this.y += this.vy;
             this.life += this.fadeSpeed;
             
-            // Reset if out of bounds or fully faded
             if (this.x < 0 || this.x > width || 
                 this.y < 0 || this.y > height || 
                 this.life > 1) {
@@ -50,12 +44,10 @@
         }
     }
     
-    // Resize canvas to match window
     function resize() {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
         
-        // Recreate particles on resize
         const particleCount = Math.floor((width * height) / 15000);
         particles = [];
         for (let i = 0; i < particleCount; i++) {
@@ -63,15 +55,11 @@
         }
     }
     
-    // Animation loop
     function draw() {
-        // Get current theme
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
         
-        // Clear canvas
         ctx.clearRect(0, 0, width, height);
         
-        // Update and draw particles
         particles.forEach(particle => {
             particle.update();
             particle.draw(isDark);
@@ -80,10 +68,7 @@
         requestAnimationFrame(draw);
     }
     
-    // Initialize
     resize();
     window.addEventListener('resize', resize);
     draw();
-    
-    console.log('Background animation initialized');
 })();

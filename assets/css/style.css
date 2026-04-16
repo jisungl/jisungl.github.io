@@ -1,4 +1,3 @@
-/* Background Animation */
 #background {
     position: fixed;
     top: 0;
@@ -15,9 +14,20 @@
     opacity: 0.4;
 }
 
-/* Custom Cursor */
 body, body * {
     cursor: none !important;
+}
+
+.article-view,
+.article-view *,
+.notes-view,
+.notes-view * {
+    cursor: auto !important;
+}
+
+.article-view_close,
+.notes-view_close {
+    cursor: pointer !important;
 }
 
 .custom-cursor {
@@ -36,7 +46,6 @@ body, body * {
     background-color: white;
 }
 
-/* CSS Variables - matching reference */
 :root {
     --c-bg: hsl(0, 0%, 90%);
     --c-text: hsl(0, 0%, 10%);
@@ -61,14 +70,12 @@ body, body * {
     --c-text: hsl(0, 0%, 95%);
 }
 
-/* Font Faces */
 @font-face {
     font-family: "Cabinet Grotesk";
     font-weight: 200;
     src: url("../font/CabinetGrotesk_Complete/Fonts/WEB/fonts/CabinetGrotesk-Extralight.woff2") format("woff2");
 }
 
-/* Reset */
 *, *:before, *:after {
     box-sizing: inherit;
     margin: 0;
@@ -96,7 +103,6 @@ a {
     text-decoration: none;
 }
 
-/* Page Container */
 #page {
     position: fixed;
     left: 0;
@@ -108,7 +114,6 @@ a {
     white-space: nowrap;
 }
 
-/* Frame Border - Always visible */
 .frame {
     position: fixed;
     z-index: 10;
@@ -131,7 +136,6 @@ a {
 .frame_line-top { left: 0; top: 0; width: 100%; height: 1px; }
 .frame_line-bottom { left: 0; bottom: 0; width: 100%; height: 1px; }
 
-/* Semi-transparent masks */
 .mask {
     position: fixed;
     z-index: 3;
@@ -157,7 +161,6 @@ a {
 .mask_top { top: 0; }
 .mask_bottom { bottom: 0; }
 
-/* Theme Toggles - Always visible */
 .theme {
     position: fixed;
     z-index: 10;
@@ -285,7 +288,6 @@ a {
     opacity: 0;
 }
 
-/* Content Area */
 .content {
     position: fixed;
     z-index: 2;
@@ -298,6 +300,8 @@ a {
     mix-blend-mode: difference;
     color: #fff;
     transition: opacity 0.3s cubic-bezier(0.1, 0.4, 0.2, 1);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .content.hidden {
@@ -305,20 +309,13 @@ a {
     pointer-events: none;
 }
 
-/* Remove mix-blend-mode when gallery page is active */
 .content:has(.page[data-page-section="gallery"].is-active) {
     mix-blend-mode: normal;
     color: var(--c-text);
 }
 
-/* Hide scrollbar */
 .content::-webkit-scrollbar {
     display: none;
-}
-
-.content {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 }
 
 .content_inner {
@@ -326,7 +323,6 @@ a {
     min-height: 100%;
 }
 
-/* Pages */
 .page {
     display: none;
     width: 100%;
@@ -339,7 +335,6 @@ a {
     display: block;
 }
 
-/* Home Page */
 .home {
     position: absolute;
     right: calc(var(--pad) * 2);
@@ -347,7 +342,6 @@ a {
     white-space: nowrap;
 }
 
-/* Projects Page */
 .project {
     padding: calc(var(--pad) * 2 + 96px) calc(var(--pad) * 2);
     text-align: right;
@@ -402,7 +396,6 @@ a {
     position: relative;
 }
 
-/* Notes link - styled like github link */
 .notes-link {
     display: inline-block;
     margin-left: 10px;
@@ -418,7 +411,6 @@ a {
     }
 }
 
-/* Project Detail View */
 .project-detail {
     position: absolute;
     right: calc(var(--pad) * 2);
@@ -476,7 +468,6 @@ a {
     word-wrap: break-word;
 }
 
-/* About Page */
 .about {
     position: absolute;
     right: calc(var(--pad) * 2);
@@ -494,7 +485,6 @@ a {
     display: block;
 }
 
-/* Gallery Page */
 .gallery {
     position: absolute;
     right: calc(var(--pad) * 2);
@@ -517,7 +507,6 @@ a {
     cursor: pointer;
 }
 
-/* Contact Page */
 .contact {
     position: absolute;
     right: calc(var(--pad) * 2);
@@ -540,7 +529,6 @@ a {
     }
 }
 
-/* Article View - Full page scrollable, NO mix-blend-mode */
 .article-view {
     position: fixed;
     z-index: 2;
@@ -551,16 +539,12 @@ a {
     overflow-y: auto;
     overflow-x: hidden;
     background-color: var(--c-bg);
-}
-
-/* Hide scrollbar completely */
-.article-view::-webkit-scrollbar {
-    display: none;
-}
-
-.article-view {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.article-view::-webkit-scrollbar {
+    display: none;
 }
 
 .article-view_close {
@@ -593,7 +577,6 @@ a {
     border: none;
 }
 
-/* Notes View - Right side scrollable, NO mix-blend-mode, shifted right */
 .notes-view {
     position: fixed;
     z-index: 2;
@@ -604,16 +587,12 @@ a {
     overflow-y: auto;
     overflow-x: hidden;
     background-color: var(--c-bg);
-}
-
-/* Hide scrollbar completely */
-.notes-view::-webkit-scrollbar {
-    display: none;
-}
-
-.notes-view {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.notes-view::-webkit-scrollbar {
+    display: none;
 }
 
 .notes-view_close {
@@ -646,7 +625,6 @@ a {
     border: none;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .siteHeader_title {
         font-size: 24px;

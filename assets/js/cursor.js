@@ -1,6 +1,4 @@
-// Custom Cursor
 (function() {
-    // Create cursor element
     const cursor = document.createElement('div');
     cursor.className = 'custom-cursor';
     document.body.appendChild(cursor);
@@ -10,13 +8,11 @@
     let cursorX = 0;
     let cursorY = 0;
     
-    // Update cursor position on mouse move
     document.addEventListener('mousemove', function(e) {
         mouseX = e.clientX;
         mouseY = e.clientY;
     });
     
-    // Smooth cursor movement
     function updateCursor() {
         cursorX += (mouseX - cursorX) * 0.2;
         cursorY += (mouseY - cursorY) * 0.2;
@@ -29,13 +25,32 @@
     
     updateCursor();
     
-    // Hide cursor when mouse leaves window
     document.addEventListener('mouseleave', function() {
         cursor.style.opacity = '0';
     });
     
-    // Show cursor when mouse enters window
     document.addEventListener('mouseenter', function() {
         cursor.style.opacity = '1';
     });
+    
+    const articleView = document.querySelector('.article-view');
+    const notesView = document.querySelector('.notes-view');
+    
+    if (articleView) {
+        articleView.addEventListener('mouseenter', function() {
+            cursor.style.opacity = '0';
+        });
+        articleView.addEventListener('mouseleave', function() {
+            cursor.style.opacity = '1';
+        });
+    }
+    
+    if (notesView) {
+        notesView.addEventListener('mouseenter', function() {
+            cursor.style.opacity = '0';
+        });
+        notesView.addEventListener('mouseleave', function() {
+            cursor.style.opacity = '1';
+        });
+    }
 })();

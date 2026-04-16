@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes - Are Two-High Safeties Ruining the NFL?</title>
     <style>
-        /* Support BOTH data-theme AND body class systems */
         :root {
             --c-text: hsl(0, 0%, 10%);
         }
@@ -20,7 +19,6 @@
             --c-text: hsl(0, 0%, 95%);
         }
 
-        /* Hide scrollbar completely */
         html::-webkit-scrollbar,
         body::-webkit-scrollbar {
             display: none;
@@ -120,11 +118,9 @@
     </div>
 
     <script>
-    // Sync theme from parent - supports BOTH data-theme AND body.class
     (function() {
         function syncTheme() {
             try {
-                // Try data-theme first
                 const parentTheme = window.parent.document.documentElement.getAttribute('data-theme');
                 if (parentTheme) {
                     document.documentElement.setAttribute('data-theme', parentTheme);
@@ -133,7 +129,6 @@
                     return;
                 }
                 
-                // Fallback: check parent body classes
                 const parentBody = window.parent.document.body;
                 if (parentBody.classList.contains('dark')) {
                     document.body.className = 'dark';
@@ -151,10 +146,8 @@
             }
         }
         
-        // Initial sync
         syncTheme();
         
-        // Watch for changes
         try {
             const observer = new MutationObserver(syncTheme);
             observer.observe(window.parent.document.documentElement, {

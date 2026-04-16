@@ -4,22 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jisung Lee</title>
+    <link rel="icon" type="image/png" href="photos/favicon.png">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <div id="page">
-        <!-- Background Animation -->
         <div id="background">
             <canvas id="backgroundCanvas"></canvas>
         </div>
         
-        <!-- Semi-transparent masks for content behind frame -->
         <div class="mask">
             <div class="mask_top"></div>
             <div class="mask_bottom"></div>
         </div>
         
-        <!-- Frame Border -->
         <div class="frame">
             <div class="frame_line frame_line-left"></div>
             <div class="frame_line frame_line-right"></div>
@@ -27,7 +25,6 @@
             <div class="frame_line frame_line-bottom"></div>
         </div>
         
-        <!-- Theme Toggles (Bottom Left, Rotated) - Always visible -->
         <div class="theme">
             <div class="theme_colors">
                 <div class="theme_btn is-selected" id="light-btn">
@@ -41,7 +38,6 @@
             </div>
         </div>
         
-        <!-- Site Header (Top Left) - Hidden in article view, visible in notes view -->
         <header class="siteHeader">
             <h1 class="siteHeader_title">Jisung Lee</h1>
             <p class="siteHeader_label">A Student Developer</p>
@@ -75,15 +71,12 @@
             </nav>
         </header>
         
-        <!-- Content Area -->
         <main class="content">
             <div class="content_inner">
-                <!-- HOME PAGE - Empty -->
                 <section class="page is-active" data-page-section="home">
                     <div class="home"></div>
                 </section>
                 
-                <!-- ABOUT PAGE -->
                 <section class="page" data-page-section="about">
                     <div class="about">
                         <div class="about_content">
@@ -101,7 +94,7 @@
                     </div>
                 </section>
                 
-                <!-- PROJECTS PAGE -->
+                <!-- Projects -->
                 <section class="page" data-page-section="projects">
                     <div class="project">
                         <div class="project_list">
@@ -133,7 +126,6 @@
                     </div>
                 </section>
                 
-                <!-- PROJECT DETAIL VIEW -->
                 <section class="page" data-page-section="project-detail">
                     <div class="project-detail">
                         <div class="project-detail_close">✕</div>
@@ -143,7 +135,7 @@
                     </div>
                 </section>
                 
-                <!-- ANALYSIS PAGE -->
+                <!-- Analysis -->
                 <section class="page" data-page-section="analysis">
                     <div class="project">
                         <div class="project_list">
@@ -163,7 +155,7 @@
                     </div>
                 </section>
                 
-                <!-- GALLERY PAGE -->
+                <!-- Gallery -->
                 <section class="page" data-page-section="gallery">
                     <div class="gallery">
                         <div class="gallery_grid">
@@ -177,7 +169,7 @@
                     </div>
                 </section>
                 
-                <!-- CONTACT PAGE -->
+                <!-- Contact -->
                 <section class="page" data-page-section="contact">
                     <div class="contact">
                         <a class="contact_item" href="leeyjisung@gmail.com">EMAIL</a>
@@ -189,7 +181,6 @@
             </div>
         </main>
         
-        <!-- ARTICLE VIEW - Outside content, full page -->
         <section class="page" data-page-section="article-view">
             <div class="article-view">
                 <div class="article-view_close">✕</div>
@@ -199,7 +190,6 @@
             </div>
         </section>
         
-        <!-- NOTES VIEW - Outside content, right side only -->
         <section class="page" data-page-section="notes-view">
             <div class="notes-view">
                 <div class="notes-view_close">✕</div>
