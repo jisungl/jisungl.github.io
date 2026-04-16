@@ -1,112 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jisung Lee - Home</title>
-    <link rel="icon" type="image/png" href="photos/favicon.png">
-    <link rel="stylesheet" href="style.css">
+    <title>Jisung Lee</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="nav-bubble"></div>
-            <a href="./" class="nav-link active">Home</a>
-            <a href="about/" class="nav-link">About</a>
-            <a href="projects/" class="nav-link">Projects</a>
-            <a href="contact/" class="nav-link">Contact</a>
+    <div id="page">
+        <!-- Background Animation -->
+        <div id="background">
+            <canvas id="backgroundCanvas"></canvas>
         </div>
-    </nav>
-
-    <div class="animated-background"></div>
-
-    <main id="main-content">
-        <section id="home" class="page active">
-            <div class="hero-section">
-                <h1 class="main-title">Hi. I'm Jisung.</h1>
-                <p class="subtitle">A Student Developer</p>
-            </div>
-            <div class="content-section">
-                <div id="featured-section" class="project-section">
-                    <h2 class="section-title">New & Featured</h2>
-                    <div class="project-list">
-                        <div class="project-item" data-work-project="nfl-predictor" data-work-url="nfl-play-predictor">
-                            <div class="project-content">
-                                <h3>NFL Play-Calling Predictor</h3>
-                                <p>Machine Learning model that predicts offensive play based on situation.</p>
-                                <span class="view-project">About →</span>
-                            </div>
-                            <div class="project-icons">
-                                <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-                                <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white" alt="Streamlit">
-                                <img src="https://img.shields.io/badge/XGBoost-orange?style=for-the-badge" alt="XGBoost">
-                            </div>
-                        </div>
-                        <div class="project-item" data-project="nfl" data-url="are-two-high-safeties-ruining-the-nfl">
-                            <div class="project-content">
-                                <h3>Are Two-High Safeties Ruining the NFL?</h3>
-                                <p>NFL: Interactive data visualization + analysis challenging a common football narrative.</p>
-                                <span class="view-project">View Article →</span>
-                            </div>
-                            <div class="project-icons">
-                                <div class="notepad-icon" data-notes="nfl" data-url="are-two-high-safeties-ruining-the-nfl"></div>
-                            </div>
-                        </div>
-                    </div>
+        
+        <!-- Semi-transparent masks for content behind frame -->
+        <div class="mask">
+            <div class="mask_top"></div>
+            <div class="mask_bottom"></div>
+        </div>
+        
+        <!-- Frame Border -->
+        <div class="frame">
+            <div class="frame_line frame_line-left"></div>
+            <div class="frame_line frame_line-right"></div>
+            <div class="frame_line frame_line-top"></div>
+            <div class="frame_line frame_line-bottom"></div>
+        </div>
+        
+        <!-- Theme Toggles (Bottom Left, Rotated) - Always visible -->
+        <div class="theme">
+            <div class="theme_colors">
+                <div class="theme_btn is-selected" id="light-btn">
+                    <div class="_box"></div>
+                    <div class="_text">White</div>
                 </div>
+                <div class="theme_btn" id="dark-btn">
+                    <div class="_box"></div>
+                    <div class="_text">Black</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Site Header (Top Left) - Hidden in article view, visible in notes view -->
+        <header class="siteHeader">
+            <h1 class="siteHeader_title">Jisung Lee</h1>
+            <p class="siteHeader_label">A Student Developer</p>
+            <nav class="siteHeader_nav">
+                <ol>
+                    <li class="is-selected">
+                        <div class="_dot">●</div>
+                        <a class="_text" href="#" data-page="home">Home</a>
+                    </li>
+                    <li>
+                        <div class="_dot">●</div>
+                        <a class="_text" href="#" data-page="about">About</a>
+                    </li>
+                    <li>
+                        <div class="_dot">●</div>
+                        <a class="_text" href="#" data-page="projects">Projects</a>
+                    </li>
+                    <li>
+                        <div class="_dot">●</div>
+                        <a class="_text" href="#" data-page="analysis">Analysis</a>
+                    </li>
+                    <li>
+                        <div class="_dot">●</div>
+                        <a class="_text" href="#" data-page="gallery">Gallery</a>
+                    </li>
+                    <li>
+                        <div class="_dot">●</div>
+                        <a class="_text" href="#" data-page="contact">Contact</a>
+                    </li>
+                </ol>
+            </nav>
+        </header>
+        
+        <!-- Content Area -->
+        <main class="content">
+            <div class="content_inner">
+                <!-- HOME PAGE - Empty -->
+                <section class="page is-active" data-page-section="home">
+                    <div class="home"></div>
+                </section>
                 
-                <div id="in-progress-section" class="project-section">
-                    <h2 class="section-title">In Progress</h2>
-                    <div class="project-list">
-                        <div class="project-item" data-project="lillard" data-url="just-how-good-was-damian-lillard">
-                            <div class="project-content">
-                                <h3>Just How Good was Damian Lillard in 2020?</h3>
-                                <p>NBA: Interactive Data Analysis: Coming Soon</p>
-                                <span class="view-project">View Article →</span>
+                <!-- ABOUT PAGE -->
+                <section class="page" data-page-section="about">
+                    <div class="about">
+                        <div class="about_content">
+                            <span>I'm a computer science student</span>
+                            <span>at the University of Washington.</span>
+                            <span>Throughout my years</span>
+                            <span>studying in Seattle,</span>
+                            <span>I've worked on projects</span>
+                            <span>ranging from</span>
+                            <span>Machine Learning models</span>
+                            <span>and search engines</span>
+                            <span>to Android App Development</span>
+                            <span>and UI design.</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- PROJECTS PAGE -->
+                <section class="page" data-page-section="projects">
+                    <div class="project">
+                        <div class="project_list">
+                            <div class="project_item" data-project="nfl-predictor">
+                                <h2 class="project_title">NFL PLAY-CALLING<br>PREDICTOR</h2>
+                                <p class="project_info">Machine Learning / XGBoost</p>
                             </div>
-                            <div class="project-icons">
-                                <div class="notepad-icon" data-notes="lillard" data-url="just-how-good-was-damian-lillard"></div>
+                            
+                            <div class="project_item" data-project="linked">
+                                <h2 class="project_title">LINKED</h2>
+                                <p class="project_info">Android / Azure Backend</p>
+                            </div>
+                            
+                            <div class="project_item" data-project="folio">
+                                <h2 class="project_title">FOLIO</h2>
+                                <p class="project_info">Portfolio Website</p>
+                            </div>
+                            
+                            <div class="project_item" data-project="flights-app">
+                                <h2 class="project_title">FLIGHTS APP</h2>
+                                <p class="project_info">Full-Stack / PostgreSQL</p>
+                            </div>
+                            
+                            <div class="project_item" data-project="web-search">
+                                <h2 class="project_title">WEB SEARCH<br>ENGINE</h2>
+                                <p class="project_info">C/C++ / HTTP Server</p>
                             </div>
                         </div>
                     </div>
+                </section>
+                
+                <!-- PROJECT DETAIL VIEW -->
+                <section class="page" data-page-section="project-detail">
+                    <div class="project-detail">
+                        <div class="project-detail_close">✕</div>
+                        <h2 class="project-detail_title"></h2>
+                        <a class="project-detail_github" href="#" target="_blank">github</a>
+                        <p class="project-detail_description"></p>
+                    </div>
+                </section>
+                
+                <!-- ANALYSIS PAGE -->
+                <section class="page" data-page-section="analysis">
+                    <div class="project">
+                        <div class="project_list">
+                            <div class="project_item" data-article="two-high">
+                                <h2 class="project_title">ARE TWO-HIGH SAFETIES<br>RUINING THE NFL?</h2>
+                                <p class="project_info">
+                                    NFL / Nov 2025
+                                    <a class="notes-link" href="#" data-notes="two-high">notes</a>
+                                </p>
+                            </div>
+                            
+                            <div class="project_item" data-article="lillard">
+                                <h2 class="project_title">JUST HOW GOOD WAS<br>DAMIAN LILLARD IN 2019?</h2>
+                                <p class="project_info">NBA / TBD</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- GALLERY PAGE -->
+                <section class="page" data-page-section="gallery">
+                    <div class="gallery">
+                        <div class="gallery_grid">
+                            <img src="photos/basketball.jpg" alt="Basketball" class="gallery_photo">
+                            <img src="photos/beach.jpg" alt="Beach" class="gallery_photo">
+                            <img src="photos/chunja.jpg" alt="Chunja" class="gallery_photo">
+                            <img src="photos/football.jpg" alt="Football" class="gallery_photo">
+                            <img src="photos/restaurant.jpg" alt="Restaurant" class="gallery_photo">
+                            <img src="photos/tennis.jpg" alt="Tennis" class="gallery_photo">
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- CONTACT PAGE -->
+                <section class="page" data-page-section="contact">
+                    <div class="contact">
+                        <a class="contact_item" href="leeyjisung@gmail.com">EMAIL</a>
+                        <a class="contact_item" href="https://www.linkedin.com/in/jisung-lee-91b55b231/" target="_blank">LINKEDIN</a>
+                        <a class="contact_item" href="https://github.com/jisungl" target="_blank">GITHUB</a>
+                        <a class="contact_item" href="https://observablehq.com/user/@jisunglee" target="_blank">OBSERVABLE</a>
+                    </div>
+                </section>
+            </div>
+        </main>
+        
+        <!-- ARTICLE VIEW - Outside content, full page -->
+        <section class="page" data-page-section="article-view">
+            <div class="article-view">
+                <div class="article-view_close">✕</div>
+                <div class="article-view_content">
+                    <iframe class="article-view_frame" src="" frameborder="0"></iframe>
                 </div>
             </div>
         </section>
-    </main>
-
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <iframe id="projectFrame" src="" frameborder="0"></iframe>
-        </div>
+        
+        <!-- NOTES VIEW - Outside content, right side only -->
+        <section class="page" data-page-section="notes-view">
+            <div class="notes-view">
+                <div class="notes-view_close">✕</div>
+                <div class="notes-view_content">
+                    <iframe class="notes-view_frame" src="" frameborder="0"></iframe>
+                </div>
+            </div>
+        </section>
     </div>
     
-    <div id="notesModal" class="modal">
-        <div class="modal-content notes-modal-content">
-            <span class="modal-close notes-close">&times;</span>
-            <div class="notes-container">
-                <h2 class="notes-title">Notes</h2>
-                <div class="notes-content"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="workModal" class="modal">
-        <div class="modal-content work-modal-content">
-            <span class="modal-close work-close">&times;</span>
-            <div class="work-container">
-                <h2 class="work-title"></h2>
-                <a href="#" target="_blank" class="github-link">
-                    <svg width="32" height="32" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                    </svg>
-                    View on GitHub
-                </a>
-                <div class="work-description"></div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <script src="assets/js/background.js"></script>
+    <script src="assets/js/cursor.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
