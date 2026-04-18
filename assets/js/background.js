@@ -35,7 +35,7 @@
         
         draw(isDark) {
             const alpha = Math.sin(this.life * Math.PI) * 0.3;
-            const color = isDark ? '90, 61, 122' : '90, 61, 122';
+            const color = isDark ? '200, 180, 220' : '90, 61, 122';
             
             ctx.fillStyle = `rgba(${color}, ${alpha})`;
             ctx.beginPath();
