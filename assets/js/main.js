@@ -1,5 +1,5 @@
 (function() {
-    var redirect = sessionStorage.redirect;
+    const redirect = sessionStorage.redirect;
     delete sessionStorage.redirect;
     if (redirect && redirect !== location.pathname) {
         history.replaceState(null, null, redirect);
@@ -45,57 +45,51 @@ const articleData = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
+    // Cache DOM elements
     const siteHeader = document.querySelector('.siteHeader');
     const content = document.querySelector('.content');
     const navLinks = document.querySelectorAll('.siteHeader_nav a');
     const navItems = document.querySelectorAll('.siteHeader_nav li');
+    const photoView = document.querySelector('.photo-view');
+    const photoViewImage = document.querySelector('.photo-view_image');
     
-    navLinks.forEach((link, index) => {
-        link.addEventListener('click', function(e) {
+    // Navigation
+    navLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
             e.preventDefault();
-            const targetPage = this.getAttribute('data-page');
-            history.pushState(null, '', '/' + targetPage);
+            history.pushState(null, '', '/' + link.getAttribute('data-page'));
             loadPageFromPath();
         });
     });
     
-    const lightBtn = document.getElementById('light-btn');
-    const darkBtn = document.getElementById('dark-btn');
+    // Theme toggle
+    const toggleTheme = (theme) => {
+        document.documentElement.setAttribute('data-theme', theme);
+        document.getElementById('light-btn').classList.toggle('is-selected', theme === 'light');
+        document.getElementById('dark-btn').classList.toggle('is-selected', theme === 'dark');
+    };
     
-    lightBtn.addEventListener('click', function() {
-        document.documentElement.setAttribute('data-theme', 'light');
-        lightBtn.classList.add('is-selected');
-        darkBtn.classList.remove('is-selected');
-    });
+    document.getElementById('light-btn').addEventListener('click', () => toggleTheme('light'));
+    document.getElementById('dark-btn').addEventListener('click', () => toggleTheme('dark'));
     
-    darkBtn.addEventListener('click', function() {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        darkBtn.classList.add('is-selected');
-        lightBtn.classList.remove('is-selected');
-    });
-    
-    const projectItems = document.querySelectorAll('.project_item[data-project]');
-    projectItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const projectId = this.getAttribute('data-project');
-            history.pushState(null, '', `/projects/${projectId}`);
+    // Project items
+    document.querySelectorAll('.project_item[data-project]').forEach(item => {
+        item.addEventListener('click', () => {
+            history.pushState(null, '', `/projects/${item.getAttribute('data-project')}`);
             loadPageFromPath();
         });
     });
     
-    function doOpenProjectDetail(projectId) {
+    // Project detail
+    const openProjectDetail = (projectId) => {
         const project = projectData[projectId];
         if (!project) return;
         
         const detailPage = document.querySelector('[data-page-section="project-detail"]');
-        const detailTitle = detailPage.querySelector('.project-detail_title');
-        const detailGithub = detailPage.querySelector('.project-detail_github');
-        const detailDesc = detailPage.querySelector('.project-detail_description');
-        
-        detailTitle.innerHTML = project.title;
-        detailGithub.href = project.github;
-        detailDesc.textContent = project.description;
+        detailPage.querySelector('.project-detail_title').innerHTML = project.title;
+        detailPage.querySelector('.project-detail_github').href = project.github;
+        detailPage.querySelector('.project-detail_description').textContent = project.description;
         
         const projectsPage = document.querySelector('[data-page-section="projects"]');
         projectsPage.style.opacity = '0';
@@ -103,173 +97,153 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             projectsPage.classList.remove('is-active');
             projectsPage.style.opacity = '1';
-            
             detailPage.style.opacity = '0';
             detailPage.classList.add('is-active');
             detailPage.offsetHeight;
             detailPage.style.opacity = '1';
         }, 300);
-    }
+    };
     
-    const projectDetailClose = document.querySelector('[data-page-section="project-detail"] .project-detail_close');
-    if (projectDetailClose) {
-        projectDetailClose.addEventListener('click', function() {
-            history.pushState(null, '', '/projects');
-            loadPageFromPath();
-        });
-    }
+    document.querySelector('.project-detail_close')?.addEventListener('click', () => {
+        history.pushState(null, '', '/projects');
+        loadPageFromPath();
+    });
     
-    const articleItems = document.querySelectorAll('.project_item[data-article]');
-    articleItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            if (e.target.classList.contains('notes-link')) {
-                return;
+    // Article items
+    document.querySelectorAll('.project_item[data-article]').forEach(item => {
+        item.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('notes-link')) {
+                history.pushState(null, '', `/analysis/${item.getAttribute('data-article')}`);
+                loadPageFromPath();
             }
-            const articleId = this.getAttribute('data-article');
-            history.pushState(null, '', `/analysis/${articleId}`);
-            loadPageFromPath();
         });
     });
     
-    function doOpenArticleView(articleId) {
+    const updateNavSelection = (pageName) => {
+        navLinks.forEach((link, index) => {
+            if (link.getAttribute('data-page') === pageName) {
+                navItems.forEach(item => item.classList.remove('is-selected'));
+                navItems[index].classList.add('is-selected');
+            }
+        });
+    };
+    
+    // Article view
+    const openArticleView = (articleId) => {
         const article = articleData[articleId];
         if (!article) return;
         
         const articleViewPage = document.querySelector('[data-page-section="article-view"]');
-        const articleFrame = articleViewPage.querySelector('.article-view_frame');
-        
-        articleFrame.src = article.path;
-        
-        const analysisPage = document.querySelector('[data-page-section="analysis"]');
+        articleViewPage.querySelector('.article-view_frame').src = article.path;
         
         siteHeader.classList.add('hidden');
         content.classList.add('hidden');
         
         setTimeout(() => {
-            analysisPage.classList.remove('is-active');
-            
+            document.querySelector('[data-page-section="analysis"]').classList.remove('is-active');
             articleViewPage.style.opacity = '0';
             articleViewPage.classList.add('is-active');
             articleViewPage.offsetHeight;
             articleViewPage.style.opacity = '1';
         }, 300);
-    }
+    };
     
-    function doCloseArticleView() {
+    const closeArticleView = () => {
         const articleViewPage = document.querySelector('[data-page-section="article-view"]');
-        const articleFrame = articleViewPage.querySelector('.article-view_frame');
         const analysisPage = document.querySelector('[data-page-section="analysis"]');
         
-        navLinks.forEach((link, index) => {
-            if (link.getAttribute('data-page') === 'analysis') {
-                navItems.forEach(item => item.classList.remove('is-selected'));
-                navItems[index].classList.add('is-selected');
-            }
-        });
-        
+        updateNavSelection('analysis');
         articleViewPage.style.opacity = '0';
         
         setTimeout(() => {
             articleViewPage.classList.remove('is-active');
-            articleFrame.src = '';
+            articleViewPage.querySelector('.article-view_frame').src = '';
             articleViewPage.style.opacity = '1';
-            
             siteHeader.classList.remove('hidden');
             content.classList.remove('hidden');
-            
             analysisPage.style.opacity = '0';
             analysisPage.classList.add('is-active');
             analysisPage.offsetHeight;
             analysisPage.style.opacity = '1';
         }, 300);
-    }
+    };
     
-    const articleViewClose = document.querySelector('.article-view_close');
-    if (articleViewClose) {
-        articleViewClose.addEventListener('click', function() {
-            history.pushState(null, '', '/analysis');
-            loadPageFromPath();
-        });
-    }
-    
-    const notesLinks = document.querySelectorAll('.notes-link');
-    notesLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const articleId = this.getAttribute('data-notes');
-            history.pushState(null, '', `/analysis/${articleId}/notes`);
-            loadPageFromPath();
-        });
+    document.querySelector('.article-view_close')?.addEventListener('click', () => {
+        history.pushState(null, '', '/analysis');
+        loadPageFromPath();
     });
     
-    function doOpenNotesView(articleId) {
+    // Notes view
+    const openNotesView = (articleId) => {
         const article = articleData[articleId];
-        if (!article || !article.notes) return;
+        if (!article?.notes) return;
         
         const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
-        const notesFrame = notesViewPage.querySelector('.notes-view_frame');
-        
-        notesFrame.src = article.notes;
-        
-        const analysisPage = document.querySelector('[data-page-section="analysis"]');
-        
+        notesViewPage.querySelector('.notes-view_frame').src = article.notes;
         content.classList.add('hidden');
         
         setTimeout(() => {
-            analysisPage.classList.remove('is-active');
-            
+            document.querySelector('[data-page-section="analysis"]').classList.remove('is-active');
             notesViewPage.style.opacity = '0';
             notesViewPage.classList.add('is-active');
             notesViewPage.offsetHeight;
             notesViewPage.style.opacity = '1';
         }, 300);
-    }
+    };
     
-    function doCloseNotesView() {
+    const closeNotesView = () => {
         const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
-        const notesFrame = notesViewPage.querySelector('.notes-view_frame');
         const analysisPage = document.querySelector('[data-page-section="analysis"]');
         
-        navLinks.forEach((link, index) => {
-            if (link.getAttribute('data-page') === 'analysis') {
-                navItems.forEach(item => item.classList.remove('is-selected'));
-                navItems[index].classList.add('is-selected');
-            }
-        });
-        
+        updateNavSelection('analysis');
         notesViewPage.style.opacity = '0';
         
         setTimeout(() => {
             notesViewPage.classList.remove('is-active');
-            notesFrame.src = '';
+            notesViewPage.querySelector('.notes-view_frame').src = '';
             notesViewPage.style.opacity = '1';
-            
             content.classList.remove('hidden');
-            
             analysisPage.style.opacity = '0';
             analysisPage.classList.add('is-active');
             analysisPage.offsetHeight;
             analysisPage.style.opacity = '1';
         }, 300);
-    }
+    };
     
-    const notesViewClose = document.querySelector('.notes-view_close');
-    if (notesViewClose) {
-        notesViewClose.addEventListener('click', function() {
-            history.pushState(null, '', '/analysis');
+    document.querySelector('.notes-view_close')?.addEventListener('click', () => {
+        history.pushState(null, '', '/analysis');
+        loadPageFromPath();
+    });
+    
+    document.querySelectorAll('.notes-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            history.pushState(null, '', `/analysis/${link.getAttribute('data-notes')}/notes`);
             loadPageFromPath();
         });
-    }
+    });
     
-    function loadPageFromPath() {
-        let path = window.location.pathname;
+    // Photo viewer
+    document.querySelectorAll('.gallery_photo').forEach(photo => {
+        photo.addEventListener('click', function() {
+            photoViewImage.src = this.src;
+            photoView.classList.add('active');
+            siteHeader.classList.add('hidden');
+        });
+    });
+    
+    document.querySelector('.photo-view_close').addEventListener('click', () => {
+        photoView.classList.remove('active');
+        siteHeader.classList.remove('hidden');
+    });
+    
+    // Route handling
+    const loadPageFromPath = () => {
+        let path = location.pathname.replace(/^\//, '').replace(/\/$/, '');
         
-        path = path.replace(/^\//, '').replace(/\/$/, '');
-        
-        if (!path || path === '' || path === 'index.html' || path === 'home') {
-            const homePage = document.querySelector('[data-page-section="home"]');
-            if (!homePage.classList.contains('is-active')) {
+        if (!path || path === 'index.html' || path === 'home') {
+            if (!document.querySelector('[data-page-section="home"]').classList.contains('is-active')) {
                 navigateToPage('home');
             }
             return;
@@ -279,14 +253,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
         
         if (path === 'analysis') {
-            if (articleViewPage.classList.contains('is-active')) {
-                doCloseArticleView();
-                return;
-            }
-            if (notesViewPage.classList.contains('is-active')) {
-                doCloseNotesView();
-                return;
-            }
+            if (articleViewPage.classList.contains('is-active')) return closeArticleView();
+            if (notesViewPage.classList.contains('is-active')) return closeNotesView();
         }
         
         if (path.startsWith('projects/')) {
@@ -297,37 +265,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (!projectsPage.classList.contains('is-active') && !detailPage.classList.contains('is-active')) {
                     navigateToPage('projects');
-                    setTimeout(() => doOpenProjectDetail(projectId), 350);
+                    setTimeout(() => openProjectDetail(projectId), 350);
                 } else if (projectsPage.classList.contains('is-active')) {
-                    doOpenProjectDetail(projectId);
+                    openProjectDetail(projectId);
                 }
                 return;
             }
         }
         
         if (path.startsWith('analysis/')) {
-            const parts = path.split('/');
-            const articleId = parts[1];
-            const isNotes = parts[2] === 'notes';
-            
+            const [_, articleId, notesPath] = path.split('/');
             if (articleData[articleId]) {
                 const analysisPage = document.querySelector('[data-page-section="analysis"]');
+                const isNotes = notesPath === 'notes';
                 
                 if (!analysisPage.classList.contains('is-active') && !articleViewPage.classList.contains('is-active') && !notesViewPage.classList.contains('is-active')) {
                     navigateToPage('analysis');
-                    setTimeout(() => {
-                        if (isNotes) {
-                            doOpenNotesView(articleId);
-                        } else {
-                            doOpenArticleView(articleId);
-                        }
-                    }, 350);
+                    setTimeout(() => isNotes ? openNotesView(articleId) : openArticleView(articleId), 350);
                 } else if (analysisPage.classList.contains('is-active')) {
-                    if (isNotes) {
-                        doOpenNotesView(articleId);
-                    } else {
-                        doOpenArticleView(articleId);
-                    }
+                    isNotes ? openNotesView(articleId) : openArticleView(articleId);
                 }
                 return;
             }
@@ -337,62 +293,49 @@ document.addEventListener('DOMContentLoaded', function() {
         if (targetPage && !targetPage.classList.contains('is-active')) {
             navigateToPage(path);
         }
-    }
+    };
     
-    function navigateToPage(pageName) {
-        navLinks.forEach((link, index) => {
-            if (link.getAttribute('data-page') === pageName) {
-                navItems.forEach(item => item.classList.remove('is-selected'));
-                navItems[index].classList.add('is-selected');
-            }
-        });
+    const navigateToPage = (pageName) => {
+        updateNavSelection(pageName);
         
         const currentPage = document.querySelector('.page.is-active');
-        if (currentPage) {
-            currentPage.style.opacity = '0';
+        if (!currentPage) return;
+        
+        currentPage.style.opacity = '0';
+        
+        setTimeout(() => {
+            currentPage.classList.remove('is-active');
+            currentPage.style.opacity = '1';
             
-            setTimeout(() => {
-                currentPage.classList.remove('is-active');
-                currentPage.style.opacity = '1';
-                
-                const newPage = document.querySelector(`[data-page-section="${pageName}"]`);
-                if (newPage) {
-                    newPage.style.opacity = '0';
-                    newPage.classList.add('is-active');
-                    newPage.offsetHeight;
-                    newPage.style.opacity = '1';
-                }
-            }, 300);
-        }
-    }
-    
-    loadPageFromPath();
-    
-    window.addEventListener('popstate', loadPageFromPath);
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            const projectDetailPage = document.querySelector('[data-page-section="project-detail"]');
-            const articleViewPage = document.querySelector('[data-page-section="article-view"]');
-            const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
-            
-            if (projectDetailPage.classList.contains('is-active')) {
-                history.pushState(null, '', '/projects');
-                loadPageFromPath();
-                return;
+            const newPage = document.querySelector(`[data-page-section="${pageName}"]`);
+            if (newPage) {
+                newPage.style.opacity = '0';
+                newPage.classList.add('is-active');
+                newPage.offsetHeight;
+                newPage.style.opacity = '1';
             }
-            
-            if (articleViewPage.classList.contains('is-active')) {
-                history.pushState(null, '', '/analysis');
-                loadPageFromPath();
-                return;
-            }
-            
-            if (notesViewPage.classList.contains('is-active')) {
-                history.pushState(null, '', '/analysis');
-                loadPageFromPath();
-                return;
-            }
+        }, 300);
+    };
+    
+    // Escape 
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        
+        if (photoView.classList.contains('active')) {
+            photoView.classList.remove('active');
+            siteHeader.classList.remove('hidden');
+        } else if (document.querySelector('[data-page-section="project-detail"]').classList.contains('is-active')) {
+            history.pushState(null, '', '/projects');
+            loadPageFromPath();
+        } else if (document.querySelector('[data-page-section="article-view"]').classList.contains('is-active')) {
+            history.pushState(null, '', '/analysis');
+            loadPageFromPath();
+        } else if (document.querySelector('[data-page-section="notes-view"]').classList.contains('is-active')) {
+            history.pushState(null, '', '/analysis');
+            loadPageFromPath();
         }
     });
+    
+    loadPageFromPath();
+    window.addEventListener('popstate', loadPageFromPath);
 });

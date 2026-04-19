@@ -40,7 +40,7 @@
         
         <header class="siteHeader">
             <h1 class="siteHeader_title">Jisung Lee</h1>
-            <p class="siteHeader_label">A Student Developer</p>
+            <p class="siteHeader_label">Developer and Analyst</p>
             <nav class="siteHeader_nav">
                 <ol>
                     <li class="is-selected">
@@ -94,7 +94,6 @@
                     </div>
                 </section>
                 
-                <!-- Projects -->
                 <section class="page" data-page-section="projects">
                     <div class="project">
                         <div class="project_list">
@@ -102,22 +101,18 @@
                                 <h2 class="project_title">NFL PLAY-CALLING<br>PREDICTOR</h2>
                                 <p class="project_info">Machine Learning / XGBoost</p>
                             </div>
-                            
                             <div class="project_item" data-project="linked">
                                 <h2 class="project_title">LINKED</h2>
                                 <p class="project_info">Android / Azure Backend</p>
                             </div>
-                            
                             <div class="project_item" data-project="folio">
                                 <h2 class="project_title">FOLIO</h2>
                                 <p class="project_info">Portfolio Website</p>
                             </div>
-                            
                             <div class="project_item" data-project="flights-app">
                                 <h2 class="project_title">FLIGHTS APP</h2>
                                 <p class="project_info">Full-Stack / PostgreSQL</p>
                             </div>
-                            
                             <div class="project_item" data-project="web-search">
                                 <h2 class="project_title">WEB SEARCH<br>ENGINE</h2>
                                 <p class="project_info">C/C++ / HTTP Server</p>
@@ -135,7 +130,6 @@
                     </div>
                 </section>
                 
-                <!-- Analysis -->
                 <section class="page" data-page-section="analysis">
                     <div class="project">
                         <div class="project_list">
@@ -146,7 +140,6 @@
                                     <a class="notes-link" href="#" data-notes="two-high">notes</a>
                                 </p>
                             </div>
-                            
                             <div class="project_item" data-article="lillard">
                                 <h2 class="project_title">JUST HOW GOOD WAS<br>DAMIAN LILLARD IN 2019?</h2>
                                 <p class="project_info">NBA / TBD</p>
@@ -155,21 +148,44 @@
                     </div>
                 </section>
                 
-                <!-- Gallery -->
                 <section class="page" data-page-section="gallery">
                     <div class="gallery">
                         <div class="gallery_grid">
-                            <img src="photos/basketball.jpg" alt="Basketball" class="gallery_photo">
-                            <img src="photos/beach.jpg" alt="Beach" class="gallery_photo">
-                            <img src="photos/chunja.jpg" alt="Chunja" class="gallery_photo">
-                            <img src="photos/football.jpg" alt="Football" class="gallery_photo">
-                            <img src="photos/restaurant.jpg" alt="Restaurant" class="gallery_photo">
-                            <img src="photos/tennis.jpg" alt="Tennis" class="gallery_photo">
+                            <div class="gallery_column gallery_column-1">
+                                <img src="photos/bobalust.JPG" alt="Boba Lust" class="gallery_photo">
+                                <img src="photos/purple.jpg" alt="Purple" class="gallery_photo">
+                                <img src="photos/snowboard.jpg" alt="Snowboard" class="gallery_photo">
+                                <img src="photos/beach.jpg" alt="Beach" class="gallery_photo">
+                                <img src="photos/chunjacar1.jpg" alt="Chunja Car" class="gallery_photo">
+                                <img src="photos/restaurant.jpg" alt="Restaurant" class="gallery_photo">
+                                <img src="photos/rattlesnake.jpg" alt="Rattlesnake" class="gallery_photo">
+                                <img src="photos/duck.jpg" alt="Duck" class="gallery_photo">
+                                <img src="photos/store.jpg" alt="Store" class="gallery_photo">
+                            </div>
+                            <div class="gallery_column gallery_column-2">
+                                <img src="photos/snow.jpg" alt="Snow" class="gallery_photo">
+                                <img src="photos/chunjasleep.JPG" alt="Chunja Sleep" class="gallery_photo">
+                                <img src="photos/dpr1.jpg" alt="DPR Concert" class="gallery_photo">
+                                <img src="photos/waterfall.jpg" alt="Waterfall" class="gallery_photo">
+                                <img src="photos/heartballoons.JPG" alt="Heart Balloons" class="gallery_photo">
+                                <img src="photos/chunjarose.jpg" alt="Chunja Rose" class="gallery_photo">
+                                <img src="photos/tenniscourt.jpg" alt="Tennis Court" class="gallery_photo">
+                                <img src="photos/xmasdinner.jpg" alt="Christmas Dinner" class="gallery_photo">
+                            </div>
+                            <div class="gallery_column gallery_column-3">
+                                <img src="photos/drinks.jpg" alt="Drinks" class="gallery_photo">
+                                <img src="photos/plane.jpg" alt="Plane" class="gallery_photo">
+                                <img src="photos/dpr2.jpg" alt="DPR Concert 2" class="gallery_photo">
+                                <img src="photos/chunjaruss.jpg" alt="Chunja Russ" class="gallery_photo">
+                                <img src="photos/laufey2.jpg" alt="Laufey Concert 2" class="gallery_photo">
+                                <img src="photos/seahawks.jpg" alt="Seahawks" class="gallery_photo">
+                                <img src="photos/chunjacar2.jpg" alt="Chunja Car 2" class="gallery_photo">
+                                <img src="photos/laufey1.jpg" alt="Laufey Concert" class="gallery_photo">
+                            </div>
                         </div>
                     </div>
                 </section>
                 
-                <!-- Contact -->
                 <section class="page" data-page-section="contact">
                     <div class="contact">
                         <a class="contact_item" href="mailto:leeyjisung@gmail.com">EMAIL</a>
@@ -181,11 +197,18 @@
             </div>
         </main>
         
+        <div class="photo-view">
+            <div class="photo-view_close">✕</div>
+            <div class="photo-view_container">
+                <img class="photo-view_image" src="" alt="">
+            </div>
+        </div>
+        
         <section class="page" data-page-section="article-view">
             <div class="article-view">
                 <div class="article-view_close">✕</div>
                 <div class="article-view_content">
-                    <iframe class="article-view_frame" src="" frameborder="0"></iframe>
+                    <iframe class="article-view_frame" src=""></iframe>
                 </div>
             </div>
         </section>
@@ -194,7 +217,7 @@
             <div class="notes-view">
                 <div class="notes-view_close">✕</div>
                 <div class="notes-view_content">
-                    <iframe class="notes-view_frame" src="" frameborder="0"></iframe>
+                    <iframe class="notes-view_frame" src=""></iframe>
                 </div>
             </div>
         </section>

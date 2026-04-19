@@ -3,54 +3,33 @@
     cursor.className = 'custom-cursor';
     document.body.appendChild(cursor);
     
-    let mouseX = 0;
-    let mouseY = 0;
-    let cursorX = 0;
-    let cursorY = 0;
-    
-    document.addEventListener('mousemove', function(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
     });
     
-    function updateCursor() {
-        cursorX += (mouseX - cursorX) * 0.2;
-        cursorY += (mouseY - cursorY) * 0.2;
-        
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        
-        requestAnimationFrame(updateCursor);
-    }
+    document.addEventListener('mouseleave', () => cursor.style.opacity = '0');
+    document.addEventListener('mouseenter', () => cursor.style.opacity = '1');
     
-    updateCursor();
-    
-    document.addEventListener('mouseleave', function() {
-        cursor.style.opacity = '0';
+    // Hide cursor in article/notes views
+    ['.article-view', '.notes-view'].forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.addEventListener('mouseenter', () => cursor.style.opacity = '0');
+            element.addEventListener('mouseleave', () => cursor.style.opacity = '1');
+        }
     });
     
-    document.addEventListener('mouseenter', function() {
-        cursor.style.opacity = '1';
-    });
+    // Gallery photo hover effects
+    document.addEventListener('mouseenter', (e) => {
+        if (e.target.classList.contains('gallery_photo')) {
+            cursor.classList.add('cursor-plus');
+        }
+    }, true);
     
-    const articleView = document.querySelector('.article-view');
-    const notesView = document.querySelector('.notes-view');
-    
-    if (articleView) {
-        articleView.addEventListener('mouseenter', function() {
-            cursor.style.opacity = '0';
-        });
-        articleView.addEventListener('mouseleave', function() {
-            cursor.style.opacity = '1';
-        });
-    }
-    
-    if (notesView) {
-        notesView.addEventListener('mouseenter', function() {
-            cursor.style.opacity = '0';
-        });
-        notesView.addEventListener('mouseleave', function() {
-            cursor.style.opacity = '1';
-        });
-    }
+    document.addEventListener('mouseleave', (e) => {
+        if (e.target.classList.contains('gallery_photo')) {
+            cursor.classList.remove('cursor-plus');
+        }
+    }, true);
 })();
