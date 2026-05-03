@@ -7,6 +7,12 @@
 })();
 
 const projectData = {
+    'qrious': {
+        title: 'Qrious',
+        description: 'This is my personal Kahoot-inspired quiz website. I made this in preparation for my friends\' and my graduation party after graduating from UW in the summer of 2026, since Kahoot Free only supports 10 concurrent players. The website\'s color theme reflects UW. It is built with Node.js, Express, and Socket.io in the backend, with HTML , CSS, and JS on the frontend. User accounts (username and password) let hosts sign up, save quizzes, and load them later via a built-in quiz editor. Quiz data is persisted in a Turso database. The GitHub is private, but the site is linked above.',
+        github: 'https://qriousquiz.onrender.com/',
+        linkText: 'Visit Qrious'
+    },
     'nfl-predictor': {
         title: 'NFL Play-Calling<br>Predictor',
         description: 'This machine learning model predicts offensive play calls in the NFL. Working with six years of NFL play-by-play data, I engineered over 60 features that cover game state, personnel groupings, and formation, weighted to reflect my own understanding of the sport. I regularization to increase the weight of time-constrained situations, achieving around 62% accuracy on the 6-class prediction task. I deployed it as an interactive Streamlit dashboard where you can input game state, personnel, and clock information to see probability distributions across all play types.',
@@ -88,7 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const detailPage = document.querySelector('[data-page-section="project-detail"]');
         detailPage.querySelector('.project-detail_title').innerHTML = project.title;
-        detailPage.querySelector('.project-detail_github').href = project.github;
+        // detailPage.querySelector('.project-detail_github').href = project.github;
+        const link = detailPage.querySelector('.project-detail_github');
+        link.href = project.github;
+        link.innerText = project.linkText || 'GitHub';
         detailPage.querySelector('.project-detail_description').textContent = project.description;
         
         const projectsPage = document.querySelector('[data-page-section="projects"]');
