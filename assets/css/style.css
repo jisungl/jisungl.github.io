@@ -791,17 +791,19 @@ a {
         text-underline-offset: 4px;
     }
 
-    /* --- CONTENT: full width below the top nav --- */
-    /* Reserve vertical space for title + label + nav row */
-    .content_inner {
-        padding-top: 130px;
-    }
-
+    /* content */
     .page {
         white-space: normal;
     }
 
-    /* --- HOME --- */
+    .page[data-page-section="home"],
+    .page[data-page-section="about"],
+    .page[data-page-section="contact"],
+    .page[data-page-section="project-detail"] {
+        overflow: hidden;
+    }
+
+    /* home */
     .home {
         right: calc(var(--pad) * 2);
         bottom: calc(var(--pad) * 2);
@@ -810,7 +812,7 @@ a {
         text-align: right;
     }
 
-    /* --- ABOUT --- */
+    /* about */
     .about {
         right: calc(var(--pad) * 2);
         bottom: calc(var(--pad) * 2);
@@ -827,9 +829,9 @@ a {
         line-height: 1.6;
     }
 
-    /* --- PROJECTS / ANALYSIS --- */
+    /* project / analysis */
     .project {
-        padding: 0 calc(var(--pad) * 2) calc(var(--pad) * 2);
+        padding: 130px calc(var(--pad) * 2) calc(var(--pad) * 2);
         white-space: normal;
     }
 
@@ -851,7 +853,6 @@ a {
         hyphens: auto;
     }
 
-    /* Drop the hard-coded <br> on narrow screens so titles wrap naturally */
     .project_title br {
         display: none;
     }
@@ -861,7 +862,7 @@ a {
         margin-top: 10px;
     }
 
-    /* --- PROJECT DETAIL --- */
+    /* project desc */
     .project-detail {
         position: absolute;
         left: calc(var(--pad) * 2);
@@ -885,9 +886,9 @@ a {
         line-height: 1.7;
     }
 
-    /* --- GALLERY --- */
+    /* gallery */
     .gallery {
-        padding: 0 calc(var(--pad) * 2) calc(var(--pad) * 2);
+        padding: 130px calc(var(--pad) * 2) calc(var(--pad) * 2);
     }
 
     .gallery_grid {
@@ -899,7 +900,7 @@ a {
 
     .gallery_column {
         gap: 8px;
-        min-width: 0; /* allow flex children to shrink below content size */
+        min-width: 0;
     }
 
     .gallery_column-2 {
@@ -921,13 +922,13 @@ a {
         filter: none;
     }
 
-    /* --- CONTACT --- */
+    /* contact */
     .contact {
         right: calc(var(--pad) * 2);
         bottom: calc(var(--pad) * 2);
     }
 
-    /* --- ARTICLE / NOTES VIEW --- */
+    /* article / note */
     .notes-view {
         left: 0;
         right: 0;
@@ -941,14 +942,13 @@ a {
         font-size: 28px;
     }
 
-    /* --- PHOTO VIEW --- */
+    /* photo view */
     .photo-view_container {
         max-width: 90%;
         max-height: 80%;
     }
 }
 
-/* Extra-narrow phones */
 @media (max-width: 420px) {
     .siteHeader_title {
         font-size: 20px;
