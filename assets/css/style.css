@@ -735,17 +735,11 @@ a {
     object-fit: contain;
 }
 
-/* ============================================================
-   RESPONSIVE: narrow screens (phones, half-screen windows)
-   Sidebar collapses into a top nav bar; content goes full width.
-   Breakpoint at 720px catches half-screen on common monitors.
-   ============================================================ */
 @media (max-width: 720px) {
     :root {
         --pad: max(14px, 3vmin);
     }
 
-    /* Hide custom cursor on touch / narrow devices, restore native cursor */
     body, body * {
         cursor: auto !important;
     }
@@ -806,17 +800,20 @@ a {
     /* home */
     .home {
         right: calc(var(--pad) * 2);
-        bottom: calc(var(--pad) * 2);
+        left: calc(var(--pad) * 2);
+        top: 150px;
+        bottom: auto;
         white-space: normal;
-        max-width: calc(100% - var(--pad) * 4);
+        max-width: none;
         text-align: right;
     }
 
     /* about */
     .about {
         right: calc(var(--pad) * 2);
-        bottom: calc(var(--pad) * 2);
         left: calc(var(--pad) * 2);
+        top: 150px;
+        bottom: auto;
         max-width: none;
         text-align: right;
     }
@@ -826,7 +823,8 @@ a {
     }
 
     .about_content {
-        line-height: 1.6;
+        line-height: 1.7;
+        font-size: 14px;
     }
 
     /* project / analysis */
@@ -867,8 +865,8 @@ a {
         position: absolute;
         left: calc(var(--pad) * 2);
         right: calc(var(--pad) * 2);
-        top: auto;
-        bottom: calc(var(--pad) * 2);
+        top: 180px;
+        bottom: auto;
         max-width: none;
         text-align: right;
     }
@@ -878,12 +876,17 @@ a {
     }
 
     .project-detail_title {
-        font-size: 16px;
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    .project-detail_github {
+        margin-bottom: 24px;
     }
 
     .project-detail_description {
-        font-size: 12px;
-        line-height: 1.7;
+        font-size: 13px;
+        line-height: 1.75;
     }
 
     /* gallery */
@@ -925,7 +928,15 @@ a {
     /* contact */
     .contact {
         right: calc(var(--pad) * 2);
-        bottom: calc(var(--pad) * 2);
+        left: calc(var(--pad) * 2);
+        top: 150px;
+        bottom: auto;
+        text-align: right;
+    }
+
+    .contact_item {
+        font-size: 16px;
+        margin-bottom: 0.8em;
     }
 
     /* article / note */
