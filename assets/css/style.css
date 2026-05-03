@@ -470,14 +470,20 @@ a {
 .project-detail_github {
     display: inline-block;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    /* text-transform: uppercase; */
     margin-bottom: 30px;
-    transition: opacity 0.4s cubic-bezier(0.1, 0.4, 0.2, 1);
+    padding-bottom: 4px;
+    border-bottom: 1px solid currentColor;
+    transition: opacity 0.4s cubic-bezier(0.1, 0.4, 0.2, 1), border-bottom-width 0.2s cubic-bezier(0.1, 0.4, 0.2, 1), padding-bottom 0.2s cubic-bezier(0.1, 0.4, 0.2, 1);
 }
 
 @media (hover: hover) {
     .project-detail_github:hover {
-        opacity: 0.25;
+        opacity: 0.6;
+        border-bottom-width: 2px;
+        padding-bottom: 3px;
     }
 }
 

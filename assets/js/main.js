@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // detailPage.querySelector('.project-detail_github').href = project.github;
         const link = detailPage.querySelector('.project-detail_github');
         link.href = project.github;
-        link.innerText = project.linkText || 'GitHub';
+        link.innerText = project.linkText || 'github';
         detailPage.querySelector('.project-detail_description').textContent = project.description;
         
         const projectsPage = document.querySelector('[data-page-section="projects"]');
