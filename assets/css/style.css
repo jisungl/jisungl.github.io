@@ -472,7 +472,6 @@ a {
     font-weight: 600;
     font-size: 12px;
     letter-spacing: 0.08em;
-    /* text-transform: uppercase; */
     margin-bottom: 30px;
     padding-bottom: 4px;
     border-bottom: 1px solid currentColor;
@@ -645,7 +644,7 @@ a {
     z-index: 2;
     left: 400px;
     top: 0;
-    right: 0;
+    right: calc(var(--pad) * 2);
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -947,8 +946,8 @@ a {
 
     /* article / note */
     .notes-view {
-        left: 0;
-        right: 0;
+        left: calc(var(--pad) * 2);
+        right: calc(var(--pad) * 2);
     }
 
     .article-view_close,

@@ -248,24 +248,76 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Route handling
+    const dismissOverlayViews = (animated = false) => {
+        const articleViewPage = document.querySelector('[data-page-section="article-view"]');
+        const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
+        const activeOverlay =
+            (articleViewPage.classList.contains('is-active') && articleViewPage) ||
+            (notesViewPage.classList.contains('is-active') && notesViewPage) ||
+            null;
+
+        const finalize = () => {
+            if (articleViewPage.classList.contains('is-active')) {
+                articleViewPage.classList.remove('is-active');
+                articleViewPage.style.opacity = '1';
+                articleViewPage.querySelector('.article-view_frame').src = '';
+            }
+            if (notesViewPage.classList.contains('is-active')) {
+                notesViewPage.classList.remove('is-active');
+                notesViewPage.style.opacity = '1';
+                notesViewPage.querySelector('.notes-view_frame').src = '';
+            }
+            siteHeader.classList.remove('hidden');
+            content.classList.remove('hidden');
+        };
+
+        if (animated && activeOverlay) {
+            activeOverlay.style.opacity = '0';
+            setTimeout(finalize, 300);
+            return true;
+        }
+        finalize();
+        return false;
+    };
+
     const loadPageFromPath = () => {
         let path = location.pathname.replace(/^\//, '').replace(/\/$/, '');
         
         if (!path || path === 'index.html' || path === 'home') {
-            if (!document.querySelector('[data-page-section="home"]').classList.contains('is-active')) {
-                navigateToPage('home');
-            }
+            const wasAnimated = dismissOverlayViews(true);
+            const go = () => {
+                if (!document.querySelector('[data-page-section="home"]').classList.contains('is-active')) {
+                    navigateToPage('home');
+                }
+            };
+            wasAnimated ? setTimeout(go, 300) : go();
             return;
         }
-        
+
         const articleViewPage = document.querySelector('[data-page-section="article-view"]');
         const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
-        
+
         if (path === 'analysis') {
             if (articleViewPage.classList.contains('is-active')) return closeArticleView();
             if (notesViewPage.classList.contains('is-active')) return closeNotesView();
         }
-        
+
+        const isTopLevelNavTarget = ['about', 'projects', 'gallery', 'contact'].includes(path);
+        if (isTopLevelNavTarget) {
+            const wasAnimated = dismissOverlayViews(true);
+            if (wasAnimated) {
+                setTimeout(() => routeAfterDismiss(path), 300);
+                return;
+            }
+        }
+
+        routeAfterDismiss(path);
+    };
+
+    const routeAfterDismiss = (path) => {
+        const articleViewPage = document.querySelector('[data-page-section="article-view"]');
+        const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
+
         if (path.startsWith('projects/')) {
             const projectId = path.split('/')[1];
             if (projectData[projectId]) {
@@ -308,7 +360,18 @@ document.addEventListener('DOMContentLoaded', () => {
         updateNavSelection(pageName);
         
         const currentPage = document.querySelector('.page.is-active');
-        if (!currentPage) return;
+        const newPage = document.querySelector(`[data-page-section="${pageName}"]`);
+        if (!newPage) return;
+        
+        if (!currentPage) {
+            newPage.style.opacity = '0';
+            newPage.classList.add('is-active');
+            newPage.offsetHeight;
+            requestAnimationFrame(() => {
+                newPage.style.opacity = '1';
+            });
+            return;
+        }
         
         currentPage.style.opacity = '0';
         
@@ -316,13 +379,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentPage.classList.remove('is-active');
             currentPage.style.opacity = '1';
             
-            const newPage = document.querySelector(`[data-page-section="${pageName}"]`);
-            if (newPage) {
-                newPage.style.opacity = '0';
-                newPage.classList.add('is-active');
-                newPage.offsetHeight;
-                newPage.style.opacity = '1';
-            }
+            newPage.style.opacity = '0';
+            newPage.classList.add('is-active');
+            newPage.offsetHeight;
+            newPage.style.opacity = '1';
         }, 300);
     };
     
