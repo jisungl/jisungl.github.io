@@ -951,7 +951,12 @@ a {
     }
 
     .article-view_close,
-    .notes-view_close,
+    .notes-view_close {
+        top: 100px;
+        right: calc(var(--pad) * 2);
+        font-size: 28px;
+    }
+
     .photo-view_close {
         top: calc(var(--pad) * 2);
         right: calc(var(--pad) * 2);

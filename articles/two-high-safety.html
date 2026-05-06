@@ -191,6 +191,17 @@
         
         .visual-container svg {
             background: transparent !important;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .visual-container * {
+            max-width: 100%;
+        }
+
+        .visual-container canvas {
+            max-width: 100%;
+            height: auto;
         }
 
         .section-divider {
@@ -292,6 +303,15 @@
             .original-link-btn {
                 font-size: 14px;
                 padding: 10px 24px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            body {
+                padding-top: 120px;
+            }
+            .container {
+                padding-top: 0;
             }
         }
 
@@ -482,7 +502,7 @@
 
     <script type="module">
         import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
-        import define from "https://api.observablehq.com/d/4b763b14606d43cb@727.js?v=4";
+        import define from "https://api.observablehq.com/d/4b763b14606d43cb@729.js?v=4";
         new Runtime().module(define, name => {
             if (name === "viewof coverages") return new Inspector(document.querySelector("#observablehq-viewof-coverages-5b1d9f00"));
             if (name === "viewof presnap") return new Inspector(document.querySelector("#observablehq-viewof-presnap-5b1d9f00"));
