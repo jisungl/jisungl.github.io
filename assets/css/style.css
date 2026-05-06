@@ -226,7 +226,7 @@ a {
     top: calc(var(--pad) * 2);
     mix-blend-mode: difference;
     color: #fff;
-    transition: opacity 0.3s cubic-bezier(0.1, 0.4, 0.2, 1);
+    transition: opacity 0.3s cubic-bezier(0.1, 0.4, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .siteHeader.hidden {
@@ -753,10 +753,20 @@ a {
     }
 
     /* --- SIDEBAR -> TOP NAV --- */
+    /* The header spans the top of the viewport on narrow screens, so its
+       background area would otherwise capture clicks meant for the close
+       button (which sits in the same top-right region). Make the header
+       container itself click-through, and only re-enable pointer events
+       on the actual interactive elements. */
     .siteHeader {
         left: calc(var(--pad) * 2);
         right: calc(var(--pad) * 2);
         top: calc(var(--pad) * 2);
+        pointer-events: none;
+    }
+
+    .siteHeader_nav ol li ._text {
+        pointer-events: auto;
     }
 
     .siteHeader_title {
@@ -952,9 +962,16 @@ a {
 
     .article-view_close,
     .notes-view_close {
-        top: 100px;
+        top: calc(var(--pad) * 2);
         right: calc(var(--pad) * 2);
         font-size: 28px;
+        z-index: 200;
+    }
+
+    .siteHeader.is-hidden-on-scroll {
+        transform: translateY(-130%);
+        opacity: 0;
+        pointer-events: none;
     }
 
     .photo-view_close {

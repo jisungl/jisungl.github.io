@@ -58,6 +58,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.siteHeader_nav a');
     const navItems = document.querySelectorAll('.siteHeader_nav li');
     const photoView = document.querySelector('.photo-view');
+
+    // hide on scroll
+    const NARROW_QUERY = window.matchMedia('(max-width: 720px)');
+
+    const setNavHidden = (hidden) => {
+        if (!NARROW_QUERY.matches) {
+            siteHeader.classList.remove('is-hidden-on-scroll');
+            return;
+        }
+        siteHeader.classList.toggle('is-hidden-on-scroll', hidden);
+    };
+
+    window.addEventListener('message', (event) => {
+        const data = event.data;
+        if (!data || data.type !== 'iframe-scroll') return;
+        setNavHidden(!data.atTop);
+    });
+
+    NARROW_QUERY.addEventListener('change', (e) => {
+        if (!e.matches) setNavHidden(false);
+    });
     const photoViewImage = document.querySelector('.photo-view_image');
     
     // Navigation
@@ -161,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const articleViewPage = document.querySelector('[data-page-section="article-view"]');
         const analysisPage = document.querySelector('[data-page-section="analysis"]');
         
+        setNavHidden(false);
         updateNavSelection('analysis');
         articleViewPage.style.opacity = '0';
         
@@ -204,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const notesViewPage = document.querySelector('[data-page-section="notes-view"]');
         const analysisPage = document.querySelector('[data-page-section="analysis"]');
         
+        setNavHidden(false);
         updateNavSelection('analysis');
         notesViewPage.style.opacity = '0';
         
@@ -255,6 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
             (articleViewPage.classList.contains('is-active') && articleViewPage) ||
             (notesViewPage.classList.contains('is-active') && notesViewPage) ||
             null;
+
+        setNavHidden(false);
 
         const finalize = () => {
             if (articleViewPage.classList.contains('is-active')) {
