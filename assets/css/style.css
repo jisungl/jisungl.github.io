@@ -605,6 +605,22 @@ a {
     scrollbar-width: none;
 }
 
+body.is-clean-article .frame,
+body.is-clean-article .mask,
+body.is-clean-article .theme {
+    display: none;
+}
+
+body.is-clean-article .article-view {
+    z-index: 50; 
+    background-color: transparent;
+}
+
+body.is-clean-article .article-view_close {
+    mix-blend-mode: normal;
+    color: #1b1a17;
+}
+
 .article-view::-webkit-scrollbar {
     display: none;
 }

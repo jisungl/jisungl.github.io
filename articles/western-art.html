@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Subject Matter of Western Art — A Quantitative Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
+<style>
+  :root {
+    --paper: #f4efe6;
+    --paper-2: #ebe4d6;
+    --ink: #1b1a17;
+    --ink-soft: #45433d;
+    --muted: #8a8578;
+    --rule: #cdc6b6;
+    --accent: #2c5f8a;
+    --crimson: #8b0000;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+
+  /* Custom scrollbar — a slim ink-on-paper bar that fits the article's
+     newspaper aesthetic. Firefox uses the simpler scrollbar-* properties;
+     WebKit/Blink browsers get the more detailed ::-webkit-scrollbar rules. */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ink-soft) var(--paper-2);
+  }
+  html::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  html::-webkit-scrollbar-track {
+    background: var(--paper-2);
+    border-left: 1px solid var(--rule);
+  }
+  html::-webkit-scrollbar-thumb {
+    background: var(--ink-soft);
+    border: 2px solid var(--paper-2);
+    border-radius: 0;
+  }
+  html::-webkit-scrollbar-thumb:hover {
+    background: var(--ink);
+  }
+  html::-webkit-scrollbar-corner {
+    background: var(--paper-2);
+  }
+  body {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 19px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .masthead {
+    border-bottom: 1px solid var(--ink);
+    padding: 18px 36px 14px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .masthead .brand {
+    display: flex; gap: 14px; align-items: baseline;
+  }
+  .masthead .brand .mark {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .masthead .meta { display: flex; gap: 28px; }
+
+  .hero {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 80px 36px 56px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+  .eyebrow .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin: 0 10px 2px 0;
+    vertical-align: middle;
+  }
+  h1.title {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: clamp(40px, 6.2vw, 84px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+    max-width: 14ch;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  h1.title em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .standfirst {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(20px, 2vw, 26px);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin: 0;
+  }
+  .byline {
+    margin-top: 44px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .byline div span {
+    display: block;
+    color: var(--ink);
+    margin-top: 4px;
+    font-family: "Source Serif 4", serif;
+    font-size: 14px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .byline div span.italic { font-style: italic; }
+
+  article {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 56px 36px 96px;
+  }
+
+  .prose {
+    max-width: 64ch;
+    margin: 0 auto;
+  }
+  .prose p {
+    margin: 0 0 1.3em;
+    text-wrap: pretty;
+  }
+  .prose p + p { text-indent: 1.6em; }
+  .prose p.lead {
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .prose p.lead + p { text-indent: 0; }
+
+  .prose .first::first-letter {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 5.4em;
+    line-height: 0.85;
+    float: left;
+    padding: 6px 14px 0 0;
+    color: var(--ink);
+  }
+
+  .section-head {
+    max-width: 64ch;
+    margin: 96px auto 40px;
+    padding-top: 0;
+  }
+  .section-head .roman {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .section-head .roman::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .section-head h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: clamp(30px, 3.4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.005em;
+    margin: 0;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .section-head h2 em { font-style: italic; color: var(--ink-soft); }
+
+  figure.chart {
+    margin: 56px 0;
+    padding: 28px 28px 24px;
+    background: #fbf8f1;
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+  figure.chart::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 22px; height: 22px;
+    border-top: 1px solid var(--ink);
+    border-left: 1px solid var(--ink);
+  }
+  figure.chart::after {
+    content: "";
+    position: absolute;
+    bottom: -1px; right: -1px;
+    width: 22px; height: 22px;
+    border-bottom: 1px solid var(--ink);
+    border-right: 1px solid var(--ink);
+  }
+  figure.chart .figlabel {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  figure.chart .figlabel .id { color: var(--accent); }
+  figure.chart .obs-host {
+    width: 100%;
+    overflow-x: auto;
+  }
+  figure.chart .obs-host > div {
+    margin: 0 auto;
+  }
+  figure.chart svg {
+    background: transparent !important;
+    max-width: 100%;
+    height: auto;
+  }
+  figcaption {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--rule);
+    font-family: "Source Serif 4", serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+
+  .pullquote {
+    max-width: 64ch;
+    margin: 56px auto;
+    padding: 32px 0 32px 36px;
+    border-left: 2px solid var(--accent);
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(24px, 2.4vw, 32px);
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .pullquote cite {
+    display: block;
+    margin-top: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .controls {
+    display: flex;
+    gap: 28px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    padding: 18px 0 22px;
+    border-bottom: 1px dashed var(--rule);
+    margin-bottom: 18px;
+  }
+  .controls .ctrl-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  footer.credit {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 36px;
+    border-top: 1px solid var(--ink);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  footer.credit a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--muted);
+  }
+  footer.credit a:hover { border-color: var(--ink); }
+
+  .ornament {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin: 48px auto;
+    color: var(--muted);
+  }
+  .ornament .line {
+    width: 60px;
+    height: 1px;
+    background: var(--rule);
+  }
+  .ornament .diamond {
+    width: 7px; height: 7px;
+    background: var(--accent);
+    transform: rotate(45deg);
+  }
+
+  /* mobile */
+  @media (max-width: 720px) {
+    body { font-size: 17px; padding-top: 60px; }
+    .hero { padding: 48px 24px 36px; }
+    article { padding: 36px 18px 64px; }
+    figure.chart { padding: 16px; }
+    .masthead { padding: 14px 20px; flex-wrap: wrap; gap: 8px; }
+    .pullquote { padding-left: 20px; margin-left: 0; margin-right: 0;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="brand">
+    <span class="mark">N.G.A.</span>
+    <span>Studies in the Collection</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span>An analysis of NGA-catalogued artworks · 1400s–2000s</div>
+  <h1 class="title">How has the subject matter of <em>Western art</em> evolved across time and traditions?</h1>
+  <p class="standfirst">Exploring six centuries of paintings, drawings, sculptures, and photographs from the National Gallery of Art.</p>
+  <div class="byline">
+    <div>Author<span>Jisung Lee</span></div>
+    <div>Source<span class="italic">National Gallery of Art, open data</span></div>
+    <div>Method<span class="italic">Quantitative survey</span></div>
+    <div>Filed<span>May&nbsp;2026</span></div>
+  </div>
+</section>
+
+<article>
+
+  <!-- lede -->
+  <div class="prose">
+    <p class="lead first">What an artist chooses to depict is never purely an aesthetic decision. It is shaped by who commissions the work, what institutions expect from it, what technologies are available, and what the contemporary culture of the artist is like.</p>
+    <p>"The forms of art are social facts," Meyer Schapiro said. "The artist is both the agent and the product of history."</p>
+    <p>Subject matter, then, is not solely a creative preference so much as residue of material conditions. It simultaneously varies not just across time, but geography, tradition, and institutional context. No artwork exists in isolation. Every style, technique or subject carries traces of the world that produced it. At the same time, artists are not simply passive products of their environments. They are capable of reshaping values and perception to reorganize how society understands itself.</p>
+    <p>This analysis explores these ideas based on the National Gallery of Art's catalogued works spanning the 1400s through the 2000s. The approach here is to track how the distribution of art themes move across different periods of time and social patterns.</p>
+  </div>
+
+  <!-- section 1 -->
+  <div class="section-head">
+    <div class="roman">I</div>
+    <h2>What is the overall arc of subject matter <em>across centuries?</em></h2>
+  </div>
+
+  <div class="prose">
+    <p>We first take a look through the broadest lens: how has the distribution of themes in the NGA's collection shifted across centuries? Below is a stacked area chart that compares the proportion of various themes in artworks to the time period during which they were created.</p>
+  </div>
+
+  <figure class="chart">
+    <div class="figlabel"><span>Figure 01</span></div>
+    <div class="obs-host"><div id="observablehq-stackedAreaSubjectMatter-055d216f"></div></div>
+  </figure>
+
+  <div class="prose">
+    <p>The most obvious pattern in the data is the religous and portrait themes dominating the 1400s, with each accounting for roughly 40% of works. Religious artworks decline steadily throughout the 1600s and 1700s before flattening to nearly zero by the 1900s, while portraiture holds its share longer, staying at least close to 20% for the entire timeframe. These two themes alone accounted for over 80% of the NGA's earliest holdings, reflecting an era when art served institutional purposes. The church commissioned religious scenes, and wealthy patrons commissioned portraits. As these functions faded, the share spread outward to other themes.</p>
+    <p>The small multiples chart below isolates each theme to make individual tracing easier.</p>
+  </div>
+
+  <figure class="chart">
+    <div class="figlabel"><span>Figure 02</span></div>
+    <div class="obs-host"><div id="observablehq-smallMultiplesSubject-055d216f"></div></div>
+  </figure>
+
+  <div class="prose">
+    <p>As religious and portrait artworks declined, themes like genre scenes, landscape, and architecture all gradually grew from the 1500s to the 1800s, diversifying subject matter. Landscape peaks around 1800 at roughly 18%, potentially coinciding with the Romantic era's emphasis on nature. Architecture spikes to nearly 30% around the 1700s, likely influenced by the Grand Tour tradition and its focus on classical ruins.</p>
+    <p>The sharpest rise is in non-representational art, which starts at essentially 0% in the 1700s and rises to around 25% by the 2000s. Unlike any other theme with gradual shifts, it shows a late, steep arrival. Meanwhile, object and still life remain marginal across the entire 600-year span, never breaking over 5%, suggesting these themes have been secondary concerns in Western art regardless of era.</p>
+  </div>
+
+  <div class="ornament"><span class="line"></span><span class="diamond"></span><span class="line"></span></div>
+
+  <!-- section 2-->
+  <div class="section-head">
+    <div class="roman">II</div>
+    <h2>How do different artistic schools depict subject matter <em>across time?</em></h2>
+  </div>
+
+  <div class="prose">
+    <p>The NGA holds works from over 150 distinct artistic schools, including national and regional traditions with their own histories and institutions.</p>
+    <p>The stacked bar chart below shows the proportions of various art themes from different artistic schools during the selected time period. The schools are sorted by volume (most to least art pieces during the time period), and only schools with a minimum of 30 art pieces during the selected time period are shown.</p>
+  </div>
+
+  <figure class="chart">
+    <div class="figlabel"><span>Figure 03</span></div>
+    <div class="controls">
+      <div>
+        <div class="ctrl-label">Century range</div>
+        <div id="observablehq-viewof-centuryRange-055d216f"></div>
+      </div>
+      <div>
+        <div class="ctrl-label">School page</div>
+        <div id="observablehq-viewof-pageSelect-055d216f"></div>
+      </div>
+    </div>
+    <div class="obs-host"><div id="observablehq-themeDistribution-055d216f"></div></div>
+  </figure>
+
+  <div class="prose">
+    <p>Viewing the entire 1400s-2000s timeframe shows the high-level overview of the distribution in the whole collection. A couple of details stand out at the aggregate level. Across the full collection, American and French art look superficially similar, both leading with portraits at around 21-22%, but diverge in the second half of the categories — American art has a 17% non-representational share, nearly doubling France's, reflecting Abstract Expressionism during post-war American movements. German art, interestingly, has 19% portrait and 18% architecture, but only 11% religious, lower than expected given Germany's ties to the Reformation and Christian artworks, which may reflect the NGA's collection skewing toward later German works.</p>
+    <p>Zooming in on the 1400s-1500s, we see more variety in the distributions between schools. Religious content dominates Italian, Venetian, and Flemish art at well over 30%, while there are some anomalies like animal works accounting for over half of Flemish art, and the Danube splitting its majority between figure and object.</p>
+    <p>By the 1700s-1800s, religious works nearly vanished from all applicable schools, and themes like object, landscape, and genre surged to help unify the distribution. At this point, we see many schools' themes starting to even out into themes that hadn't been represented before. The Enlightenment shifted intellectual culture away from religious authority toward reason, science, and secular life. Although the church was a dominant commissioner of art for centuries, by the 1700s, wealthy merchants, aristocrats, and eventually the middle class were primary buyers, who wanted portraits of themselves, landscapes of their estates, scenes of daily life, and still life for their homes.</p>
+    <p>By the 1800s, and particularly the 1900s and on, there is a noticeable increase in non-representational arts, particularly from the Czech, Japanese, and Danish cultures. Czech non-representational work likely traces to the influence of artists like Frantisek Kupka, one of the earliest pioneers of pure abstract works. Japanese abstraction may trace to post-war movements, like the Gutai group, which emphasized radical material experimentation. Gutai artists were well-connected with American Abstract Expressionists, and their work was collected by Western institutions as part of the transatlantic exchange.</p>
+  </div>
+
+  <div class="ornament"><span class="line"></span><span class="diamond"></span><span class="line"></span></div>
+
+  <!-- section 3 -->
+  <div class="section-head">
+    <div class="roman">III</div>
+    <h2>The rise in <em>non-representational</em> art.</h2>
+  </div>
+
+  <div class="prose">
+    <p>Non-representional art grew rather unevenly, appearing as a major category in some traditions while barely registering in others. Some artistic schools like Italian and Spanish holdings remain largely representational even in the 1900s. So where exactly does the sudden rise in non-representational art come from? Which themes diminished in influence as a result?</p>
+  </div>
+
+  <figure class="chart">
+    <div class="figlabel"><span>Figure 04</span></div>
+    <div class="obs-host"><div id="observablehq-changeInTheme-055d216f"></div></div>
+  </figure>
+
+  <div class="prose">
+    <p>Compared to the pre-1900 period, Portraits in the modern era lost the most share, declining by 11.1 percentage points, which is notable considering it was the single most persistent theme across every century in the earlier charts. However, it didn't decrease because people stopped wanting portraits; rather, photography largely absorbed that function. Religious art continued its centuries-long decline as the Church's influence diminished further. Architecture dropped 7.9 percentage points due to the fading of the Grand Tour tradition, while animal and landscape each shed around 6 points.</p>
+    <p>This chart differs from the previous ones in that it compares two pools of artworks: those created before 1900 and those created after 1900. For each theme, it calculates the difference in the share of that category's work between the two pools. For example, portraits losing 11.1 percentage points represents portraits accounting for roughly 23% of the artworks pre-1900, down to 12% post-1900. This is not the same as saying portraits "declined by 11%," which would imply a much smaller change. It's a closed system in which every value on the chart sums to zero; an increase in a theme's share must come from another theme's loss (e.g., the 27.2-point increase in non-representational art is accounted for by the net changes across all other themes).</p>
+    <p>Non-representational art increased by more than 27 percentage points in the modern era, outpacing other categories by a wide margin. One of the most immediate causes is photography. Once cameras could capture likenesses, landscapes, and architectural views more accurately than paint could, artists lost their monopoly on visual documentation, leading to declines in portrait commissions. Photography didn't entirely kill representational art, but it removed the practical justification for much of it, freeing artists to create what paintings and drawings could do that a camera couldn't: expressing color, form, and emotion.</p>
+    <p>It is worth noting that a significant portion of the NGA's collection is American art, one of the leading schools in non-representational art. It holds more non-representational art than the next five largest schools in the collection combined, which would seemingly skew the percentage points heavily. However, even after completely excluding American art from consideration, the general trend remains the same:</p>
+  </div>
+
+  <figure class="chart">
+    <div class="figlabel"><span>Figure 05</span></div>
+    <div class="obs-host"><div id="observablehq-changeInTheme2-055d216f"></div></div>
+  </figure>
+
+  <div class="prose">
+    <p>Non-representational art (+17.5pp) still leads in increases by an overwhelming rate, accounting for a larger share than the other four gaining categories combined (+14.0pp), and portrait, architecture, and religion remain the three most diminished themes, suggesting a real shift towards non-representational art.</p>
+    <p>World War I helped accelerate this change, as the level of mass death and destruction shattered European cultural traditions, including representational art. Dadaism and Surrealism rejected rational order, and many artists coming out of wartime trauma found that conventional subject matter failed to convey their experience, turning to art that was "nonsensical." After World War II, the center of the art world moved from Paris to New York, and Abstract Expressionism became a dominant movement in the 1950s. The United States government and cultural institutions promoted abstract art during the Cold War as a symbol of individualism and creative expression, in contrast to Soviet Socialist Realism. Abstraction became politically useful, accelerating its acceptance and market value.</p>
+    <p>The global spread of art education and international exhibitions in the mid-20th century took abstract art beyond its European and American origins. The Gutai group in Japan, Neo-Concretism in Brazil, and the Progressive Artists' Group in India all developed their own version of abstraction, often blending them with local traditions.</p>
+  </div>
+
+  <div class="ornament"><span class="line"></span><span class="diamond"></span><span class="line"></span></div>
+
+</article>
+
+<footer class="credit">
+  <div>View · <a href="https://observablehq.com/@jisung/subject-matter-western-art@507" target="_blank" rel="noopener">Original Notebook On ObservableHQ</a></div>
+  <div>Data · <a href="https://github.com/NationalGalleryOfArt/opendata/tree/main/data" target="_blank" rel="noopener">National Gallery of Art Open Data</a></div>
+</footer>
+
+<script>
+(function() {
+    let lastSent = null;
+    let ticking = false;
+    const TOP_THRESHOLD = 30;
+
+    function notify(state) {
+        if (state === lastSent) return;
+        lastSent = state;
+        try {
+            window.parent.postMessage({
+                type: 'iframe-scroll',
+                atTop: state === 'top'
+            }, '*');
+        } catch (e) { /* ignore */ }
+    }
+
+    function onScroll() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        notify(scrollY <= TOP_THRESHOLD ? 'top' : 'scrolled');
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(onScroll);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    window.addEventListener('load', onScroll);
+})();
+</script>
+
+<script type="module">
+  import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
+  import define from "https://api.observablehq.com/@jisung/subject-matter-western-art@507.js?v=4";
+  new Runtime().module(define, name => {
+    if (name === "stackedAreaSubjectMatter") return new Inspector(document.querySelector("#observablehq-stackedAreaSubjectMatter-055d216f"));
+    if (name === "smallMultiplesSubject") return new Inspector(document.querySelector("#observablehq-smallMultiplesSubject-055d216f"));
+    if (name === "viewof pageSelect") return new Inspector(document.querySelector("#observablehq-viewof-pageSelect-055d216f"));
+    if (name === "viewof centuryRange") return new Inspector(document.querySelector("#observablehq-viewof-centuryRange-055d216f"));
+    if (name === "themeDistribution") return new Inspector(document.querySelector("#observablehq-themeDistribution-055d216f"));
+    if (name === "changeInTheme") return new Inspector(document.querySelector("#observablehq-changeInTheme-055d216f"));
+    if (name === "changeInTheme2") return new Inspector(document.querySelector("#observablehq-changeInTheme2-055d216f"));
+    return ["schoolThemesFiltered","filteredSchools"].includes(name);
+  });
+</script>
+
+</body>
+</html>

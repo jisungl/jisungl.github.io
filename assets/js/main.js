@@ -41,14 +41,19 @@ const projectData = {
 };
 
 const articleData = {
+    'lillard': {
+        path: '/articles/lillard.html',
+        notes: null
+    },
+    'western-art': {
+        path: '/articles/western-art.html',
+        notes: '/articles/western-art-notes.html',
+        fullscreen: true
+    },
     'two-high': {
         path: '/articles/two-high-safety.html',
         notes: '/articles/two-high-notes.html'
     },
-    'lillard': {
-        path: '/articles/lillard.html',
-        notes: null
-    }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -166,6 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const articleViewPage = document.querySelector('[data-page-section="article-view"]');
         articleViewPage.querySelector('.article-view_frame').src = article.path;
         
+        if (article.fullscreen) {
+            document.body.classList.add('is-clean-article');
+        }
+        
         siteHeader.classList.add('hidden');
         content.classList.add('hidden');
         
@@ -183,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const analysisPage = document.querySelector('[data-page-section="analysis"]');
         
         setNavHidden(false);
+        document.body.classList.remove('is-clean-article');
         updateNavSelection('analysis');
         articleViewPage.style.opacity = '0';
         
@@ -280,6 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
             null;
 
         setNavHidden(false);
+        document.body.classList.remove('is-clean-article');
 
         const finalize = () => {
             if (articleViewPage.classList.contains('is-active')) {
